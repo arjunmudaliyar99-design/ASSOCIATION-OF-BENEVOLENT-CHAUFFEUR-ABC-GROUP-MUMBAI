@@ -5,6 +5,7 @@ import { z } from "zod";
 import { audit, requireAdmin } from "@/lib/auth";
 import { addMonths, db, ensureSchema, memberCode, one, q, run, today } from "@/lib/db";
 import { importRow, type ImportRow } from "@/lib/validate";
+import { checkDoc, DOC_KINDS, saveDoc, type DocKind } from "@/lib/docs";
 
 const id = z.coerce.number().int().positive();
 
@@ -141,4 +142,28 @@ export async function commitImport(rows: Record<string, string>[]) {
   await audit(admin, "import", `${good.length} imported, ${results.length - good.length} skipped`);
   revalidatePath("/admin", "layout");
   return { imported: good.length, updated: good.filter((g) => g.duplicate).length, skipped: results.length - good.length };
+}
+
+export async function uploadDoc(_: unknown, fd: FormData) {
+  const admin = await requireAdmin();
+  const m = id.parse(fd.get("id"));
+  const kind = String(fd.get("kind"));
+  if (!(kind in DOC_KINDS)) return "Choose which document this is.";
+  const file = fd.get("file");
+  if (!(file instanceof File) || !file.size) return "Choose a file.";
+  const c = checkDoc(kind, new Uint8Array(await file.arrayBuffer()));
+  if ("error" in c) return c.error;
+  await saveDoc({ kind: kind as DocKind, mime: c.mime, buf: c.buf, memberId: m, by: admin });
+  await audit(admin, "uploaded document", `${kind} ${memberCode(m)}`);
+  revalidatePath(`/admin/members/${m}`);
+  return "Uploaded.";
+}
+
+export async function deleteDoc(fd: FormData) {
+  const admin = await requireAdmin();
+  const d = id.parse(fd.get("doc"));
+  const row = await one<{ member_id: number; kind: string }>("SELECT member_id, kind FROM documents WHERE id = ?", [d]);
+  await run("DELETE FROM documents WHERE id = ?", [d]);
+  await audit(admin, "deleted document", `${row?.kind} ${row?.member_id ? memberCode(row.member_id) : ""}`);
+  revalidatePath(`/admin/members/${row?.member_id}`);
 }

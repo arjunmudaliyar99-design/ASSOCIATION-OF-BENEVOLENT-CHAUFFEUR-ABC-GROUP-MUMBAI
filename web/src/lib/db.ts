@@ -34,14 +34,20 @@ const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS admins (
      id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL,
      created_at TEXT NOT NULL DEFAULT (datetime('now')))`,
+  `CREATE TABLE IF NOT EXISTS documents (
+     id INTEGER PRIMARY KEY AUTOINCREMENT, order_id TEXT, member_id INTEGER, kind TEXT NOT NULL,
+     mime TEXT NOT NULL, size INTEGER NOT NULL, data BLOB NOT NULL, uploaded_by TEXT NOT NULL DEFAULT 'member',
+     created_at TEXT NOT NULL DEFAULT (datetime('now')))`,
+  `CREATE INDEX IF NOT EXISTS documents_member ON documents(member_id)`,
+  `CREATE INDEX IF NOT EXISTS documents_order ON documents(order_id)`,
   `CREATE TABLE IF NOT EXISTS rate (key TEXT NOT NULL, at INTEGER NOT NULL)`,
   `CREATE INDEX IF NOT EXISTS rate_key ON rate(key, at)`,
   `CREATE TABLE IF NOT EXISTS audit (
      id INTEGER PRIMARY KEY AUTOINCREMENT, admin TEXT, action TEXT NOT NULL, detail TEXT,
      at TEXT NOT NULL DEFAULT (datetime('now')))`,
-  // Placeholder prices until the association confirms them. Editable in Admin > Plans.
+  // Prices confirmed by the association. Editable in Admin > Plans.
   `INSERT OR IGNORE INTO plans (id, label, months, price_paise, sort) VALUES
-     ('1y', '1 year', 12, 36500, 1), ('3y', '3 years', 36, 300000, 2)`,
+     ('1y', '1 year', 12, 36500, 1), ('10y', '10 years', 120, 300000, 2)`,
 ];
 
 export function db(): Client {

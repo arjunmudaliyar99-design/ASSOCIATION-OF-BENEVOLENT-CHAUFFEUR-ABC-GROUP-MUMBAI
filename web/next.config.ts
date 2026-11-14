@@ -29,6 +29,7 @@ const security = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  experimental: { serverActions: { bodySizeLimit: "2mb" } },
   serverExternalPackages: ["@libsql/client", "libsql"],
   images: { formats: ["image/avif", "image/webp"], minimumCacheTTL: 31536000 },
   async headers() {

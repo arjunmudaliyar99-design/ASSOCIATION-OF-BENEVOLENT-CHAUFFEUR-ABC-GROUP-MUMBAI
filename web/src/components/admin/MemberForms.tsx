@@ -1,6 +1,6 @@
 "use client";
 import { useActionState } from "react";
-import { recordOfflineRenewal, updateMember } from "@/app/admin/actions";
+import { recordOfflineRenewal, updateMember, uploadDoc } from "@/app/admin/actions";
 import { input } from "@/components/admin/ui";
 
 const box = "grid content-start gap-4 rounded-3xl bg-card p-6 ring-1 ring-line";
@@ -38,6 +38,20 @@ export function OfflineRenewal({ id, plans }: { id: number; plans: { id: string;
       <label className={lab}>Amount received (₹)<input name="amount" type="number" min={0} step="1" defaultValue={plans[0]?.price} required className={input} /></label>
       <label className={lab}>Paid by<select name="mode" className={input}><option value="cash">Cash</option><option value="upi">UPI</option><option value="bank">Bank transfer</option></select></label>
       <div className="flex items-center gap-3"><button disabled={pending} className="btn-primary !px-6 !py-2.5 !text-base disabled:opacity-60">Record renewal</button>{msg && <span role="status" className="font-semibold">{msg}</span>}</div>
+    </form>
+  );
+}
+
+export function DocUpload({ id }: { id: number }) {
+  const [msg, run, pending] = useActionState(uploadDoc, undefined);
+  return (
+    <form action={run} className={box}>
+      <h2 className="font-display text-xl font-extrabold">Add a document</h2>
+      <p className="text-ink/70">For imported members, or when a member sends a clearer copy on WhatsApp. Photo or PDF, under 1 MB.</p>
+      <input type="hidden" name="id" value={id} />
+      <label className={lab}>Document<select name="kind" className={input}><option value="aadhaar">Aadhaar card</option><option value="pan">PAN card</option><option value="licence">Driving licence</option></select></label>
+      <label className={lab}>File<input name="file" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" required className={input} /></label>
+      <div className="flex items-center gap-3"><button disabled={pending} className="btn-primary !px-6 !py-2.5 !text-base disabled:opacity-60">Upload</button>{msg && <span role="status" className="font-semibold">{msg}</span>}</div>
     </form>
   );
 }

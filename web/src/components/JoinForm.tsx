@@ -3,6 +3,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { pay, preloadCheckout } from "@/lib/checkout";
+import DocInput from "@/components/DocInput";
 
 type Plan = { id: string; label: string; months: number; price_paise: number };
 const inr = (p: number) => `₹${(p / 100).toLocaleString("en-IN")}`;
@@ -13,6 +14,7 @@ export default function JoinForm({ plans }: { plans: Plan[] }) {
   const [planId, setPlanId] = useState(plans[0].id);
   const [f, setF] = useState({ name: "", phone: params.get("phone") ?? "", licence_no: "", pan: "", email: "", area: "" });
   const [agree, setAgree] = useState(false);
+  const [docs, setDocs] = useState<{ aadhaar?: string; pan?: string; licence?: string }>({});
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const plan = plans.find((p) => p.id === planId)!;
@@ -24,7 +26,7 @@ export default function JoinForm({ plans }: { plans: Plan[] }) {
     if (!agree) return setErr("Please confirm the details are correct.");
     setBusy(true);
     try {
-      const r = await pay({ endpoint: "/api/join/order", body: { planId, ...f }, description: `Membership – ${plan.label}`, prefill: { name: f.name, email: f.email, contact: f.phone } });
+      const r = await pay({ endpoint: "/api/join/order", body: { planId, ...f, docs }, description: `Membership – ${plan.label}`, prefill: { name: f.name, email: f.email, contact: f.phone } });
       if (r.dismissed) return setBusy(false);
       if (r.ok && r.token) router.push(`/membership/${r.token}?new=1`);
       else router.push(`/donate/thank-you?id=${encodeURIComponent(r.paymentId)}&ok=0`);
@@ -56,7 +58,7 @@ export default function JoinForm({ plans }: { plans: Plan[] }) {
           ["name", "Full name", "name", "text", true],
           ["phone", "Mobile number", "tel", "tel", true],
           ["licence_no", "Driving licence number", "off", "text", true],
-          ["pan", "PAN (optional)", "off", "text", false],
+          ["pan", "PAN number (optional)", "off", "text", false],
           ["email", "Email (optional)", "email", "email", false],
           ["area", "Area you live in (optional)", "address-level2", "text", false],
         ] as const).map(([k, label, ac, type, req]) => (
@@ -67,6 +69,14 @@ export default function JoinForm({ plans }: { plans: Plan[] }) {
           </label>
         ))}
       </div>
+
+      <fieldset className="grid gap-3">
+        <legend className="mb-1 font-display text-xl font-bold">Upload your documents</legend>
+        <p className="text-sm text-ink/70">Take a clear photo of each card. Only the association&apos;s committee can see these, and they&apos;re used only to verify you. Already a member and renewing? You can skip this.</p>
+        <DocInput id="d-aadhaar" label="Aadhaar card" hint="Front side, photo or PDF" value={docs.aadhaar} onChange={(v, e) => { setDocs({ ...docs, aadhaar: v }); setErr(e ?? ""); }} />
+        <DocInput id="d-pan" label="PAN card" value={docs.pan} onChange={(v, e) => { setDocs({ ...docs, pan: v }); setErr(e ?? ""); }} />
+        <DocInput id="d-licence" label="Driving licence" hint="Front side, photo or PDF" value={docs.licence} onChange={(v, e) => { setDocs({ ...docs, licence: v }); setErr(e ?? ""); }} />
+      </fieldset>
 
       <label htmlFor="j-agree" className="flex cursor-pointer items-start gap-3">
         <input id="j-agree" type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} className="mt-1 h-5 w-5 shrink-0 accent-[rgb(var(--ink))]" />

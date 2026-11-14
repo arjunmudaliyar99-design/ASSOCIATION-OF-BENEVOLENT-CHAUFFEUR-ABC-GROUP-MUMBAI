@@ -94,7 +94,22 @@ describe("donations", () => {
 });
 
 describe("membership", () => {
-  const driver = { planId: "1y", name: "Suresh Patil", phone: "+91 98200 11111", licence_no: "MH02 20180012345" };
+  // Smallest valid JPEG / PDF headers are enough: the server checks the real file type from its bytes.
+  const jpg = "data:image/jpeg;base64," + Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0, 16, 74, 70, 73, 70]).toString("base64");
+  const pdf = Buffer.from("%PDF-1.4 test").toString("base64");
+  const docs = { aadhaar: jpg, pan: pdf, licence: jpg };
+  const driver = { planId: "1y", name: "Suresh Patil", phone: "+91 98200 11111", licence_no: "MH02 20180012345", docs };
+
+  it("requires all three documents from new members and rejects fake files", async () => {
+    const noDocs = await joinOrder(post("/api/join/order", { ...driver, phone: "9820099999", docs: { aadhaar: jpg } }));
+    expect(noDocs.status).toBe(400);
+    expect((await noDocs.json()).error).toContain("PAN card");
+    const fake = await joinOrder(post("/api/join/order", { ...driver, phone: "9820099999", docs: { ...docs, licence: Buffer.from("<script>alert(1)</script>").toString("base64") } }));
+    expect(fake.status).toBe(400);
+    expect((await fake.json()).error).toContain("photo");
+    const huge = await joinOrder(post("/api/join/order", { ...driver, phone: "9820099999", docs: { ...docs, aadhaar: Buffer.concat([Buffer.from([0xff, 0xd8, 0xff]), Buffer.alloc(1_300_000)]).toString("base64") } }));
+    expect(huge.status).toBe(400);
+  });
 
   it("charges the plan price from the database, not from the browser", async () => {
     const r = await joinOrder(post("/api/join/order", { ...driver, amount: 1, price_paise: 100 }));
@@ -114,15 +129,19 @@ describe("membership", () => {
     expect(v.token).toMatch(/^[a-f0-9]{32}$/);
     const m1 = await dbm.one<{ id: number; status: string; phone: string; paid_on: string; expires_on: string }>("SELECT * FROM members WHERE token = ?", [v.token]);
     expect(m1).toMatchObject({ status: "pending", phone: "9820011111" });
+    const linked = await dbm.q<{ kind: string; mime: string }>("SELECT kind, mime FROM documents WHERE member_id = ? ORDER BY kind", [m1!.id]);
+    expect(linked).toEqual([{ kind: "aadhaar", mime: "image/jpeg" }, { kind: "licence", mime: "image/jpeg" }, { kind: "pan", mime: "application/pdf" }]);
     expect(m1!.expires_on).toBe(dbm.addMonths(dbm.today(), 12));
 
-    // Admin approves, driver renews early with the 3-year plan: new period starts the day after current expiry.
+    // Admin approves, driver renews early with the 10-year plan: new period starts the day after current expiry.
     await dbm.run("UPDATE members SET status = 'active' WHERE id = ?", [m1!.id]);
-    const { orderId: o2 } = await (await joinOrder(post("/api/join/order", { ...driver, planId: "3y" }))).json();
+    const renew = await joinOrder(post("/api/join/order", { ...driver, planId: "10y", docs: {} })); // renewing: documents already on file
+    expect(renew.status).toBe(200);
+    const { orderId: o2 } = await renew.json();
     await payViaWebhook(o2, "pay_M2");
     const m2 = await dbm.one<{ id: number; status: string; expires_on: string }>("SELECT * FROM members WHERE id = ?", [m1!.id]);
     const next = new Date(Date.parse(`${m1!.expires_on}T00:00:00Z`) + 864e5).toISOString().slice(0, 10);
-    expect(m2).toMatchObject({ status: "active", expires_on: dbm.addMonths(next, 36) });
+    expect(m2).toMatchObject({ status: "active", expires_on: dbm.addMonths(next, 120) });
     expect(Number((await dbm.one<{ n: number }>("SELECT COUNT(*) AS n FROM members WHERE phone = '9820011111'"))!.n)).toBe(1);
   });
 
@@ -135,9 +154,9 @@ describe("membership", () => {
 describe("import", () => {
   it("previews, skips bad rows, and imports without duplicates", async () => {
     const { previewImport, commitImport } = await import("@/app/admin/actions");
-    const rows = [
+    const rows: Record<string, string>[] = [
       { "Full name": "Imran Shaikh", "Mobile number": "9876500001", Plan: "1 year", "Amount paid": "365", "Paid on": "15-03-2025", "Payment mode": "Cash" },
-      { "Full name": "Kiran Rao", "Mobile number": "9876500002", Plan: "3 years", "Amount paid": "3000", "Paid on": "2024/01/10", "Payment mode": "UPI" },
+      { "Full name": "Kiran Rao", "Mobile number": "9876500002", Plan: "10 years", "Amount paid": "3000", "Paid on": "2024/01/10", "Payment mode": "UPI" },
       { "Full name": "No Phone", "Mobile number": "", Plan: "1 year", "Amount paid": "365", "Paid on": "15-03-2025" },
       { "Full name": "Bad Plan", "Mobile number": "9876500003", Plan: "5 years", "Amount paid": "365", "Paid on": "15-03-2025" },
       { "Full name": "Dup", "Mobile number": "9876500001", Plan: "1 year", "Amount paid": "365", "Paid on": "15-03-2025" },
@@ -168,5 +187,7 @@ describe("admin protection", () => {
     const good = await new SignJWT({ sub: "tester" }).setProtectedHeader({ alg: "HS256" }).setExpirationTime("1h").sign(new TextEncoder().encode("a".repeat(48)));
     const ok = await middleware(new NextRequest("http://localhost/admin", { headers: { cookie: `abc_admin=${good}` } }));
     expect(ok.status).toBe(200);
+    const doc = await middleware(new NextRequest("http://localhost/api/admin/doc/1"));
+    expect(doc.status).toBe(401);
   });
 });

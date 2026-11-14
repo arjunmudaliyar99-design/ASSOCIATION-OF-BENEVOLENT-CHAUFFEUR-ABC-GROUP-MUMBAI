@@ -51,6 +51,7 @@ export async function markPaid(orderId: string, paymentId: string): Promise<{ ki
         memberId = Number(r.lastInsertRowid);
       }
     }
+    if (memberId) await tx.execute({ sql: "UPDATE documents SET member_id = ? WHERE order_id = ?", args: [memberId, orderId] });
     await tx.execute({
       sql: "UPDATE payments SET status = 'paid', payment_id = ?, paid_at = datetime('now'), member_id = COALESCE(?, member_id) WHERE order_id = ?",
       args: [paymentId, memberId ?? null, orderId],
