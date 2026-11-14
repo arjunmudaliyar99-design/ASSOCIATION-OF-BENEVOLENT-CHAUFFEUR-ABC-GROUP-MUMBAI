@@ -1,0 +1,6 @@
+# Sensitive documents (PAN, registration certificates) - never commit or publish
+private/
+# Original WhatsApp exports (duplicates of media/)
+_original-zips/
+# Large raw videos - host on YouTube/Instagram instead
+media/videos/

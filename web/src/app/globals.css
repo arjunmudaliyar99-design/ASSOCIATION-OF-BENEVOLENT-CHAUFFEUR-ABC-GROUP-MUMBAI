@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Colours from the ABC logo. Yellow leads; navy and sindoor red support. */
+:root {
+  --sun: 255 196 30;
+  --on-sun: 31 29 107;
+  --paper: 255 241 196;
+  --card: 255 252 240;
+  --ink: 31 29 107;
+  --muted: 84 80 130;
+  --line: 236 205 110;
+  --gold: 255 196 30;
+  --navy: 31 29 107;
+  --sindoor: 192 47 28;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sun: 31 29 107;
+    --on-sun: 255 204 51;
+    --paper: 20 18 56;
+    --card: 30 28 82;
+    --ink: 255 243 205;
+    --muted: 196 190 235;
+    --line: 70 66 140;
+    --sindoor: 255 110 84;
+    color-scheme: dark;
+  }
+}
+
+html { scroll-behavior: smooth; }
+body { @apply bg-paper text-ink font-sans antialiased; }
+h1, h2, h3 { @apply font-display; text-wrap: balance; }
+:focus-visible { outline: 3px solid rgb(var(--sindoor)); outline-offset: 3px; border-radius: 6px; }
+::selection { background: rgb(var(--gold)); color: rgb(var(--navy)); }
+
+@layer components {
+  .wrap { @apply mx-auto w-full max-w-6xl px-4 sm:px-6; }
+  .lane { background: repeating-linear-gradient(90deg, rgb(var(--gold)) 0 36px, transparent 36px 64px); }
+  .lane-navy { background: repeating-linear-gradient(90deg, rgb(var(--navy)) 0 36px, transparent 36px 64px); }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-display text-lg font-bold transition duration-200 active:scale-[.97]; }
+  .btn-red { @apply btn bg-sindoor text-white shadow-[0_6px_0_rgb(var(--navy))] hover:-translate-y-0.5 hover:shadow-[0_8px_0_rgb(var(--navy))]; }
+  .btn-ghost { @apply btn border-2 border-current hover:bg-ink/5; }
+  .h-sec { @apply font-display text-4xl font-extrabold leading-[1.05] sm:text-5xl; }
+  .field { @apply w-full rounded-xl border-2 border-line bg-card px-4 py-3 text-ink placeholder:text-muted/70 focus:border-ink focus:outline-none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

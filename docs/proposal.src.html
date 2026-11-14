@@ -1,0 +1,470 @@
+<title>ABC Website Blueprint</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@500;700;800&family=Mukta:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one long "route" — a dashed highway lane runs down the left edge, each section is a stop along it. Brand colours from the ABC logo. */
+:root{
+  --navy:#22206b; --marigold:#f3b80c; --sindoor:#c0321d;
+  --bg:#fbf8ef; --surface:#ffffff; --ink:#1c1a3d; --muted:#5d5a7c; --line:#e3dcc6;
+  --lane:#f3b80c; --chip:#f4eccf; --onnavy:#ffffff;
+  --display:"Baloo Bhai 2","Trebuchet MS",system-ui,sans-serif;
+  --body:"Mukta","Segoe UI",system-ui,sans-serif;
+  --r-s:6px; --r-l:18px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --navy:#9d9bff; --marigold:#f7c63a; --sindoor:#ff7a62;
+  --bg:#13122b; --surface:#1d1c3d; --ink:#f2f0ff; --muted:#aeabd0; --line:#34325e;
+  --lane:#f7c63a; --chip:#2a2852; --onnavy:#13122b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --navy:#9d9bff; --marigold:#f7c63a; --sindoor:#ff7a62;
+  --bg:#13122b; --surface:#1d1c3d; --ink:#f2f0ff; --muted:#aeabd0; --line:#34325e;
+  --lane:#f7c63a; --chip:#2a2852; --onnavy:#13122b; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);line-height:1.1;text-wrap:balance;margin:0}
+h2{font-size:clamp(28px,4vw,40px);color:var(--navy);font-weight:800}
+h3{font-size:21px;font-weight:700}
+p{margin:0}
+.lede{color:var(--muted);max-width:62ch;font-size:18px}
+a{color:var(--navy)}
+:focus-visible{outline:3px solid var(--marigold);outline-offset:3px;border-radius:4px}
+
+/* ---- Hero ---- */
+.hero{background:#22206b;color:#fff;position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding-block:56px 64px}
+.hero-brand{display:flex;gap:16px;align-items:center;margin-bottom:28px}
+.hero-brand img{width:72px;height:72px;border-radius:50%;box-shadow:0 0 0 4px #f3b80c}
+.hero-brand span{font-weight:600;color:#d9d7ff;font-size:15px;line-height:1.3}
+.hero h1{font-size:clamp(38px,6vw,68px);font-weight:800;color:#fff}
+.hero h1 .y{color:#f3b80c}
+.hero p.sub{margin-top:18px;color:#d9d7ff;max-width:52ch;font-size:19px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.hero-meta span{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);padding:6px 12px;border-radius:999px;font-size:14px;color:#fff}
+.hero-photo{position:relative}
+.hero-photo img{width:100%;border-radius:var(--r-l);display:block;transform:rotate(1.5deg);box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.hero-photo figcaption{position:absolute;left:-14px;bottom:18px;background:#f3b80c;color:#22206b;font-weight:700;padding:8px 14px;border-radius:var(--r-s);font-size:14px;transform:rotate(-2deg)}
+/* the road */
+.road{position:absolute;left:0;right:0;bottom:0;height:14px;background:#1a184f}
+.road::after{content:"";position:absolute;left:0;right:0;top:5px;height:4px;
+  background:repeating-linear-gradient(90deg,#f3b80c 0 34px,transparent 34px 60px);
+  animation:drive 2.4s linear infinite}
+@keyframes drive{to{background-position:-60px 0}}
+
+/* ---- Route (sections as stops) ---- */
+.route{position:relative;padding-block:24px 40px}
+.route::before{content:"";position:absolute;top:0;bottom:0;left:max(26px,calc(50% - 540px + 26px));width:4px;
+  background:repeating-linear-gradient(180deg,var(--lane) 0 22px,transparent 22px 40px);opacity:.75}
+.stop{position:relative;padding-left:64px;padding-block:44px}
+.stop>.pin{position:absolute;left:12px;top:48px;width:32px;height:32px;border-radius:50%;background:var(--navy);color:var(--onnavy);
+  display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:15px;box-shadow:0 0 0 5px var(--bg)}
+.stop-head{display:grid;gap:10px;margin-bottom:26px}
+.kicker{color:var(--sindoor);font-weight:700;font-size:15px}
+
+/* ---- Theme ---- */
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.sw{border-radius:var(--r-l);overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.sw i{display:block;height:84px}
+.sw div{padding:10px 14px;font-size:14px}
+.sw b{display:block;font-size:16px}
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.specimen{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:22px}
+.specimen .big{font-family:var(--display);font-size:44px;font-weight:800;color:var(--navy);line-height:1}
+.specimen .body{font-size:18px}
+.specimen small{color:var(--muted);display:block;margin-top:10px;font-size:14px}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.mode{border-radius:var(--r-l);padding:20px;display:grid;gap:10px}
+.mode.l{background:#fbf8ef;color:#1c1a3d;border:1px solid #e3dcc6}
+.mode.d{background:#13122b;color:#f2f0ff;border:1px solid #34325e}
+.mode .mb{display:inline-block;padding:8px 16px;border-radius:999px;font-weight:700;width:max-content}
+.mode.l .mb{background:#c0321d;color:#fff}
+.mode.d .mb{background:#f7c63a;color:#13122b}
+
+/* ---- Sitemap ---- */
+.pages{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.page{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-s);padding:16px 18px;display:grid;gap:6px;transition:border-color .2s,transform .2s}
+.page:hover{border-color:var(--marigold);transform:translateY(-2px)}
+.page h3{font-size:19px;color:var(--navy)}
+.page p{font-size:15px;color:var(--muted);line-height:1.5}
+.tag{font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;width:max-content}
+.tag.p1{background:var(--marigold);color:#22206b}
+.tag.p2{background:var(--chip);color:var(--ink)}
+.tag.p3{background:transparent;color:var(--muted);border:1px dashed var(--muted)}
+.page.star{border:2px solid var(--sindoor)}
+
+/* ---- Mockup ---- */
+.browser{border:1px solid var(--line);border-radius:var(--r-l);overflow:hidden;background:#fff;color:#1c1a3d;box-shadow:0 18px 40px rgba(34,32,107,.12)}
+.bar{display:flex;gap:6px;align-items:center;padding:10px 14px;background:#efe9d6}
+.bar i{width:10px;height:10px;border-radius:50%;background:#d4cbb0}
+.bar span{margin-left:10px;background:#fff;border-radius:6px;padding:2px 12px;font-size:13px;color:#5d5a7c;flex:1;max-width:340px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.m-nav{display:flex;align-items:center;gap:18px;padding:12px 20px;border-bottom:3px solid #f3b80c;flex-wrap:wrap}
+.m-nav img{width:36px;height:36px;border-radius:50%}
+.m-nav b{font-family:var(--display);color:#22206b;font-size:18px;margin-right:auto}
+.m-nav a{font-size:14px;text-decoration:none;color:#1c1a3d}
+.m-nav .d{background:#c0321d;color:#fff;padding:6px 14px;border-radius:999px;font-weight:700}
+.m-hero{display:grid;grid-template-columns:1fr 1fr;min-height:260px}
+.m-hero>div{padding:28px;display:grid;align-content:center;gap:12px;background:#22206b;color:#fff}
+.m-hero h4{font-family:var(--display);font-size:32px;line-height:1.05;margin:0}
+.m-hero h4 span{color:#f3b80c}
+.m-hero p{font-size:15px;color:#d9d7ff}
+.m-hero img{width:100%;height:100%;object-fit:cover}
+.m-stats{display:grid;grid-template-columns:repeat(4,1fr);background:#f3b80c;color:#22206b;text-align:center}
+.m-stats div{padding:12px 6px;font-size:13px;font-weight:600}
+.m-stats b{display:block;font-family:var(--display);font-size:24px}
+.m-work{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:20px}
+.m-work figure{margin:0;border-radius:10px;overflow:hidden;background:#fbf8ef}
+.m-work img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.m-work figcaption{padding:8px 10px;font-size:13px;font-weight:600}
+.note{font-size:14px;color:var(--muted);margin-top:12px}
+
+/* ---- Donate demo ---- */
+.donate-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.dcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:24px;display:grid;gap:16px}
+.dcard h3{color:var(--navy)}
+.amts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.amts button,.causes button,.freq button{font:inherit;font-weight:600;border:2px solid var(--line);background:var(--bg);color:var(--ink);border-radius:var(--r-s);padding:10px 6px;cursor:pointer;transition:all .15s}
+.amts button[aria-pressed="true"],.causes button[aria-pressed="true"],.freq button[aria-pressed="true"]{border-color:var(--navy);background:var(--navy);color:var(--onnavy)}
+.causes{display:flex;flex-wrap:wrap;gap:8px}
+.causes button{padding:6px 12px;font-size:14px;border-radius:999px}
+.freq{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+label.f{display:grid;gap:4px;font-size:14px;font-weight:600}
+label.f input{font:inherit;padding:10px 12px;border:2px solid var(--line);border-radius:var(--r-s);background:var(--bg);color:var(--ink)}
+.pay{font:inherit;font-family:var(--display);font-size:20px;font-weight:800;background:var(--sindoor);color:#fff;border:0;border-radius:999px;padding:14px;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.pay:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(192,50,29,.3)}
+.toast{background:var(--chip);border-radius:var(--r-s);padding:12px 14px;font-size:15px}
+.linkbox{display:grid;gap:10px}
+.link{display:flex;gap:8px;align-items:center;background:var(--surface);border:1px dashed var(--navy);border-radius:var(--r-s);padding:10px 12px;font-size:14px;min-width:0}
+.link code{flex:1;min-width:0;overflow-wrap:anywhere;font-size:13px}
+.link button{font:inherit;font-size:13px;font-weight:700;border:0;background:var(--navy);color:var(--onnavy);border-radius:999px;padding:4px 12px;cursor:pointer}
+.flow{display:grid;gap:10px;margin-top:6px;padding:0;list-style:none;counter-reset:f}
+.flow li{counter-increment:f;display:grid;grid-template-columns:30px 1fr;gap:10px;font-size:15px}
+.flow li::before{content:counter(f);width:26px;height:26px;border-radius:50%;background:var(--marigold);color:#22206b;font-weight:800;display:grid;place-items:center;font-size:13px}
+
+/* ---- Architecture ---- */
+.arch{overflow-x:auto}
+.arch-inner{min-width:760px;display:grid;grid-template-columns:1fr 60px 1.2fr 60px 1fr;align-items:center;gap:0}
+.col{display:grid;gap:12px}
+.box{background:var(--surface);border:2px solid var(--line);border-radius:var(--r-s);padding:12px 14px;font-size:14px;line-height:1.4}
+.box b{display:block;font-family:var(--display);font-size:17px;color:var(--navy)}
+.box.core{border-color:var(--navy);background:var(--chip)}
+.box.pay{border-color:var(--sindoor)}
+.arrow{height:4px;background:repeating-linear-gradient(90deg,var(--marigold) 0 10px,transparent 10px 16px);position:relative}
+.arrow::after{content:"";position:absolute;right:-2px;top:-6px;border:8px solid transparent;border-left-color:var(--marigold)}
+.stack{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:22px}
+.stack div{border-left:4px solid var(--marigold);padding:4px 0 4px 14px}
+.stack b{display:block;color:var(--navy)}
+.stack span{font-size:15px;color:var(--muted)}
+
+/* ---- Motion ---- */
+.motion{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.mo{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:20px;display:grid;gap:12px}
+.demo{height:90px;border-radius:var(--r-s);background:var(--chip);position:relative;overflow:hidden;display:grid;place-items:center}
+.demo-road{position:absolute;left:0;right:0;top:50%;height:4px;background:repeating-linear-gradient(90deg,var(--marigold) 0 24px,transparent 24px 40px);animation:drive 1.8s linear infinite}
+.demo-count{font-family:var(--display);font-size:38px;font-weight:800;color:var(--navy)}
+.demo-heart{width:120px;height:44px;border-radius:999px;background:var(--sindoor);color:#fff;font-weight:700;display:grid;place-items:center;animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06);box-shadow:0 0 0 10px rgba(192,50,29,.15)}}
+.demo-photo{display:flex;gap:6px}
+.demo-photo i{width:50px;height:50px;border-radius:8px;background:var(--navy);opacity:.25;transition:opacity .3s,transform .3s}
+.mo:hover .demo-photo i{opacity:.9;transform:translateY(-4px)}
+.mo:hover .demo-photo i:nth-child(2){transition-delay:.06s}.mo:hover .demo-photo i:nth-child(3){transition-delay:.12s}
+
+/* ---- Phases ---- */
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ph{background:var(--surface);border-radius:var(--r-l);padding:22px;border-top:6px solid var(--line);display:grid;gap:10px;align-content:start}
+.ph.one{border-top-color:var(--sindoor)} .ph.two{border-top-color:var(--marigold)} .ph.three{border-top-color:var(--navy)}
+.ph ul{margin:0;padding-left:18px;font-size:15px;display:grid;gap:4px}
+.ph .when{font-size:14px;color:var(--muted);font-weight:600}
+
+/* ---- Checklist ---- */
+.need{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.need label{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-s);padding:14px 16px;cursor:pointer;font-size:15px}
+.need input{width:20px;height:20px;accent-color:var(--navy);margin-top:3px;flex:none}
+.need b{display:block}
+.need .warn{color:var(--sindoor);font-size:14px;font-weight:600}
+.qs{display:grid;gap:12px;counter-reset:q;padding:0;list-style:none}
+.qs li{counter-increment:q;background:var(--surface);border:2px solid var(--navy);border-radius:var(--r-s);padding:14px 16px 14px 56px;position:relative}
+.qs li::before{content:"Q" counter(q);position:absolute;left:14px;top:14px;font-family:var(--display);font-weight:800;color:var(--sindoor)}
+footer{background:#22206b;color:#d9d7ff;padding-block:28px;font-size:15px}
+footer b{color:#f3b80c}
+
+/* load moment: hero only */
+@media (prefers-reduced-motion:no-preference){
+  .hero h1,.hero p.sub,.hero-meta{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+  .hero p.sub{animation-delay:.12s}.hero-meta{animation-delay:.22s}
+  .hero-photo img{animation:settle .9s .1s cubic-bezier(.2,.7,.2,1) both}
+}
+@keyframes rise{from{transform:translateY(16px);opacity:.01}to{transform:none;opacity:1}}
+@keyframes settle{from{transform:rotate(6deg) translateY(20px)}to{transform:rotate(1.5deg)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+@media (max-width:820px){
+  .hero .wrap,.donate-grid,.type-grid,.modes,.phases,.m-hero{grid-template-columns:1fr}
+  .m-work{grid-template-columns:1fr 1fr}
+  .m-stats{grid-template-columns:repeat(2,1fr)}
+  .stop{padding-left:48px}
+  .stop>.pin{left:4px;width:28px;height:28px}
+  .route::before{left:max(18px,env(safe-area-inset-left,0px))}
+  .amts{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="hero-brand"><img src="{{logo}}" alt="ABC Group Mumbai logo"><span>Association of Benevolent Chauffeur<br>Group Mumbai · Reg. MU/000566/2023</span></div>
+      <h1>A website that keeps the wheels of kindness turning</h1>
+      <p class="sub">The plan for ABC's website: what it looks like, what pages it has, how donations work through Razorpay, and what we need from the association to launch.</p>
+      <div class="hero-meta"><span>Draft for review</span><span>14 Nov 2026</span><span>Phase 1 target: 3–4 weeks</span></div>
+    </div>
+    <figure class="hero-photo" style="margin:0">
+      <img src="{{hero}}" alt="ABC members gathered in front of the association's bus">
+      <figcaption>Real members, real photos</figcaption>
+    </figure>
+  </div>
+  <div class="road" aria-hidden="true"></div>
+</header>
+
+<main class="route">
+  <div class="wrap">
+
+  <section class="stop" id="look">
+    <div class="pin">1</div>
+    <div class="stop-head">
+      <p class="kicker">Look and feel</p>
+      <h2>Colours straight from the logo</h2>
+      <p class="lede">The site borrows the logo's navy, marigold and red. Marigold also ties to the garlands at every ABC event. The recurring visual idea is the road: a dashed lane line that runs through the site, because this is an association of drivers.</p>
+    </div>
+    <div class="swatches">
+      <div class="sw"><i style="background:#22206b"></i><div><b>Logo navy</b>Headings, header, trust</div></div>
+      <div class="sw"><i style="background:#f3b80c"></i><div><b>Marigold</b>Highlights, road lines</div></div>
+      <div class="sw"><i style="background:#c0321d"></i><div><b>Sindoor red</b>Donate button only</div></div>
+      <div class="sw"><i style="background:#fbf8ef"></i><div><b>Paper</b>Page background</div></div>
+      <div class="sw"><i style="background:#13122b"></i><div><b>Night drive</b>Dark mode background</div></div>
+    </div>
+    <div class="type-grid">
+      <div class="specimen"><div class="big">Seva se samman</div><small>Headings: Baloo Bhai 2. Rounded, warm, and it supports Hindi and Gujarati script.</small></div>
+      <div class="specimen"><p class="body">To provide employment opportunities and driving duties to drivers without charging any commission.</p><p class="body" style="margin-top:6px">ड्राइवरों और उनके परिवारों का साथ</p><small>Body text: Mukta. Easy to read on cheap phones, with full Devanagari for Hindi and Marathi.</small></div>
+    </div>
+    <div class="modes">
+      <div class="mode l"><b>Light mode</b><span>Default during the day</span><span class="mb">Donate now</span></div>
+      <div class="mode d"><b>Dark mode</b><span>Follows the phone's setting</span><span class="mb">Donate now</span></div>
+    </div>
+  </section>
+
+  <section class="stop" id="pages">
+    <div class="pin">2</div>
+    <div class="stop-head">
+      <p class="kicker">Pages</p>
+      <h2>What's on the site</h2>
+      <p class="lede">Ten pages, built in three phases. The red-bordered page is the one that makes ABC different from any other charity site.</p>
+    </div>
+    <div class="pages">
+      <div class="page"><span class="tag p1">Phase 1</span><h3>Home</h3><p>Big photo, the motto, impact numbers, the 7 areas of work, latest news, donate button.</p></div>
+      <div class="page"><span class="tag p1">Phase 1</span><h3>About us</h3><p>Story since 2023, vision and mission, committee with photos, registration details.</p></div>
+      <div class="page"><span class="tag p1">Phase 1</span><h3>Our work</h3><p>The 7 objectives: employment, welfare, education, ashrams, medical, family, social service.</p></div>
+      <div class="page"><span class="tag p1">Phase 1</span><h3>Donate</h3><p>Pick an amount and a cause, pay by UPI, card or netbanking through Razorpay.</p></div>
+      <div class="page"><span class="tag p1">Phase 1</span><h3>Gallery</h3><p>Albums for each event: bus felicitation, ashram meals, grocery drives, children's home visits.</p></div>
+      <div class="page"><span class="tag p1">Phase 1</span><h3>Contact</h3><p>Santacruz (E) address with map, phone, WhatsApp button, email, Instagram.</p></div>
+      <div class="page"><span class="tag p1">Phase 1</span><h3>Policies</h3><p>Privacy, terms, refund policy. Razorpay won't activate the account without these.</p></div>
+      <div class="page"><span class="tag p2">Phase 2</span><h3>News and events</h3><p>Blog posts the trustees write from their phones, with photos and videos.</p></div>
+      <div class="page"><span class="tag p2">Phase 2</span><h3>Transparency</h3><p>Certificates, yearly reports, and where donations went.</p></div>
+      <div class="page star"><span class="tag p3">Phase 3</span><h3>Driver jobs</h3><p>Drivers register for work and employers request a driver, with no commission. Objective #1, done online.</p></div>
+    </div>
+  </section>
+
+  <section class="stop" id="home">
+    <div class="pin">3</div>
+    <div class="stop-head">
+      <p class="kicker">Home page preview</p>
+      <h2>A first look, using ABC's own photos</h2>
+      <p class="lede">A rough sketch of the home page. The real one will be fully designed, but the structure and mood will be like this.</p>
+    </div>
+    <div class="browser" role="img" aria-label="Sketch of the ABC home page">
+      <div class="bar"><i></i><i></i><i></i><span>abcgroupmumbai.org</span></div>
+      <div class="m-nav"><img src="{{logo}}" alt=""><b>ABC Group Mumbai</b><a>About</a><a>Our work</a><a>Gallery</a><a>News</a><a class="d">Donate</a></div>
+      <div class="m-hero"><div><h4>To serve, to care, <span>to uplift.</span></h4><p>Mumbai's drivers looking after each other, and after the city's children.</p></div><img src="{{honour}}" alt=""></div>
+      <div class="m-stats"><div><b>500+</b>members</div><div><b>2,000+</b>meals served</div><div><b>7</b>areas of work</div><div><b>₹0</b>commission on jobs</div></div>
+      <div class="m-work">
+        <figure><img src="{{meal}}" alt=""><figcaption>Meals at ashrams</figcaption></figure>
+        <figure><img src="{{kids}}" alt=""><figcaption>Children's homes</figcaption></figure>
+        <figure><img src="{{grocery}}" alt=""><figcaption>Grocery drives</figcaption></figure>
+      </div>
+    </div>
+    <p class="note">The figures in the yellow strip are placeholders. We need the real ones from the association.</p>
+  </section>
+
+  <section class="stop" id="donate">
+    <div class="pin">4</div>
+    <div class="stop-head">
+      <p class="kicker">Donations with Razorpay</p>
+      <h2>Share a link, they tap, they pay</h2>
+      <p class="lede">Try the widget below. It's a working demo of the donate box, but it doesn't charge anything. On the real site, the red button opens Razorpay, where people pay by UPI, card or netbanking.</p>
+    </div>
+    <div class="donate-grid">
+      <form class="dcard" id="dform">
+        <h3>Support ABC's work</h3>
+        <div class="freq" role="group" aria-label="How often">
+          <button type="button" id="f-once" aria-pressed="true">One time</button>
+          <button type="button" id="f-month" aria-pressed="false">Monthly</button>
+        </div>
+        <div class="amts" role="group" aria-label="Amount">
+          <button type="button" data-a="500" aria-pressed="false">₹500</button>
+          <button type="button" data-a="1000" aria-pressed="true">₹1,000</button>
+          <button type="button" data-a="2500" aria-pressed="false">₹2,500</button>
+          <button type="button" data-a="5000" aria-pressed="false">₹5,000</button>
+        </div>
+        <label class="f" for="amt">Or enter your own amount (₹)<input id="amt" inputmode="numeric" value="1000"></label>
+        <div class="causes" role="group" aria-label="Cause">
+          <button type="button" data-c="general" aria-pressed="true">Where most needed</button>
+          <button type="button" data-c="education" aria-pressed="false">Children's education</button>
+          <button type="button" data-c="ashram" aria-pressed="false">Ashram meals</button>
+          <button type="button" data-c="medical" aria-pressed="false">Medical emergencies</button>
+        </div>
+        <label class="f" for="dname">Your name<input id="dname" value="Priya Sharma (example)"></label>
+        <button class="pay" type="submit" id="paybtn">Donate ₹1,000</button>
+        <div class="toast" id="toast" hidden></div>
+      </form>
+      <div class="linkbox">
+        <h3>Links you can send on WhatsApp</h3>
+        <p style="font-size:15px;color:var(--muted)">Every link opens the donate page ready to go. Change the amount or cause in the demo and this link changes too.</p>
+        <div class="link"><code id="live">abcgroupmumbai.org/donate?amount=1000&amp;cause=general</code><button type="button" id="copy">Copy</button></div>
+        <div class="link"><code>abcgroupmumbai.org/donate</code></div>
+        <div class="link"><code>abcgroupmumbai.org/campaign/diwali-ashram-drive</code></div>
+        <h3 style="margin-top:12px">What happens when someone pays</h3>
+        <ol class="flow">
+          <li>The donor opens the link and picks an amount.</li>
+          <li>Our server asks Razorpay to create an order for exactly that amount.</li>
+          <li>The Razorpay window opens. The donor pays by UPI, card or netbanking.</li>
+          <li>Razorpay notifies our server, and the server checks the payment is genuine.</li>
+          <li>The donation is saved and the donor gets a thank-you email with a receipt.</li>
+          <li>Money reaches the association's bank account in 2–3 working days.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="stop" id="tech">
+    <div class="pin">5</div>
+    <div class="stop-head">
+      <p class="kicker">How it's built</p>
+      <h2>Simple parts, mostly free</h2>
+      <p class="lede">Running costs are mainly the domain (about ₹1,000 a year) plus Razorpay's fee of about 2% per donation. Hosting, the database, the blog editor and email all fit in free plans at ABC's size.</p>
+    </div>
+    <div class="arch"><div class="arch-inner">
+      <div class="col"><div class="box"><b>Donor's phone</b>Opens a WhatsApp link</div><div class="box"><b>Trustee's phone</b>Writes a post, uploads photos</div></div>
+      <div class="arrow"></div>
+      <div class="col"><div class="box core"><b>ABC website</b>Next.js, hosted on Vercel. Fast on any phone and easy for Google to find.</div><div class="box"><b>Blog editor</b>Sanity CMS. Trustees post without code.</div></div>
+      <div class="arrow"></div>
+      <div class="col"><div class="box pay"><b>Razorpay</b>Payments, with confirmation sent back to our server</div><div class="box"><b>Database</b>Supabase: donations and donors</div><div class="box"><b>Email</b>Resend: receipts and thank-yous</div></div>
+    </div></div>
+    <div class="stack">
+      <div><b>Safe payments</b><span>Card and UPI details never touch our site. Razorpay handles them.</span></div>
+      <div><b>No lost donations</b><span>Razorpay tells our server about every payment, even if the donor closes the app.</span></div>
+      <div><b>Admin page</b><span>Trustees see every donation and can download a list for accounts.</span></div>
+      <div><b>Private stays private</b><span>The PAN card and certificates are never put on the public site.</span></div>
+    </div>
+  </section>
+
+  <section class="stop" id="motion">
+    <div class="pin">6</div>
+    <div class="stop-head">
+      <p class="kicker">Animation</p>
+      <h2>A little movement, used carefully</h2>
+      <p class="lede">Animation is kept to a few moments where it means something. Phones that ask for reduced motion get a still version.</p>
+    </div>
+    <div class="motion">
+      <div class="mo"><div class="demo"><div class="demo-road"></div></div><h3>Moving road line</h3><p style="font-size:15px;color:var(--muted)">The dashed lane under the header slowly rolls, like a car on the move. This is the site's signature detail.</p></div>
+      <div class="mo"><div class="demo"><span class="demo-count" id="count">0</span></div><h3>Counting numbers</h3><p style="font-size:15px;color:var(--muted)">Impact numbers count up the first time someone scrolls to them.</p></div>
+      <div class="mo"><div class="demo"><span class="demo-heart">Donate</span></div><h3>Gentle pulse</h3><p style="font-size:15px;color:var(--muted)">The donate button breathes slowly, so it's easy to find without being pushy.</p></div>
+      <div class="mo"><div class="demo"><div class="demo-photo"><i></i><i></i><i></i></div></div><h3>Photo albums</h3><p style="font-size:15px;color:var(--muted)">Gallery photos lift on hover and open full screen with a swipe. Hover over this card to see it.</p></div>
+    </div>
+  </section>
+
+  <section class="stop" id="plan">
+    <div class="pin">7</div>
+    <div class="stop-head">
+      <p class="kicker">Timeline</p>
+      <h2>Three phases</h2>
+    </div>
+    <div class="phases">
+      <div class="ph one"><h3>Phase 1: Go live</h3><span class="when">About 3–4 weeks</span><ul><li>Home, About, Our work, Gallery, Contact</li><li>Donate page with Razorpay</li><li>Shareable donate links</li><li>Policy pages</li><li>Domain and hosting</li></ul></div>
+      <div class="ph two"><h3>Phase 2: Stories</h3><span class="when">About 2–3 weeks</span><ul><li>News and events blog</li><li>Campaign pages with a progress bar</li><li>Email receipts</li><li>Admin donations page</li><li>Transparency page</li></ul></div>
+      <div class="ph three"><h3>Phase 3: Community</h3><span class="when">When ready</span><ul><li>Driver jobs board</li><li>Membership sign-up</li><li>Monthly donations</li><li>Hindi and Marathi versions</li></ul></div>
+    </div>
+  </section>
+
+  <section class="stop" id="need">
+    <div class="pin">8</div>
+    <div class="stop-head">
+      <p class="kicker">From the association</p>
+      <h2>What we need to launch</h2>
+      <p class="lede">Tick items off as they arrive. The ticks stay in this browser only.</p>
+    </div>
+    <div class="need">
+      <label for="n1"><input type="checkbox" id="n1" checked><span><b>Logo, objectives, photos</b>Received</span></label>
+      <label for="n2"><input type="checkbox" id="n2" checked><span><b>Registration certificates and PAN</b>Received</span></label>
+      <label for="n3"><input type="checkbox" id="n3"><span><b>Bank account in the association's name</b>Needed for Razorpay. <span class="warn">The name must match the PAN exactly. The PAN says "CHAUFEUR" with one F.</span></span></label>
+      <label for="n4"><input type="checkbox" id="n4"><span><b>80G / 12A certificate</b>If they have one, donors get tax receipts.</span></label>
+      <label for="n5"><input type="checkbox" id="n5"><span><b>Signatory's PAN and Aadhaar</b>For Razorpay's KYC, entered by them directly.</span></label>
+      <label for="n6"><input type="checkbox" id="n6"><span><b>Committee names and photos</b>For the About page.</span></label>
+      <label for="n7"><input type="checkbox" id="n7"><span><b>Real impact numbers</b>Members, meals, children helped.</span></label>
+      <label for="n8"><input type="checkbox" id="n8"><span><b>Event dates and places</b>For the gallery and the first news posts.</span></label>
+      <label for="n9"><input type="checkbox" id="n9"><span><b>Domain choice</b>For example abcgroupmumbai.org</span></label>
+    </div>
+  </section>
+
+  <section class="stop" id="questions">
+    <div class="pin">9</div>
+    <div class="stop-head">
+      <p class="kicker">Your review</p>
+      <h2>Questions to decide</h2>
+    </div>
+    <ol class="qs">
+      <li>Are the colours, fonts and road-line idea right for ABC?</li>
+      <li>Does the association have 80G/12A, and a bank account in its own name?</li>
+      <li>Should the driver jobs board be built, and in which phase?</li>
+      <li>Who will post news and photos after launch: you, or the trustees?</li>
+      <li>Should the site be English only at first, or include Hindi or Marathi from day one?</li>
+    </ol>
+  </section>
+
+  </div>
+</main>
+<footer><div class="wrap"><b>ABC Group Mumbai</b> · 136, Subhash Nagar, Gaondevi, Vakola Pipe Line, Santacruz (E), Mumbai 400055 · Instagram @abc_groupmumbai</div></footer>
+
+<script>
+(function(){
+  var amt=1000,cause="general",monthly=false;
+  var $=function(s){return document.querySelector(s)};
+  function fmt(n){return "₹"+Number(n).toLocaleString("en-IN")}
+  function sync(){
+    $("#paybtn").textContent="Donate "+fmt(amt)+(monthly?" a month":"");
+    $("#live").textContent="abcgroupmumbai.org/donate?amount="+amt+"&cause="+cause+(monthly?"&monthly=1":"");
+    document.querySelectorAll(".amts button").forEach(function(b){b.setAttribute("aria-pressed",String(+b.dataset.a===amt))});
+  }
+  document.querySelectorAll(".amts button").forEach(function(b){b.addEventListener("click",function(){amt=+b.dataset.a;$("#amt").value=amt;sync()})});
+  $("#amt").addEventListener("input",function(e){var v=parseInt(e.target.value.replace(/\D/g,""),10);amt=v>0?v:0;sync()});
+  document.querySelectorAll(".causes button").forEach(function(b){b.addEventListener("click",function(){cause=b.dataset.c;document.querySelectorAll(".causes button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});sync()})});
+  $("#f-once").addEventListener("click",function(){monthly=false;this.setAttribute("aria-pressed","true");$("#f-month").setAttribute("aria-pressed","false");sync()});
+  $("#f-month").addEventListener("click",function(){monthly=true;this.setAttribute("aria-pressed","true");$("#f-once").setAttribute("aria-pressed","false");sync()});
+  $("#dform").addEventListener("submit",function(e){e.preventDefault();var t=$("#toast");
+    if(amt<1){t.textContent="Enter an amount of at least ₹1.";t.hidden=false;return}
+    t.textContent="Demo only. On the live site, Razorpay would open here to collect "+fmt(amt)+" for "+$('.causes button[aria-pressed="true"]').textContent.toLowerCase()+".";t.hidden=false});
+  $("#copy").addEventListener("click",function(){var b=this,txt="https://"+$("#live").textContent;
+    var done=function(){b.textContent="Copied";setTimeout(function(){b.textContent="Copy"},1500)};
+    try{navigator.clipboard.writeText(txt).then(done,function(){sel()})}catch(e){sel()}
+    function sel(){var r=document.createRange();r.selectNodeContents($("#live"));var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Selected"}});
+  // checklist memory
+  document.querySelectorAll(".need input").forEach(function(c){
+    try{var v=localStorage.getItem("abc-"+c.id);if(v!==null)c.checked=v==="1"}catch(e){}
+    c.addEventListener("change",function(){try{localStorage.setItem("abc-"+c.id,c.checked?"1":"0")}catch(e){}})});
+  // count-up demo
+  var el=$("#count"),reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function run(){if(reduce){el.textContent="2,000+";return}var s=null;function step(t){if(!s)s=t;var p=Math.min((t-s)/1400,1);el.textContent=Math.round(2000*(1-Math.pow(1-p,3))).toLocaleString("en-IN")+(p===1?"+":"");if(p<1)requestAnimationFrame(step)}requestAnimationFrame(step)}
+  el.textContent="2,000+";
+  if("IntersectionObserver" in window){var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){run();io.disconnect()}});io.observe(el)}
+  sync();
+})();
+</script>
