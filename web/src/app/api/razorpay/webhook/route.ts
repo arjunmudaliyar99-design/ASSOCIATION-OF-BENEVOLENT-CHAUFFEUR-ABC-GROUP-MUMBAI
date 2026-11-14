@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { verifyWebhook } from "@/lib/razorpay";
+import { markFailed, markPaid } from "@/lib/payments";
 
 /**
  * Razorpay calls this for every payment, even if the donor closed the browser.
- * Phase 1 logs captured payments (visible in Vercel logs and the Razorpay dashboard).
- * Phase 2 saves them to the database and emails a receipt.
+ * It is the source of truth: the payment is saved here even if the browser step never ran.
  */
 export async function POST(req: Request) {
   const raw = await req.text();
@@ -12,9 +12,10 @@ export async function POST(req: Request) {
   if (!verifyWebhook(raw, sig)) return NextResponse.json({ ok: false }, { status: 400 });
 
   const evt = JSON.parse(raw);
-  if (evt.event === "payment.captured") {
-    const p = evt.payload.payment.entity;
-    console.log("donation captured", { id: p.id, order: p.order_id, amount: p.amount / 100, method: p.method, cause: p.notes?.cause });
+  const p = evt?.payload?.payment?.entity;
+  if (p?.order_id) {
+    if (evt.event === "payment.captured" || evt.event === "order.paid") await markPaid(p.order_id, p.id);
+    else if (evt.event === "payment.failed") await markFailed(p.order_id);
   }
   return NextResponse.json({ ok: true });
 }

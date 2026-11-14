@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import DonateForm from "@/components/DonateForm";
+import { features } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Donate",
@@ -15,7 +16,8 @@ export default function Donate() {
           <h1 className="font-display text-[clamp(2.75rem,6vw,4.75rem)] font-extrabold leading-[.95]">Give what feels right.</h1>
           <p className="max-w-lg text-xl opacity-90">There is no minimum and no suggested amount. Whatever you give goes to drivers&apos; families, children and ashrams across Mumbai.</p>
           <ul className="grid gap-3 text-lg">
-            {["Pay by UPI, card, netbanking or wallet", "Payments secured by Razorpay", "Payment confirmation sent to your email", "Pick a cause, or let us use it where it's needed most"].map((t) => (
+            {["Pay by UPI, card, netbanking or wallet", "Payments secured by Razorpay", ...(features.has80G ? ["Tax deduction under Section 80G"] : []),
+              "Payment confirmation sent to your email", "Pick a cause, or let us use it where it's needed most"].map((t) => (
               <li key={t} className="flex items-start gap-3"><span aria-hidden className="mt-2 h-3 w-3 shrink-0 rotate-45 bg-sindoor" />{t}</li>
             ))}
           </ul>

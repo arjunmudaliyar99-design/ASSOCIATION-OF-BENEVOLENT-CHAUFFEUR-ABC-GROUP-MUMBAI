@@ -14,21 +14,27 @@ export const site = {
 };
 
 export const nav = [
+  { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/our-work", label: "Our work" },
   { href: "/gallery", label: "Gallery" },
+  { href: "/join", label: "Join" },
   { href: "/contact", label: "Contact" },
 ];
 
 export const objectives = [
-  { slug: "employment", title: "Employment support for drivers", body: "Driving jobs and duties for drivers, with no commission charged. Fair and open, every time.", photo: "/photos/drivers-felicitation-bus-event/04.jpg" },
-  { slug: "welfare", title: "Drivers' welfare", body: "Help with salary delays, payment disputes and problems at work, so no driver faces them alone.", photo: "/photos/drivers-felicitation-bus-event/02.jpg" },
+  { slug: "employment", title: "Employment support for drivers", body: "Driving jobs and duties for drivers, without charging any commission, so every opportunity is fair and transparent.", photo: "/photos/drivers-felicitation-bus-event/03.jpg" },
+  { slug: "welfare", title: "Drivers' welfare", body: "Help with salary delays, payment disputes and problems at work, so no driver faces them alone.", photo: "/photos/drivers-felicitation-bus-event/13.jpg" },
   { slug: "education", title: "Education for children", body: "Notebooks, stationery and learning material for the children of our members.", photo: "/photos/childrens-home-visit/04.jpg" },
-  { slug: "ashram", title: "Ashrams and needy children", body: "Food, groceries and essentials delivered to ashrams and children who need them.", photo: "/photos/ashram-food-seva/03.jpg" },
-  { slug: "medical", title: "Medical and emergency help", body: "Money and support for members' families during illness, accidents and sudden crises.", photo: "/photos/home-visits-family-support/01.jpg" },
-  { slug: "family", title: "Family welfare", body: "Welfare programmes that look after the wellbeing of drivers' families.", photo: "/photos/team-moments/01.jpg" },
-  { slug: "social", title: "Social service", body: "Food drives, grocery help and charity work for anyone in Mumbai who needs it.", photo: "/photos/grocery-supplies-drive/01.jpg" },
+  { slug: "ashram", title: "Ashrams and needy children", body: "Food, groceries and essentials delivered to ashrams and children who need them.", photo: "/photos/ashram-food-seva/21.jpg" },
+  { slug: "medical", title: "Medical and emergency help", body: "Money and support for members' families during medical emergencies, accidents and family crises, based on available resources.", photo: "/photos/home-visits-family-support/01.jpg" },
+  { slug: "family", title: "Family welfare", body: "Welfare activities, humanitarian help and community programmes for the wellbeing of drivers' families.", photo: "/photos/team-moments/01.jpg" },
+  { slug: "social", title: "Social service", body: "Food drives, grocery help and charity work for anyone in Mumbai who needs it.", photo: "/photos/grocery-supplies-drive/05.jpg" },
 ];
+
+export const features = { has80G: false }; // set true once the trust confirms its 80G certificate
+
+export const jobNetwork = { members: "800+", note: "A WhatsApp group where members share driving jobs with each other." };
 
 export const causes = [
   { id: "general", label: "Where it's needed most" },

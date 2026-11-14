@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Gallery", description: "Photos from 
 export default function GalleryPage() {
   return (
     <>
-      <PageHero title="Gallery" intro="Moments from our drives around Mumbai. Tap any photo to see it full size." />
+      <PageHero title="Gallery" intro="Moments from our drives around Mumbai. Pick an album, then swipe or use the arrows." />
       <Gallery />
     </>
   );

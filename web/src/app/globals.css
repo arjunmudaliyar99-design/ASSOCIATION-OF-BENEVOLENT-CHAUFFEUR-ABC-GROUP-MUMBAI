@@ -2,49 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Colours from the ABC logo. Yellow leads; navy and sindoor red support. */
+/* One theme, always: logo yellow leads. Navy for text, red only as a small accent.
+   The site does not switch to dark mode, so it looks the same on every phone. */
 :root {
-  --sun: 255 196 30;
-  --on-sun: 31 29 107;
-  --paper: 255 241 196;
-  --card: 255 252 240;
-  --ink: 31 29 107;
-  --muted: 84 80 130;
-  --line: 236 205 110;
-  --gold: 255 196 30;
-  --navy: 31 29 107;
-  --sindoor: 192 47 28;
+  --sun: 255 196 31;      /* logo yellow */
+  --honey: 247 176 0;     /* deeper yellow for bands */
+  --paper: 255 248 222;   /* cream-yellow page */
+  --card: 255 253 246;
+  --ink: 31 29 107;       /* logo navy */
+  --muted: 92 86 120;
+  --line: 240 214 140;
+  --sindoor: 192 47 28;   /* logo red, used sparingly */
+  --navy: var(--ink);
+  --gold: var(--sun);
   color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --sun: 31 29 107;
-    --on-sun: 255 204 51;
-    --paper: 20 18 56;
-    --card: 30 28 82;
-    --ink: 255 243 205;
-    --muted: 196 190 235;
-    --line: 70 66 140;
-    --sindoor: 255 110 84;
-    color-scheme: dark;
-  }
 }
 
 html { scroll-behavior: smooth; }
 body { @apply bg-paper text-ink font-sans antialiased; }
 h1, h2, h3 { @apply font-display; text-wrap: balance; }
-:focus-visible { outline: 3px solid rgb(var(--sindoor)); outline-offset: 3px; border-radius: 6px; }
-::selection { background: rgb(var(--gold)); color: rgb(var(--navy)); }
+:focus-visible { outline: 3px solid rgb(var(--ink)); outline-offset: 3px; border-radius: 8px; }
+::selection { background: rgb(var(--ink)); color: rgb(var(--sun)); }
 
 @layer components {
-  .wrap { @apply mx-auto w-full max-w-6xl px-4 sm:px-6; }
-  .lane { background: repeating-linear-gradient(90deg, rgb(var(--gold)) 0 36px, transparent 36px 64px); }
-  .lane-navy { background: repeating-linear-gradient(90deg, rgb(var(--navy)) 0 36px, transparent 36px 64px); }
-  .btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-display text-lg font-bold transition duration-200 active:scale-[.97]; }
-  .btn-red { @apply btn bg-sindoor text-white shadow-[0_6px_0_rgb(var(--navy))] hover:-translate-y-0.5 hover:shadow-[0_8px_0_rgb(var(--navy))]; }
-  .btn-ghost { @apply btn border-2 border-current hover:bg-ink/5; }
-  .h-sec { @apply font-display text-4xl font-extrabold leading-[1.05] sm:text-5xl; }
-  .field { @apply w-full rounded-xl border-2 border-line bg-card px-4 py-3 text-ink placeholder:text-muted/70 focus:border-ink focus:outline-none; }
+  .wrap { @apply mx-auto w-full max-w-[1440px] px-5 md:px-10 lg:px-16; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-display text-lg font-bold transition duration-300 active:scale-[.97]; }
+  .btn-primary { @apply btn bg-ink text-sun shadow-[0_10px_30px_-10px_rgb(var(--ink)/.6)] hover:-translate-y-0.5 hover:shadow-[0_16px_36px_-12px_rgb(var(--ink)/.7)]; }
+  .btn-ghost { @apply btn border-2 border-ink/80 text-ink hover:bg-ink hover:text-sun; }
+  .h-sec { @apply font-display text-[clamp(2.2rem,4.5vw,3.75rem)] font-extrabold leading-[1.02] tracking-tight; }
+  .field { @apply w-full rounded-xl border-2 border-line bg-card px-4 py-3 text-ink placeholder:text-muted/60 focus:border-ink focus:outline-none; }
+  .btn-red { @apply btn-primary; }
+  .glass { @apply border border-white/60 bg-white/35 shadow-[0_8px_32px_-8px_rgb(var(--ink)/.25),inset_0_1px_0_rgb(255_255_255/.7)] backdrop-blur-xl backdrop-saturate-150; }
+  .glow { background: radial-gradient(60% 60% at 70% 30%, rgb(255 236 160 / .9), transparent 70%), rgb(var(--sun)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

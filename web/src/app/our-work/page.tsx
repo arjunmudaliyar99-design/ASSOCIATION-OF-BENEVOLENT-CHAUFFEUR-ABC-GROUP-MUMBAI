@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "Our work", description: "The seven a
 export default function Work() {
   return (
     <>
-      <PageHero title="Our work" intro="Seven areas of service, all run by volunteer drivers and funded by members and well-wishers." />
+      <PageHero title="Our work" intro="The seven objectives of the association, taken from its founding documents." photo="/photos/ashram-food-seva/05.jpg" />
       <div className="bg-paper">
         {objectives.map((o, i) => (
           <section key={o.slug} id={o.slug} className={`scroll-mt-24 ${i % 2 ? "bg-sun text-on-sun" : ""}`}>

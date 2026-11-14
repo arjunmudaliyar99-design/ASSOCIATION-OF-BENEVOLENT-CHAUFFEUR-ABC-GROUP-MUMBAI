@@ -10,17 +10,17 @@ export const metadata: Metadata = { title: "About us", description: "Who ABC Gro
 export default function About() {
   return (
     <>
-      <PageHero title="Drivers who stop for each other" intro="ABC Group Mumbai began with a simple promise between chauffeurs: when one of us is in trouble, the rest of us show up." />
+      <PageHero title="About ABC Group Mumbai" intro="A registered association of Mumbai's chauffeurs, built on social service." photo="/photos/drivers-felicitation-bus-event/05.jpg" />
       <section className="bg-paper">
         <div className="wrap grid items-center gap-12 py-20 lg:grid-cols-2">
           <Reveal className="grid gap-5 text-lg leading-relaxed">
             <h2 className="h-sec">Our story</h2>
-            <p>The Association of Benevolent Chauffeur Group Mumbai was formed on {site.founded} by drivers who saw colleagues struggle alone with unpaid salaries, sudden hospital bills and no help finding work.</p>
-            <p>Today the association finds members driving jobs without taking any commission, steps in when a family faces an emergency, and takes food, groceries and school supplies to ashrams and children&apos;s homes across Mumbai.</p>
-            <p>It is a registered public trust under the Maharashtra Public Trusts Act and a registered society, Reg. No. {site.regNo}.</p>
+            <p>The Association of Benevolent Chauffeur (ABC) Group Mumbai was formed on {site.founded}. It brings together professional drivers from across Mumbai with one main objective: social service.</p>
+            <p>The association helps drivers find work without charging commission, supports them with problems at work, and helps members&apos; families with education and emergencies. It also takes food, groceries and supplies to ashrams and children in need.</p>
+            <p>It is registered under the Societies Registration Act, 1860 and as a public trust under the Bombay Public Trusts Act, 1950. Reg. No. {site.regNo}.</p>
           </Reveal>
           <Reveal delay={0.1} className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-[12px_12px_0_rgb(var(--gold))]">
-            <Photo src="/photos/drivers-felicitation-bus-event/07.jpg" alt="ABC members gathered in front of the association's bus" fill sizes="(min-width:1024px) 50vw, 100vw" className="object-cover" />
+            <Photo src="/photos/drivers-felicitation-bus-event/17.jpg" alt="ABC members gathered in front of the association's bus" fill sizes="(min-width:1024px) 50vw, 100vw" className="object-cover" />
           </Reveal>
         </div>
       </section>

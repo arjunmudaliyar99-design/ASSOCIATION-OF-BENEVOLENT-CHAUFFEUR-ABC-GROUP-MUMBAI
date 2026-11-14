@@ -3,7 +3,6 @@ import { Baloo_Bhai_2, Mukta } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import ScrollRoad from "@/components/ScrollRoad";
 import { site } from "@/data/site";
 
 const display = Baloo_Bhai_2({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-display", display: "swap" });
@@ -17,10 +16,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#FFC41E" },
-    { media: "(prefers-color-scheme: dark)", color: "#1F1D6B" },
-  ],
+  themeColor: "#FFC41F",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -28,7 +24,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body>
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-navy focus:px-4 focus:py-2 focus:text-gold">Skip to content</a>
-        <ScrollRoad />
         <Header />
         <main id="main">{children}</main>
         <Footer />

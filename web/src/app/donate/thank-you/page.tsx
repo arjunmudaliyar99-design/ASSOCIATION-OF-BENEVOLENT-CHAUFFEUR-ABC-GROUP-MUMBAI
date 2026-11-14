@@ -9,7 +9,7 @@ export default async function ThankYou({ searchParams }: { searchParams: Promise
   return (
     <section className="bg-sun text-on-sun">
       <div className="wrap grid max-w-2xl justify-items-center gap-6 py-24 text-center">
-        <div className="grid h-24 w-24 animate-beat place-items-center rounded-full bg-sindoor text-5xl text-white" aria-hidden>♥</div>
+        <div className="grid h-24 w-24 animate-float place-items-center rounded-full bg-ink text-5xl text-sun" aria-hidden>♥</div>
         <h1 className="font-display text-5xl font-extrabold leading-none">{confirmed ? "Thank you for your gift." : "We're confirming your payment."}</h1>
         <p className="text-xl opacity-90">
           {confirmed

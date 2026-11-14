@@ -2,27 +2,16 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { causes, site } from "@/data/site";
-
-declare global { interface Window { Razorpay?: new (o: Record<string, unknown>) => { open: () => void; on: (e: string, cb: (r: { error: { description: string } }) => void) => void } } }
-
-function loadCheckout() {
-  return new Promise<boolean>((res) => {
-    if (window.Razorpay) return res(true);
-    const s = document.createElement("script");
-    s.src = "https://checkout.razorpay.com/v1/checkout.js";
-    s.onload = () => res(true);
-    s.onerror = () => res(false);
-    document.body.appendChild(s);
-  });
-}
+import { causes, features } from "@/data/site";
+import { pay, preloadCheckout } from "@/lib/checkout";
 
 export default function DonateForm() {
   const params = useSearchParams();
   const router = useRouter();
   const [amount, setAmount] = useState(params.get("amount")?.replace(/[^\d.]/g, "") ?? "");
   const [cause, setCause] = useState(causes.some((c) => c.id === params.get("cause")) ? params.get("cause")! : "general");
-  const [f, setF] = useState({ name: "", email: "", phone: "" });
+  const [f, setF] = useState({ name: "", email: "", phone: "", pan: "" });
+  const [wants80g, setWants80g] = useState(features.has80G);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const rupees = Number(amount);
@@ -32,25 +21,17 @@ export default function DonateForm() {
     e.preventDefault();
     setErr("");
     if (!(rupees >= 1)) return setErr("Enter the amount you'd like to give.");
+    if (wants80g && !/^[A-Z]{5}\d{4}[A-Z]$/.test(f.pan)) return setErr("Enter a valid 10-character PAN (like ABCDE1234F) for your 80G receipt, or untick the 80G box.");
     setBusy(true);
     try {
-      const [ok, r] = await Promise.all([loadCheckout(), fetch("/api/donate/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ amount: rupees, cause, ...f }) })]);
-      const data = await r.json();
-      if (!r.ok) throw new Error(data.error);
-      if (!ok || !window.Razorpay) throw new Error("Couldn't load the payment window. Check your connection and try again.");
-      const rz = new window.Razorpay({
-        key: data.keyId, order_id: data.orderId, amount: data.amount, currency: "INR",
-        name: site.name, description: causes.find((c) => c.id === cause)?.label, image: `${location.origin}/logo.jpg`,
+      const r = await pay({
+        endpoint: "/api/donate/order",
+        body: { amount: rupees, cause, ...f, pan: wants80g ? f.pan : "" },
+        description: causes.find((c) => c.id === cause)?.label ?? "Donation",
         prefill: { name: f.name, email: f.email, contact: f.phone },
-        notes: { cause }, theme: { color: "#1F1D6B" },
-        modal: { ondismiss: () => setBusy(false) },
-        handler: async (resp: Record<string, string>) => {
-          const v = await fetch("/api/donate/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(resp) }).then((x) => x.json()).catch(() => ({ ok: false }));
-          router.push(`/donate/thank-you?id=${encodeURIComponent(resp.razorpay_payment_id)}&ok=${v.ok ? 1 : 0}`);
-        },
       });
-      rz.on("payment.failed", (r) => { setErr(`Payment didn't go through: ${r.error.description}. You have not been charged.`); setBusy(false); });
-      rz.open();
+      if (r.dismissed) return setBusy(false);
+      router.push(`/donate/thank-you?id=${encodeURIComponent(r.paymentId)}&ok=${r.ok ? 1 : 0}`);
     } catch (x) {
       setErr((x as Error).message || "Something went wrong. Please try again.");
       setBusy(false);
@@ -58,7 +39,7 @@ export default function DonateForm() {
   }
 
   return (
-    <form onSubmit={submit} noValidate className="grid gap-6 rounded-3xl bg-card p-6 text-ink shadow-[0_10px_0_rgb(var(--navy))] sm:p-8">
+    <form onSubmit={submit} onFocus={() => void preloadCheckout()} noValidate className="grid gap-6 rounded-3xl bg-card p-6 text-ink shadow-[0_10px_0_rgb(var(--navy))] sm:p-8">
       <label htmlFor="amount" className="grid gap-2">
         <span className="font-display text-xl font-bold">Amount</span>
         <span className="flex items-center rounded-2xl border-2 border-line bg-paper px-4 focus-within:border-ink">
@@ -90,6 +71,18 @@ export default function DonateForm() {
         <label htmlFor="phone" className="grid gap-1.5"><span className="font-semibold">Phone <span className="font-normal text-muted">(optional)</span></span>
           <input id="phone" type="tel" autoComplete="tel" className="field" value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} /></label>
       </div>
+
+      {features.has80G && <div className="grid gap-3 rounded-2xl bg-sun/40 p-4">
+        <label htmlFor="g80" className="flex cursor-pointer items-start gap-3">
+          <input id="g80" type="checkbox" checked={wants80g} onChange={(e) => setWants80g(e.target.checked)} className="mt-1 h-5 w-5 shrink-0 accent-[rgb(var(--ink))]" />
+          <span><span className="font-semibold">I want an 80G tax receipt</span><span className="block text-sm text-ink/70">Donations to the trust qualify for tax deduction under Section 80G of the Income Tax Act.</span></span>
+        </label>
+        {wants80g && (
+          <label htmlFor="pan" className="grid gap-1.5"><span className="font-semibold">PAN <span className="font-normal text-ink/70">(required for 80G)</span></span>
+            <input id="pan" autoComplete="off" maxLength={10} placeholder="ABCDE1234F" className="field uppercase tracking-widest" value={f.pan}
+              onChange={(e) => setF({ ...f, pan: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "") })} /></label>
+        )}
+      </div>}
 
       <AnimatePresence>
         {err && <motion.p role="alert" initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="rounded-xl bg-sindoor/10 px-4 py-3 font-semibold text-sindoor">{err}</motion.p>}
