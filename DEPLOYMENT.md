@@ -99,6 +99,17 @@ Razorpay → **Settings → Webhooks → Add new webhook**
 2. Once KYC is approved, put the **Live** keys into Netlify, add a **live** webhook (step 5 again in Live mode), and redeploy.
 3. Make one real ₹1 donation, confirm it in Admin, and refund it from the Razorpay dashboard.
 
+### 7. Keep it fast and inside the free limits
+- **Uptime monitor (free):** at uptimerobot.com, add two HTTP monitors at **5-minute** intervals, with alerts to the trust Gmail:
+  - `https://abcgroupmumbai.org/` (is the site up?)
+  - `https://abcgroupmumbai.org/api/health` (keeps the server and database awake; answers `{"ok":true}`)
+  Don't go below 5 minutes; it only uses up free allowance.
+- **Built in:** when a visitor starts typing in the Donate or Join form, the page calls `/api/health` once in the background, so the server is awake by the time they press Pay.
+- **Netlify usage alerts:** turn them on (Team settings → Usage / billing notifications).
+- **Media:** put videos on YouTube and embed them; never upload video files. Keep gallery photos under about 300 KB each (today: 6 MB in total).
+- **Expected use:** about 5–10 membership payments a month, one donation drive a year and a few thousand visits a month. That is a small fraction of the free plans. If a limit is ever reached, the site pauses until the next month; no data is lost because it lives in Turso.
+- **Fallback if usage grows:** a small Mumbai VPS (Hostinger KVM 1 or AWS Lightsail $5, about ₹350–450/month on a yearly plan) running `npm run build && npm run start` with `DATABASE_URL=file:./data/abc.db`, plus a nightly copy of `data/abc.db` to Google Drive.
+
 ### Backups
 - **Database:** Turso keeps automatic backups.
 - **Monthly:** download the **Members** and **Donations** CSVs from Admin and store them in the trust's Google Drive.

@@ -6,9 +6,12 @@ type Rzp = { open: () => void; on: (e: string, cb: (r: { error: { description: s
 declare global { interface Window { Razorpay?: new (o: Record<string, unknown>) => Rzp } }
 
 let loading: Promise<boolean> | null = null;
+let warmed = false;
 /** Loads Razorpay's script once. Call early (on focus/hover) so the payment window opens instantly. */
 export function preloadCheckout() {
   if (typeof window === "undefined") return Promise.resolve(false);
+  // Wake the server and database once while the visitor fills the form, so Pay has no cold start.
+  if (!warmed) { warmed = true; void fetch("/api/health", { cache: "no-store" }).catch(() => {}); }
   if (window.Razorpay) return Promise.resolve(true);
   loading ??= new Promise<boolean>((res) => {
     const s = document.createElement("script");
