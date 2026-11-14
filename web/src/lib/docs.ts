@@ -15,12 +15,12 @@ export function sniff(buf: Uint8Array): string | null {
 }
 
 /** Checks one uploaded document. Returns an error message, or the bytes and real type. */
-export function checkDoc(kind: string, buf: Uint8Array): { error: string } | { mime: string; buf: Uint8Array } {
+export function checkDoc(kind: string, buf: Uint8Array): { error: string; code: string } | { mime: string; buf: Uint8Array } {
   const label = DOC_KINDS[kind as DocKind] ?? "Document";
-  if (!buf.length) return { error: `${label}: the file is empty.` };
-  if (buf.length > MAX_DOC_BYTES) return { error: `${label}: the file is too big. Use a photo or a PDF under 1 MB.` };
+  if (!buf.length) return { error: `${label}: the file is empty.`, code: "docEmpty" };
+  if (buf.length > MAX_DOC_BYTES) return { error: `${label}: the file is too big. Use a photo or a PDF under 1 MB.`, code: "docBig" };
   const mime = sniff(buf);
-  if (!mime) return { error: `${label}: upload a photo (JPG or PNG) or a PDF.` };
+  if (!mime) return { error: `${label}: upload a photo (JPG or PNG) or a PDF.`, code: "docType" };
   return { mime, buf };
 }
 

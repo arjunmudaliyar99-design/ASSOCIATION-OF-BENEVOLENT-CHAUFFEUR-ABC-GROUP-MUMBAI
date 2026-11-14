@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const inr = (paise: number | bigint | null | undefined) => `₹${(Number(paise ?? 0) / 100).toLocaleString("en-IN", { maximumFractionDigits: 2 })}`;
-export const date = (d: string | null | undefined) => d ? new Date(d.length === 10 ? `${d}T00:00:00Z` : `${d.replace(" ", "T")}Z`).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" }) : "–";
+export const date = (d: string | null | undefined, lang = "en") => d ? new Date(d.length === 10 ? `${d}T00:00:00Z` : `${d.replace(" ", "T")}Z`).toLocaleDateString(`${lang}-IN`, { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" }) : "–";
 
 export function PageTitle({ title, sub, children }: { title: string; sub?: string; children?: React.ReactNode }) {
   return (
@@ -24,14 +24,14 @@ export function Stat({ label, value, hint, href }: { label: string; value: React
   return href ? <Link href={href} className={cls}>{body}</Link> : <div className={cls}>{body}</div>;
 }
 
-export function Table({ head, children, empty }: { head: string[]; children: React.ReactNode; empty?: boolean }) {
+export function Table({ head, children, empty, emptyText = "Nothing here yet." }: { head: string[]; children: React.ReactNode; empty?: boolean; emptyText?: string }) {
   return (
     <div className="overflow-x-auto rounded-3xl bg-card ring-1 ring-line">
       <table className="w-full min-w-[720px] text-left text-sm">
         <thead className="bg-sun/50"><tr>{head.map((h) => <th key={h} className="whitespace-nowrap px-4 py-3 font-semibold">{h}</th>)}</tr></thead>
         <tbody className="divide-y divide-line">{children}</tbody>
       </table>
-      {empty && <p className="p-8 text-center text-ink/60">Nothing here yet.</p>}
+      {empty && <p className="p-8 text-center text-ink/60">{emptyText}</p>}
     </div>
   );
 }
@@ -44,8 +44,8 @@ export function Pill({ s, label }: { s: string; label?: string }) {
   return <span className={`inline-block whitespace-nowrap rounded-full px-3 py-1 text-xs font-bold ${tones[s] ?? "bg-line"}`}>{label ?? s[0].toUpperCase() + s.slice(1)}</span>;
 }
 
-export function Filters({ children }: { children: React.ReactNode }) {
-  return <form className="mb-5 flex flex-wrap items-end gap-3 rounded-3xl bg-card p-4 ring-1 ring-line">{children}<button className="btn-primary !px-5 !py-2.5 !text-base">Apply</button></form>;
+export function Filters({ children, apply = "Apply" }: { children: React.ReactNode; apply?: string }) {
+  return <form className="mb-5 flex flex-wrap items-end gap-3 rounded-3xl bg-card p-4 ring-1 ring-line">{children}<button className="btn-primary !px-5 !py-2.5 !text-base">{apply}</button></form>;
 }
 
 export function Field({ label, children }: { label: string; children: React.ReactNode }) {
@@ -56,15 +56,15 @@ export const input = "rounded-xl border-2 border-line bg-paper px-3 py-2 font-no
 
 export const PAGE = 50;
 
-export function Pager({ page, total, qs, base }: { page: number; total: number; qs: URLSearchParams; base: string }) {
+export function Pager({ page, total, qs, base, t }: { page: number; total: number; qs: URLSearchParams; base: string; t: { prev: string; next: string; pageOf: string } }) {
   const pages = Math.ceil(total / PAGE);
   if (pages <= 1) return null;
   const link = (p: number) => `${base}?${new URLSearchParams({ ...Object.fromEntries(qs), page: String(p) })}`;
   return (
     <div className="mt-4 flex items-center justify-between">
-      {page > 1 ? <Link href={link(page - 1)} className="btn-ghost !px-4 !py-2 !text-base">Previous</Link> : <span />}
-      <span className="text-ink/70">Page {page} of {pages}</span>
-      {page < pages ? <Link href={link(page + 1)} className="btn-ghost !px-4 !py-2 !text-base">Next</Link> : <span />}
+      {page > 1 ? <Link href={link(page - 1)} className="btn-ghost !px-4 !py-2 !text-base">{t.prev}</Link> : <span />}
+      <span className="text-ink/70">{t.pageOf.replace("{p}", String(page)).replace("{n}", String(pages))}</span>
+      {page < pages ? <Link href={link(page + 1)} className="btn-ghost !px-4 !py-2 !text-base">{t.next}</Link> : <span />}
     </div>
   );
 }

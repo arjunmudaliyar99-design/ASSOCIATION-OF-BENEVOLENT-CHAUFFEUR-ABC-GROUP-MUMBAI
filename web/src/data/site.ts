@@ -7,20 +7,35 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://abcgroupmumbai.org",
   address: "136, Subhash Nagar, Gaondevi, Vakola Pipe Line, Santacruz (E), Mumbai 400055",
   phone: "+91 98929 42264",
+  phone2: "+91 98929 56995",
   whatsapp: "919892942264",
   email: "abcgroupmumbai@gmail.com",
   instagram: "abc_groupmumbai",
   mapUrl: "https://www.google.com/maps/search/?api=1&query=Subhash+Nagar+Vakola+Santacruz+East+Mumbai+400055",
 };
 
-export const nav = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/our-work", label: "Our work" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/join", label: "Join" },
-  { href: "/contact", label: "Contact" },
+export const leaders = [
+  { name: "Mohan Muthu", role: "founder" as const },
+  { name: "S. Ramchandran Nadar", role: "vicePresident" as const },
 ];
+
+/** Driver hire rates from the association's rate cards (₹). */
+export const rates = {
+  standard: { dailyHours: 8, daily: 1000, monthlyHours: 10, monthly: 30000, extra: 100, dinner: 200, travel: 200, outUnder: 1500, outOver: 1800 },
+  luxury: { dailyHours: 10, daily: 1200, monthlyHours: 10, monthly: 35000, extra: 150, dinner: 250, travel: 250, outUnder: 1800, outOver: 2000 },
+};
+
+export const serviceKeys = ["social", "medical", "welfare", "orphanage", "sports"] as const;
+
+export const nav = [
+  { href: "/", key: "home" },
+  { href: "/about", key: "about" },
+  { href: "/our-work", key: "work" },
+  { href: "/hire-a-driver", key: "rates" },
+  { href: "/gallery", key: "gallery" },
+  { href: "/join", key: "join" },
+  { href: "/contact", key: "contact" },
+] as const;
 
 export const objectives = [
   { slug: "employment", title: "Employment support for drivers", body: "Driving jobs and duties for drivers, without charging any commission, so every opportunity is fair and transparent.", photo: "/photos/drivers-felicitation-bus-event/03.jpg" },

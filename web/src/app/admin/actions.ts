@@ -6,6 +6,7 @@ import { audit, requireAdmin } from "@/lib/auth";
 import { addMonths, db, ensureSchema, memberCode, one, q, run, today } from "@/lib/db";
 import { importRow, type ImportRow } from "@/lib/validate";
 import { checkDoc, DOC_KINDS, saveDoc, type DocKind } from "@/lib/docs";
+import { adminDict } from "@/i18n";
 
 const id = z.coerce.number().int().positive();
 
@@ -42,7 +43,7 @@ export async function updateMember(_: unknown, fd: FormData) {
     [d.name, d.email || null, d.licence_no || null, d.pan || null, d.area || null, d.notes || null, d.expires_on, d.id]);
   await audit(admin, "member edited", memberCode(d.id));
   revalidatePath("/admin", "layout");
-  return "Saved.";
+  return (await adminDict()).t.admin.saved;
 }
 
 /** Record a renewal paid in cash/UPI outside the website. */
@@ -60,7 +61,7 @@ export async function recordOfflineRenewal(_: unknown, fd: FormData) {
     [p.data.planId, Math.round(p.data.amount * 100), t, expires, p.data.mode, p.data.id]);
   await audit(admin, "offline renewal", `${memberCode(p.data.id)} ${p.data.amount} ${p.data.mode} until ${expires}`);
   revalidatePath("/admin", "layout");
-  return `Renewed until ${expires}.`;
+  return (await adminDict()).t.admin.renewedUntil.replace("{date}", expires);
 }
 
 function nextDay(iso: string) {
@@ -83,8 +84,8 @@ export async function savePlan(_: unknown, fd: FormData) {
     [d.id, d.label, d.months, Math.round(d.price * 100), d.active ? 1 : 0, d.sort]);
   await audit(admin, "plan saved", `${d.id} ${d.label} ₹${d.price} ${d.months}m ${d.active ? "on" : "off"}`);
   revalidatePath("/admin/plans");
-  revalidatePath("/join");
-  return "Saved.";
+  revalidatePath("/[lang]/join", "page");
+  return (await adminDict()).t.admin.saved;
 }
 
 export type RowResult = { row: number; ok: boolean; error?: string; data?: ImportRow; duplicate?: boolean; planId?: string };
@@ -156,7 +157,7 @@ export async function uploadDoc(_: unknown, fd: FormData) {
   await saveDoc({ kind: kind as DocKind, mime: c.mime, buf: c.buf, memberId: m, by: admin });
   await audit(admin, "uploaded document", `${kind} ${memberCode(m)}`);
   revalidatePath(`/admin/members/${m}`);
-  return "Uploaded.";
+  return (await adminDict()).t.admin.uploaded;
 }
 
 export async function deleteDoc(fd: FormData) {

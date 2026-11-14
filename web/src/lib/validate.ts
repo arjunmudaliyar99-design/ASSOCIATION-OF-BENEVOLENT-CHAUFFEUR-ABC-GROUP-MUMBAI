@@ -43,3 +43,10 @@ export function toIso(s: string) {
 }
 
 export const firstError = (e: z.ZodError) => e.issues[0]?.message ?? "Please check the form.";
+
+/** Short code for the first problem, so the browser can show it in the visitor's language. */
+export function errorCode(e: z.ZodError) {
+  const f = String(e.issues[0]?.path[0] ?? "");
+  const map: Record<string, string> = { amount: "amount", name: "name", email: "email", phone: "phone", licence_no: "licence", pan: "pan", planId: "plan" };
+  return map[f] ?? "invalid";
+}

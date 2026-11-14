@@ -6,8 +6,8 @@ import Photo from "@/components/Photo";
 export type Slide = { src: string; caption?: string };
 
 /** Crossfading photo slider with a slow zoom, swipe, arrows, keyboard and an autoplay progress bar. */
-export default function Slider({ slides, interval = 5000, className = "", sizes = "100vw", thumbs = false, priority = false }:
-  { slides: Slide[]; interval?: number; className?: string; sizes?: string; thumbs?: boolean; priority?: boolean }) {
+export default function Slider({ slides, t, interval = 5000, className = "", sizes = "100vw", thumbs = false, priority = false }:
+  { slides: Slide[]; t: { prev: string; next: string; show: string }; interval?: number; className?: string; sizes?: string; thumbs?: boolean; priority?: boolean }) {
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
   const reduce = useReducedMotion();
@@ -33,7 +33,7 @@ export default function Slider({ slides, interval = 5000, className = "", sizes 
             drag="x" dragConstraints={{ left: 0, right: 0 }} dragElastic={0.15}
             onDragEnd={(_, info) => { if (info.offset.x < -50) go(1); else if (info.offset.x > 50) go(-1); }}>
             <motion.div className="absolute inset-0" initial={{ scale: reduce ? 1 : 1.12 }} animate={{ scale: 1 }} transition={{ duration: interval / 1000 + 1, ease: "linear" }}>
-              <Photo src={s.src} alt={s.caption ?? "ABC Group Mumbai service drive"} fill sizes={sizes} priority={priority && i === 0} className="pointer-events-none select-none object-cover" draggable={false} />
+              <Photo src={s.src} alt={s.caption ?? ""} fill sizes={sizes} priority={priority && i === 0} className="pointer-events-none select-none object-cover" draggable={false} />
             </motion.div>
           </motion.div>
         </AnimatePresence>
@@ -44,7 +44,7 @@ export default function Slider({ slides, interval = 5000, className = "", sizes 
         )}
         {slides.length > 1 && (
           <div className="absolute bottom-5 right-5 flex gap-2">
-            {[["Previous photo", -1, "M15 18l-6-6 6-6"], ["Next photo", 1, "M9 6l6 6-6 6"]].map(([l, d, p]) => (
+            {[[t.prev, -1, "M15 18l-6-6 6-6"], [t.next, 1, "M9 6l6 6-6 6"]].map(([l, d, p]) => (
               <button key={l as string} aria-label={l as string} onClick={() => go(d as number)}
                 className="grid h-11 w-11 place-items-center rounded-full bg-paper/90 text-ink shadow-lg backdrop-blur transition hover:scale-110 hover:bg-sun">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d={p as string} /></svg>
@@ -66,7 +66,7 @@ export default function Slider({ slides, interval = 5000, className = "", sizes 
       {thumbs && slides.length > 1 && (
         <div className="flex gap-3 overflow-x-auto pb-2 [scrollbar-width:thin]">
           {slides.map((x, k) => (
-            <button key={x.src} onClick={() => setI(k)} aria-label={`Show photo ${k + 1}`} aria-current={k === i}
+            <button key={x.src} onClick={() => setI(k)} aria-label={t.show.replace("{n}", String(k + 1))} aria-current={k === i}
               className={`relative h-20 w-28 shrink-0 overflow-hidden rounded-xl transition duration-300 ${k === i ? "ring-4 ring-ink" : "opacity-60 hover:opacity-100"}`}>
               <Photo src={x.src} alt="" fill sizes="112px" className="object-cover" />
             </button>

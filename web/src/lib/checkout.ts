@@ -31,8 +31,8 @@ export async function pay(opts: { endpoint: string; body: unknown; description: 
     fetch(opts.endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(opts.body) }),
   ]);
   const data = await r.json().catch(() => ({ error: "Something went wrong. Please try again." }));
-  if (!r.ok) throw new Error(data.error);
-  if (!ok || !window.Razorpay) throw new Error("Couldn't load the payment window. Check your internet and try again.");
+  if (!r.ok) throw Object.assign(new Error(data.error), { code: data.code, doc: data.doc });
+  if (!ok || !window.Razorpay) throw Object.assign(new Error("Couldn't load the payment window."), { code: "loadFail" });
 
   return new Promise<{ ok: boolean; paymentId: string; token?: string; dismissed?: boolean }>((resolve, reject) => {
     const rz = new window.Razorpay!({
@@ -55,4 +55,12 @@ export async function pay(opts: { endpoint: string; body: unknown; description: 
     void reject;
     rz.open();
   });
+}
+
+/** Turns a payment error into a message in the visitor's language. */
+export function errorText(x: unknown, errors: Record<string, string>, docs: Record<string, string> = {}, fallback = "") {
+  const e = x as { code?: string; doc?: string; message?: string };
+  const tpl = e.code ? errors[e.code] : undefined;
+  if (tpl) return tpl.replace("{doc}", e.doc ? docs[e.doc] ?? e.doc : "");
+  return e.message || fallback;
 }

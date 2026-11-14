@@ -2,12 +2,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const items = [
-  ["/admin", "Overview"], ["/admin/donations", "Donations"], ["/admin/members", "Members"],
-  ["/admin/renewals", "Renewals"], ["/admin/import", "Import members"], ["/admin/plans", "Plans & prices"],
-];
+type T = { overview: string; donations: string; members: string; renewals: string; import: string; plans: string };
 
-export default function AdminNav() {
+export default function AdminNav({ t }: { t: T }) {
+  const items = [["/admin", t.overview], ["/admin/donations", t.donations], ["/admin/members", t.members], ["/admin/renewals", t.renewals], ["/admin/import", t.import], ["/admin/plans", t.plans]];
   const path = usePathname();
   return (
     <nav aria-label="Admin" className="flex gap-1 overflow-x-auto lg:grid">

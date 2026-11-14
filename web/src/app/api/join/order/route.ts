@@ -2,24 +2,24 @@ import { NextResponse } from "next/server";
 import { client } from "@/lib/razorpay";
 import { limited, one, run } from "@/lib/db";
 import { clientIp } from "@/lib/auth";
-import { firstError, joinSchema } from "@/lib/validate";
+import { errorCode, firstError, joinSchema } from "@/lib/validate";
 import { checkDoc, DOC_KINDS, saveDoc, type DocKind } from "@/lib/docs";
 
 export async function POST(req: Request) {
   const rp = client();
-  if (!rp) return NextResponse.json({ error: "Online membership payments are not switched on yet. Please contact us." }, { status: 503 });
-  if (await limited(`order:${await clientIp()}`, 20, 600)) return NextResponse.json({ error: "Too many attempts. Please wait a few minutes." }, { status: 429 });
+  if (!rp) return NextResponse.json({ error: "Online membership payments are not switched on yet. Please contact us.", code: "notOn" }, { status: 503 });
+  if (await limited(`order:${await clientIp()}`, 20, 600)) return NextResponse.json({ error: "Too many attempts. Please wait a few minutes.", code: "tooMany" }, { status: 429 });
 
   const body = await req.json().catch(() => null);
   const parsed = joinSchema.safeParse(body);
-  if (!parsed.success) return NextResponse.json({ error: firstError(parsed.error) }, { status: 400 });
+  if (!parsed.success) return NextResponse.json({ error: firstError(parsed.error), code: errorCode(parsed.error) }, { status: 400 });
   const d = parsed.data;
 
   // Price always comes from the database, never from the browser.
   const plan = await one<{ id: string; price_paise: number; label: string }>("SELECT id, price_paise, label FROM plans WHERE id = ? AND active = 1", [d.planId]);
-  if (!plan) return NextResponse.json({ error: "That plan isn't available. Please pick another." }, { status: 400 });
+  if (!plan) return NextResponse.json({ error: "That plan isn't available. Please pick another.", code: "plan" }, { status: 400 });
   const rejected = await one("SELECT 1 FROM members WHERE phone = ? AND status = 'rejected'", [d.phone]);
-  if (rejected) return NextResponse.json({ error: "Please contact the association before renewing this membership." }, { status: 409 });
+  if (rejected) return NextResponse.json({ error: "Please contact the association before renewing this membership.", code: "rejected" }, { status: 409 });
 
   // Documents: required for new members, optional when an existing member renews.
   const hasDocs = await one("SELECT 1 FROM documents d JOIN members m ON m.id = d.member_id WHERE m.phone = ? LIMIT 1", [d.phone]);
@@ -28,11 +28,11 @@ export async function POST(req: Request) {
   for (const kind of Object.keys(DOC_KINDS) as DocKind[]) {
     const v = raw[kind];
     if (typeof v !== "string" || !v) {
-      if (!hasDocs) return NextResponse.json({ error: `Please upload your ${DOC_KINDS[kind]}.` }, { status: 400 });
+      if (!hasDocs) return NextResponse.json({ error: `Please upload your ${DOC_KINDS[kind]}.`, code: "docMissing", doc: kind }, { status: 400 });
       continue;
     }
     const c = checkDoc(kind, new Uint8Array(Buffer.from(v.replace(/^data:[^,]*,/, ""), "base64")));
-    if ("error" in c) return NextResponse.json({ error: c.error }, { status: 400 });
+    if ("error" in c) return NextResponse.json({ error: c.error, code: c.code, doc: kind }, { status: 400 });
     docs.push({ kind, ...c });
   }
 
@@ -47,6 +47,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ orderId: order.id, amount: order.amount, keyId: process.env.RAZORPAY_KEY_ID, label: plan.label });
   } catch (e) {
     console.error("membership order failed", e);
-    return NextResponse.json({ error: "Couldn't start the payment. Please try again in a minute." }, { status: 502 });
+    return NextResponse.json({ error: "Couldn't start the payment. Please try again in a minute.", code: "startFail" }, { status: 502 });
   }
 }

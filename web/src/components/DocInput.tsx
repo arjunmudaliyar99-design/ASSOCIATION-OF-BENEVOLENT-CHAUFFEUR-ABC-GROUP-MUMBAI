@@ -26,7 +26,9 @@ const toBase64 = (b: Blob) => new Promise<string>((res, rej) => {
   r.readAsDataURL(b);
 });
 
-export default function DocInput({ id, label, hint, value, onChange }: { id: string; label: string; hint?: string; value?: string; onChange: (v: string | undefined, err?: string) => void }) {
+type T = { frontSide: string; photoOrPdf: string; preparing: string; added: string; tapChange: string; tooBigPdf: string; wrongType: string; unreadable: string };
+
+export default function DocInput({ id, label, hint, value, onChange, t }: { id: string; label: string; hint?: string; value?: string; onChange: (v: string | undefined, err?: string) => void; t: T }) {
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
   const isImg = value?.startsWith("data:image/");
@@ -43,7 +45,7 @@ export default function DocInput({ id, label, hint, value, onChange }: { id: str
       onChange(await toBase64(blob));
     } catch (e) {
       const m = (e as Error).message;
-      onChange(undefined, m === "pdf" ? `${label}: the PDF is over 1 MB. Take a photo of the card instead.` : m === "type" ? `${label}: upload a photo or a PDF.` : `${label}: couldn't read that file. Try another photo.`);
+      onChange(undefined, (m === "pdf" ? t.tooBigPdf : m === "type" ? t.wrongType : t.unreadable).replace("{doc}", label));
     } finally {
       setBusy(false);
     }
@@ -58,7 +60,7 @@ export default function DocInput({ id, label, hint, value, onChange }: { id: str
       </span>
       <span className="min-w-0">
         <span className="block font-semibold">{label}</span>
-        <span className="block truncate text-sm text-ink/70">{busy ? "Preparing…" : value ? `${name || "Added"} · tap to change` : hint ?? "Photo or PDF"}</span>
+        <span className="block truncate text-sm text-ink/70">{busy ? t.preparing : value ? `${name || t.added} · ${t.tapChange}` : hint ?? t.photoOrPdf}</span>
       </span>
       {value && <span className="ml-auto grid h-7 w-7 shrink-0 place-items-center rounded-full bg-ink text-sun" aria-hidden>✓</span>}
       <input id={id} type="file" accept="image/*,application/pdf" className="sr-only" onChange={(e) => pick(e.target.files?.[0])} />
