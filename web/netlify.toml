@@ -5,6 +5,8 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  # The site URL is public and is meant to appear in pages; keep scanning the real secrets.
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_SITE_URL"
 
 # Runs Next.js server pages, API routes and middleware as Netlify Functions.
 [[plugins]]
