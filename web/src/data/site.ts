@@ -23,7 +23,7 @@ export const leaders = [
   { n: 2, name: "S. Ramachandran Nadar", role: "vicePresident", tier: "core" },
   { n: 3, name: "Durairaj Bhagwati Nadar", role: "secretary", tier: "core" },
   { n: 4, name: "Vigneshwaran", role: "treasurer", tier: "core" },
-  { n: 5, name: "Murugan Udaiyar", role: "chiefAdvisor", tier: "core" },
+  { n: 5, name: "Murugan Udaiyar", role: "member", tier: "member" },
   { n: 6, name: "Gandhi Rakkappan", role: "member", tier: "member" },
   { n: 7, name: "Ganesh Kombaiya Thevar", role: "member", tier: "member" },
   { n: 8, name: "Esakki Muthu Nadar", role: "member", tier: "member" },
