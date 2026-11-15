@@ -22,6 +22,15 @@ export const leaders = [
   { n: 4, name: "Vigneshwaran", role: "treasurer" },
   { n: 5, name: "Murugan Udaiyar", role: "chiefAdvisor" },
   { n: 6, name: "Gandhi Rakkappan", role: "member" },
+  { n: 7, name: "Ganesh Kombaiya Thevar", role: "member" },
+  { n: 8, name: "Esakki Muthu Nadar", role: "member" },
+  { n: 9, name: "Muppudathi Durai Swamy", role: "member" },
+  { n: 10, name: "Muthu Kumar", role: "member" },
+  { n: 11, name: "Jebamani Iruthaya Swamy", role: "member" },
+  { n: 12, name: "Murugan Perumal", role: "admin" },
+  { n: 13, name: "Velusamy Chellaiya", role: "admin" },
+  { n: 14, name: "Arul Mani", role: "admin" },
+  { n: 15, name: "Moses Nadar", role: "admin" },
 ] as const;
 
 /** Driver hire rates from the association's rate cards (₹). */
@@ -54,7 +63,7 @@ export const objectives = [
 
 export const features = { has80G: false }; // set true once the trust confirms its 80G certificate
 
-export const jobNetwork = { members: "800+", note: "A WhatsApp group where members share driving jobs with each other." };
+export const jobNetwork = { members: "1300+", note: "A WhatsApp group where members share driving jobs with each other." };
 
 export const causes = [
   { id: "general", label: "Where it's needed most" },

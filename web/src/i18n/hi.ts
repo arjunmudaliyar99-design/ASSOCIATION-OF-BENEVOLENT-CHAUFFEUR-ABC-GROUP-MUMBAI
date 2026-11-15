@@ -38,6 +38,7 @@ const hi: Dict = {
     social: { title: "समाज सेवा", body: "मुंबई में किसी भी ज़रूरतमंद के लिए भोजन वितरण, राशन मदद और दान का काम।" },
   },
   albums: {
+    "recent-events": "हाल के कार्यक्रम",
     "drivers-felicitation-bus-event": "ड्राइवरों का सम्मान",
     "ashram-food-seva": "आश्रम में भोजन",
     "childrens-home-visit": "बाल गृह की यात्रा",
@@ -96,6 +97,7 @@ const hi: Dict = {
     treasurer: "कोषाध्यक्ष",
     chiefAdvisor: "मुख्य सलाहकार",
     member: "सदस्य",
+    admin: "एडमिन",
     moreLeaders: "सभी संस्थापक सदस्यों की फ़ोटो और नाम जल्द ही जोड़े जाएंगे।",
     contactCta: "संपर्क करें",
   },

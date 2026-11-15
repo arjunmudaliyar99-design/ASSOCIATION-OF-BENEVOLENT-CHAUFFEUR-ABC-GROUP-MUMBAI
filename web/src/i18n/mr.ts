@@ -38,6 +38,7 @@ const mr: Dict = {
     social: { title: "समाजसेवा", body: "मुंबईतील कोणत्याही गरजूसाठी अन्नवाटप, किराणा मदत आणि धर्मादाय काम." },
   },
   albums: {
+    "recent-events": "अलीकडील कार्यक्रम",
     "drivers-felicitation-bus-event": "ड्रायव्हरचा सत्कार",
     "ashram-food-seva": "आश्रमात भोजन",
     "childrens-home-visit": "बालगृह भेट",
@@ -96,6 +97,7 @@ const mr: Dict = {
     treasurer: "खजिनदार",
     chiefAdvisor: "मुख्य सल्लागार",
     member: "सदस्य",
+    admin: "प्रशासक",
     moreLeaders: "सर्व संस्थापक सदस्यांचे फोटो आणि नावे लवकरच जोडली जातील.",
     contactCta: "संपर्क साधा",
   },

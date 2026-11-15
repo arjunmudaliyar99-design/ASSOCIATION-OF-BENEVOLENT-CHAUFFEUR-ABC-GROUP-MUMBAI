@@ -11,6 +11,7 @@ import { fill } from "@/i18n/config";
 
 // [photo, caption index, focus]. The two felicitation photos lead, framed on the people and the ABC banner.
 const heroPhotos: [string, number, string][] = [
+  ["/photos/hero/0.jpg", 2, "0% 45%"],
   ["/photos/hero/1.jpg", 0, "50% 62%"],
   ["/photos/hero/2.jpg", 0, "50% 58%"],
   ["/photos/ashram-food-seva/03.jpg", 1, "50% 50%"],
@@ -20,7 +21,7 @@ const heroPhotos: [string, number, string][] = [
 ];
 
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
-  const { t, L } = await pageCtx(params);
+  const { lang, t, L } = await pageCtx(params);
   const h = t.home;
   const heroSlides = heroPhotos.map(([src, c, focus]) => ({ src, caption: h.slides[c], focus }));
   const all = albums.flatMap((a) => a.photos);
@@ -33,9 +34,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className="relative overflow-hidden bg-sun">
         <Aurora />
         <div className="wrap relative grid items-center gap-12 pb-20 pt-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16 lg:pb-28 lg:pt-16">
-          <div className="grid gap-7">
-            <p className="glass animate-rise w-max max-w-full rounded-full px-4 py-2 text-sm font-semibold">{fill(t.org.regTrust, { reg: site.regNo })}</p>
-            <h1 className="font-display text-[clamp(2.8rem,7vw,6.25rem)] font-extrabold leading-[.95] tracking-tight">
+          <div className="grid min-w-0 gap-7">
+            <p className="glass animate-rise w-fit max-w-full rounded-3xl px-4 py-2 text-sm font-semibold">{fill(t.org.regTrust, { reg: site.regNo })}</p>
+            <h1 className={`font-display font-extrabold leading-[.95] tracking-tight ${lang === "ta" ? "text-[clamp(2.1rem,6vw,5rem)] leading-[1.1]" : "text-[clamp(2.8rem,7vw,6.25rem)]"}`}>
               {words.map((w, i) => (
                 <span key={w} className="block overflow-hidden pb-1"><span className="block animate-wordup" style={{ animationDelay: `${120 + i * 140}ms` }}>{w}</span></span>
               ))}
@@ -129,7 +130,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <div className="relative grid content-end gap-3 p-8 text-paper">
               <h3 className="font-display text-3xl font-extrabold text-sun">{h.hireTitle}</h3>
               <p className="max-w-md text-paper/90">{h.hireBody}</p>
-              <Link href={L("/hire-a-driver")} className="btn w-max bg-sun text-ink hover:-translate-y-0.5">{h.hireCta}</Link>
+              <Link href={L("/hire-a-driver")} className="btn w-fit max-w-full bg-sun text-ink hover:-translate-y-0.5">{h.hireCta}</Link>
             </div>
           </Reveal>
         </div>

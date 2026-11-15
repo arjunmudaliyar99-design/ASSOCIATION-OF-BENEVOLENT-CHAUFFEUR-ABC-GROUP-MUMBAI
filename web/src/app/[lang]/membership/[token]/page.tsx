@@ -42,7 +42,7 @@ export default async function Card({ params, searchParams }: { params: Promise<{
             <div><dt className="text-paper/60">{c.paidOn}</dt><dd className="font-semibold">{fmt(m.paid_on, lang)}</dd></div>
             <div><dt className="text-paper/60">{c.validUntil}</dt><dd className="font-semibold">{fmt(m.expires_on, lang)}</dd></div>
           </dl>
-          <p className={`relative mt-6 w-max rounded-full px-4 py-1.5 text-sm font-bold ${state[1]}`}>{state[0]}</p>
+          <p className={`relative mt-6 w-fit max-w-full rounded-full px-4 py-1.5 text-sm font-bold ${state[1]}`}>{state[0]}</p>
         </div>
         <div className="grid max-w-md gap-3 text-center text-ink/80">
           {m.status === "pending" && !expired && <p>{c.pendingNote.replace("{phone}", site.phone)}</p>}
