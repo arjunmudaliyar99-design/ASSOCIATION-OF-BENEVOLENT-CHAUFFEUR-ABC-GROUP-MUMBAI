@@ -1,0 +1,11 @@
+# Netlify build settings (base directory in the Netlify UI is "web").
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Runs Next.js server pages, API routes and middleware as Netlify Functions.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
