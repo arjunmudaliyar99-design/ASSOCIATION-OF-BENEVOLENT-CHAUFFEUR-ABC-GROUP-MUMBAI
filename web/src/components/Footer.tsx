@@ -22,15 +22,15 @@ export default function Footer({ lang, t }: { lang: Lang; t: Dict }) {
           </div>
           <p className="max-w-sm text-ink/80">{fill(t.footer.about, { reg: site.regNo })}</p>
           <p className="font-display text-xl font-bold">{t.org.motto}</p>
-          <Link href={L("/donate")} className="btn-primary w-max">{t.common.donate}</Link>
+          <Link href={L("/donate")} className="btn-primary w-fit max-w-full">{t.common.donate}</Link>
         </div>
         <div className="grid content-start gap-2.5">
           <p className="mb-1 font-display text-xl font-extrabold">{t.footer.visit}</p>
           <p className="text-ink/80">{site.address}</p>
-          <a className="w-max font-semibold hover:underline" href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a>
-          <a className="w-max font-semibold hover:underline" href={`tel:${site.phone2.replace(/\s/g, "")}`}>{site.phone2}</a>
-          <a className="w-max font-semibold hover:underline" href={`mailto:${site.email}`}>{site.email}</a>
-          <a className="w-max font-semibold hover:underline" href={`https://instagram.com/${site.instagram}`} target="_blank" rel="noopener noreferrer">Instagram @{site.instagram}</a>
+          <a className="w-fit max-w-full font-semibold hover:underline" href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a>
+          <a className="w-fit max-w-full font-semibold hover:underline" href={`tel:${site.phone2.replace(/\s/g, "")}`}>{site.phone2}</a>
+          <a className="w-fit max-w-full font-semibold hover:underline" href={`mailto:${site.email}`}>{site.email}</a>
+          <a className="w-fit max-w-full font-semibold hover:underline" href={`https://instagram.com/${site.instagram}`} target="_blank" rel="noopener noreferrer">Instagram @{site.instagram}</a>
         </div>
         <div className="grid content-start gap-2.5">
           <p className="mb-1 font-display text-xl font-extrabold">{t.footer.pages}</p>

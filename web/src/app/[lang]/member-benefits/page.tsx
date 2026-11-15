@@ -21,7 +21,7 @@ export default async function Benefits({ params }: { params: Promise<{ lang: str
             <Reveal key={c.title} delay={i * 0.08} className="relative grid content-start gap-5 overflow-hidden rounded-[2rem] bg-card p-8 ring-1 ring-line shadow-[0_30px_70px_-35px_rgb(var(--ink)/.5)]">
               <span aria-hidden className="absolute -right-6 -top-10 font-display text-[9rem] font-extrabold leading-none text-sun/50">{c.days}</span>
               <h2 className="relative font-display text-3xl font-extrabold leading-tight">{c.title}</h2>
-              <p className="relative w-max rounded-full bg-ink px-5 py-2 font-display text-2xl font-extrabold text-sun">{c.amount}</p>
+              <p className="relative w-fit max-w-full rounded-full bg-ink px-5 py-2 font-display text-2xl font-extrabold text-sun">{c.amount}</p>
               <p className="relative text-lg leading-relaxed">{c.body}</p>
               <p className="relative rounded-2xl bg-sun/50 p-4 font-semibold">{c.repay}</p>
             </Reveal>

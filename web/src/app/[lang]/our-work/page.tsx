@@ -26,7 +26,7 @@ export default async function Work({ params }: { params: Promise<{ lang: string 
                   <span className="font-display text-7xl font-extrabold leading-none text-sindoor/80">{String(i + 1).padStart(2, "0")}</span>
                   <h2 className="font-display text-4xl font-extrabold leading-tight">{ot.title}</h2>
                   <p className="max-w-lg text-lg leading-relaxed opacity-90">{ot.body}</p>
-                  <Link href={L(`/donate?cause=${cause}`)} className="btn-primary w-max">{t.work.support}</Link>
+                  <Link href={L(`/donate?cause=${cause}`)} className="btn-primary w-fit max-w-full">{t.work.support}</Link>
                 </Reveal>
               </div>
             </section>

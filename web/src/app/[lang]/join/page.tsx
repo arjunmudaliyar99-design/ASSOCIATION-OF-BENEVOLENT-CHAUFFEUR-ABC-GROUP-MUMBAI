@@ -31,7 +31,7 @@ export default async function Join({ params, searchParams }: { params: Promise<{
               ); })}
             </ol>
             <p className="glass rounded-2xl p-4 text-ink/80">{j.already} <Link href={L("/membership")} className="font-semibold underline">{j.check}</Link></p>
-            <Link href={L("/member-benefits")} className="btn-ghost w-max">{t.nav.benefits}</Link>
+            <Link href={L("/member-benefits")} className="btn-ghost w-fit max-w-full">{t.nav.benefits}</Link>
           </div>
           {plans.length ? <JoinForm plans={plans} initialPhone={phone} t={{ join: j, common: t.common, errors: t.errors }} /> : <p className="rounded-3xl bg-card p-8">{j.soon}</p>}
         </div>

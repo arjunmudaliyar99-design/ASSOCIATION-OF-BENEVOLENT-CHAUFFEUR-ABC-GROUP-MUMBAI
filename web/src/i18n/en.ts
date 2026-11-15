@@ -40,6 +40,7 @@ const en = {
     social: { title: "Social service", body: "Food drives, grocery help and charity work for anyone in Mumbai who needs it." },
   },
   albums: {
+    "recent-events": "Recent events",
     "drivers-felicitation-bus-event": "Drivers' felicitation",
     "ashram-food-seva": "Meals at the ashram",
     "childrens-home-visit": "Children's home visit",
@@ -98,6 +99,7 @@ const en = {
     treasurer: "Treasurer",
     chiefAdvisor: "Chief Advisor",
     member: "Member",
+    admin: "Admin",
     moreLeaders: "Photos and names of all founding members will be added soon.",
     contactCta: "Get in touch",
   },

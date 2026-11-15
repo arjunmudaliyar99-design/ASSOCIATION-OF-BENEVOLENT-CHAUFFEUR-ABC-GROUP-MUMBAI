@@ -66,7 +66,7 @@ export default async function About({ params }: { params: Promise<{ lang: string
                   </span>
                   <span className="grid gap-2">
                     <span className="font-display text-2xl font-extrabold leading-tight">{p.name}</span>
-                    <span className="mx-auto w-max rounded-full bg-ink px-4 py-1 text-sm font-bold text-sun">{a[p.role]}</span>
+                    <span className="mx-auto w-fit max-w-full rounded-full bg-ink px-4 py-1 text-sm font-bold text-sun">{a[p.role]}</span>
                   </span>
                 </Reveal>
               );

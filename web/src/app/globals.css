@@ -20,7 +20,12 @@
 
 html { scroll-behavior: smooth; }
 body { @apply bg-paper text-ink font-sans antialiased; }
-h1, h2, h3 { @apply font-display; text-wrap: balance; }
+h1, h2, h3 { @apply font-display; text-wrap: balance; overflow-wrap: break-word; }
+/* Tamil words are long: let headings wrap inside the screen, and keep grid items from growing past it. */
+:lang(ta) h1, :lang(ta) h2, :lang(ta) h3 { overflow-wrap: anywhere; letter-spacing: 0; }
+.wrap > * { min-width: 0; }
+/* A grid's default single column never grows past the screen (column counts set with grid-cols-* still apply). */
+@layer base { .grid { grid-template-columns: minmax(0, 1fr); } }
 :focus-visible { outline: 3px solid rgb(var(--ink)); outline-offset: 3px; border-radius: 8px; }
 ::selection { background: rgb(var(--ink)); color: rgb(var(--sun)); }
 
