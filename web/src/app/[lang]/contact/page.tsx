@@ -59,7 +59,7 @@ export default async function Contact({ params }: { params: Promise<{ lang: stri
             <h2 className="h-sec">{c.jobsTitle}</h2>
             <p className="max-w-xl text-lg text-ink/80">{fill(c.jobsBody, { n: jobNetwork.members })}</p>
             <ul className="grid gap-3 text-lg">
-              {c.jobsPoints.map((p) => <li key={p} className="flex items-start gap-3"><span aria-hidden className="mt-2.5 h-2.5 w-2.5 shrink-0 rounded-full bg-ink" />{p}</li>)}
+              {[c.jobsPoints[0], c.jobsDocs, c.jobsPoints[2]].map((p) => <li key={p} className="flex items-start gap-3"><span aria-hidden className="mt-2.5 h-2.5 w-2.5 shrink-0 rounded-full bg-ink" />{p}</li>)}
             </ul>
             <div className="flex flex-wrap gap-3">
               <Link href={L("/join")} className="btn-primary">{c.joinOnline}</Link>

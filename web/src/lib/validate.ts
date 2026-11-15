@@ -10,8 +10,6 @@ export const joinSchema = z.object({
   name: text(80).min(2, "Enter your full name."),
   phone,
   email: z.string().trim().max(120).email("Enter a valid email.").optional().or(z.literal("")).transform((s) => s || undefined),
-  licence_no: text(30).min(5, "Enter your driving licence number."),
-  pan: z.string().trim().toUpperCase().regex(PAN, "Enter a valid PAN, like ABCDE1234F.").optional().or(z.literal("")).transform((s) => s || undefined),
   area: optional(80),
 });
 

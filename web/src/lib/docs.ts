@@ -1,7 +1,11 @@
 import "server-only";
 import { run } from "@/lib/db";
 
-export const DOC_KINDS = { aadhaar: "Aadhaar card", pan: "PAN card", licence: "Driving licence" } as const;
+export const DOC_KINDS = {
+  aadhaar_front: "Aadhaar card (front)", aadhaar_back: "Aadhaar card (back)",
+  pan_front: "PAN card (front)", pan_back: "PAN card (back)",
+  licence_front: "Driving licence (front)", licence_back: "Driving licence (back)",
+} as const;
 export type DocKind = keyof typeof DOC_KINDS;
 export const MAX_DOC_BYTES = 1_200_000; // phones compress photos to ~200–400 KB before upload
 

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { site } from "@/data/site";
 import { pageCtx } from "@/i18n";
 
-export const metadata = { title: "Thank you", robots: { index: false } };
+export const generateMetadata = async ({ params }: { params: Promise<{ lang: string }> }) => ({ title: (await pageCtx(params)).t.donate.thanksTitle, robots: { index: false } });
 
 export default async function ThankYou({ params, searchParams }: { params: Promise<{ lang: string }>; searchParams: Promise<{ id?: string; ok?: string }> }) {
   const { t, L } = await pageCtx(params);

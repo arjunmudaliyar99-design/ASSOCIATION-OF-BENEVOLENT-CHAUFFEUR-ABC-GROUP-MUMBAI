@@ -17,21 +17,26 @@ Everything lives in the `web/` folder. One deploy updates the site, the backend 
 
 ---
 
-## Chosen plan: paid Mumbai server (≈ ₹6,000 / year)
+## Upgrade option: paid India server (≈ ₹8,500 / year for the first 2 years)
 
-Approved by the founder in November 2026. One small server in India runs the website, backend, database and member documents. No usage limits that pause the site, no cold starts.
+Not used at launch (November 2026: the association chose the free plan). Move here if the site outgrows the free plan. One small server in India runs the website, backend, database and member documents. No usage limits that pause the site, no cold starts.
+
+Prices below were checked on hostinger.com/in on 15 Nov 2026 and include 18% GST.
 
 | Part | Service | Cost |
 |---|---|---|
-| Server | **Hostinger KVM 1 VPS**, India (Mumbai) location, 12-month plan: 1 vCPU, 4 GB RAM, 50 GB disk | ≈ ₹4,500–5,500 / year |
-| Domain | Cloudflare Registrar / Hostinger | ≈ ₹800–1,200 / year |
+| Server | **Hostinger KVM 1 VPS**, India location, **24-month plan** (₹599/mo): 1 vCPU, 4 GB RAM, 50 GB NVMe | **₹16,963.68 for 2 years** (≈ ₹8,482/yr). Renews at ₹999/mo + GST |
+| | 12-month plan instead (₹699/mo) | ₹9,897.84 for 1 year. Renews at ₹1,149/mo + GST |
+| Domain (`abcgroupmumbai.com`, available) | Free for year 1 with the VPS plan | ₹0, then ₹1,499/yr + GST |
 | HTTPS | Caddy (Let's Encrypt), auto-renewing | ₹0 |
 | CDN + protection | Cloudflare free plan | ₹0 |
 | Uptime alerts | UptimeRobot free | ₹0 |
 | Off-site backups | Trust Google Drive (15 GB free) | ₹0 |
-| **Total** | | **≈ ₹5,500–6,500 / year** |
+| **Total** | | **≈ ₹8,500 / year for 2 years; ≈ ₹16,000 / year after renewal** |
 
-Alternative: AWS Lightsail Mumbai, 2 GB plan (≈ $12/month, ≈ ₹12,000/year). It's more expensive but billed monthly. Avoid 1 GB servers: building the site needs about 1.5 GB of memory.
+Hostinger's optional daily auto-backup (₹299/mo) isn't needed, because `deploy/backup.sh` backs up nightly to Google Drive for free.
+
+Alternative: AWS Lightsail Mumbai, 2 GB plan with public IPv4 ($12/month + 18% GST, ≈ ₹14,400/year). It's more expensive but billed monthly. Avoid 1 GB servers: building the site needs about 1.5 GB of memory.
 
 Prices change. Check hostinger.in/vps-hosting before paying. Pay with the trust's card, and note that renewal can cost more than the first year.
 
@@ -65,7 +70,7 @@ Prices change. Check hostinger.in/vps-hosting before paying. Pay with the trust'
    systemctl daemon-reload && systemctl enable --now abc-web
    cp /home/abc/site/deploy/Caddyfile /etc/caddy/Caddyfile && systemctl reload caddy
    ```
-   Open `https://abcgroupmumbai.org`. HTTPS turns on automatically within a minute.
+   Open `https://abcgroupmumbai.com`. HTTPS turns on automatically within a minute.
 6. **Turn on Cloudflare:** switch both DNS records to **Proxied** (orange cloud). Then set SSL/TLS mode to **Full (strict)**. Cloudflare now caches photos and pages close to visitors, and it blocks bot traffic.
 7. **Backups (as `abc`):** run `rclone config` and add a Google Drive remote named `gdrive`, signed in with the trust Gmail. Then add the cron line from `deploy/backup.sh`. Test it once with `~/site/deploy/backup.sh`.
 8. **Uptime monitor:** set up UptimeRobot as in step 7 below. You only need it for alerts here; the server never sleeps.
@@ -84,9 +89,9 @@ This pulls the latest code, rebuilds, restarts and checks `/api/health`. The sit
 
 ---
 
-## Alternative: free hosting (Netlify + Turso)
+## Chosen plan: free hosting (Netlify + Turso)
 
-Not chosen, but kept here in case costs need to drop to about ₹1,000 a year.
+Chosen in November 2026. Fixed cost is only the domain.
 
 ### Free plan budget
 
@@ -97,7 +102,7 @@ Everything (website, backend, database and member documents) fits on **free plan
 | Website + backend | **Netlify** | Free. Commercial use is allowed. | ₹0 |
 | Database + member documents | **Turso** | Free: 5 GB storage, 500 million row reads/month | ₹0 |
 | CDN + HTTPS | Included with Netlify | – | ₹0 |
-| Domain | Cloudflare Registrar / GoDaddy / Hostinger | `.org` (or `.in` for less) | **₹800–1,200 / year** |
+| Domain | Cloudflare Registrar / GoDaddy / Hostinger | `.com` | **₹900–1,500 / year** |
 | Payments | Razorpay | No setup or yearly fee | ≈2% + GST per payment |
 | **Total fixed** | | | **≈ ₹800–1,200 / year** |
 
@@ -137,7 +142,7 @@ That leaves ₹1,000–2,000 of the budget spare. Keep it for domain renewal pri
 
 | Name | Value |
 |---|---|
-| `NEXT_PUBLIC_SITE_URL` | `https://abcgroupmumbai.org` |
+| `NEXT_PUBLIC_SITE_URL` | `https://abcgroupmumbai.com` |
 | `DATABASE_URL` | the `libsql://…` URL |
 | `DATABASE_AUTH_TOKEN` | the Turso token |
 | `AUTH_SECRET` | 64 random characters (see the command in `web/.env.example`) |
@@ -154,11 +159,11 @@ npm run admin:create -- secretary 'a-long-password-here'
 Repeat for each committee member who needs access. Running it again with the same name resets that password.
 
 ### 4. Connect the domain
-Netlify → **Domain management → Add a domain** → `abcgroupmumbai.org`. Follow Netlify's DNS instructions at your registrar. HTTPS turns on automatically.
+Netlify → **Domain management → Add a domain** → `abcgroupmumbai.com`. Follow Netlify's DNS instructions at your registrar. HTTPS turns on automatically.
 
 ### 5. Razorpay webhook
 Razorpay → **Settings → Webhooks → Add new webhook**
-- URL: `https://abcgroupmumbai.org/api/razorpay/webhook`
+- URL: `https://abcgroupmumbai.com/api/razorpay/webhook`
 - Secret: the same value as `RAZORPAY_WEBHOOK_SECRET`
 - Events: `payment.captured`, `payment.failed`, `order.paid`
 
@@ -172,8 +177,8 @@ Razorpay → **Settings → Webhooks → Add new webhook**
 
 ### 7. Keep it fast and inside the free limits
 - **Uptime monitor (free):** at uptimerobot.com, add two HTTP monitors at **5-minute** intervals, with alerts to the trust Gmail:
-  - `https://abcgroupmumbai.org/` (is the site up?)
-  - `https://abcgroupmumbai.org/api/health` (keeps the server and database awake; answers `{"ok":true}`)
+  - `https://abcgroupmumbai.com/` (is the site up?)
+  - `https://abcgroupmumbai.com/api/health` (keeps the server and database awake; answers `{"ok":true}`)
   Don't go below 5 minutes; it only uses up free allowance.
 - **Built in:** when a visitor starts typing in the Donate or Join form, the page calls `/api/health` once in the background, so the server is awake by the time they press Pay.
 - **Netlify usage alerts:** turn them on (Team settings → Usage / billing notifications).

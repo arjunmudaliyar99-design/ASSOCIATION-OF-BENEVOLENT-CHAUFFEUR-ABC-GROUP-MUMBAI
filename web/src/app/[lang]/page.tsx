@@ -9,18 +9,20 @@ import { albums } from "@/data/gallery";
 import { pageCtx } from "@/i18n";
 import { fill } from "@/i18n/config";
 
-const heroPhotos = [
-  "/photos/drivers-felicitation-bus-event/02.jpg",
-  "/photos/ashram-food-seva/03.jpg",
-  "/photos/childrens-home-visit/07.jpg",
-  "/photos/grocery-supplies-drive/01.jpg",
-  "/photos/ashram-food-seva/13.jpg",
+// [photo, caption index, focus]. The two felicitation photos lead, framed on the people and the ABC banner.
+const heroPhotos: [string, number, string][] = [
+  ["/photos/hero/1.jpg", 0, "50% 62%"],
+  ["/photos/hero/2.jpg", 0, "50% 58%"],
+  ["/photos/ashram-food-seva/03.jpg", 1, "50% 50%"],
+  ["/photos/childrens-home-visit/07.jpg", 2, "50% 50%"],
+  ["/photos/grocery-supplies-drive/01.jpg", 3, "50% 50%"],
+  ["/photos/ashram-food-seva/13.jpg", 4, "50% 50%"],
 ];
 
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const { t, L } = await pageCtx(params);
   const h = t.home;
-  const heroSlides = heroPhotos.map((src, i) => ({ src, caption: h.slides[i] }));
+  const heroSlides = heroPhotos.map(([src, c, focus]) => ({ src, caption: h.slides[c], focus }));
   const all = albums.flatMap((a) => a.photos);
   const rows: [typeof all, typeof all] = [all.filter((_, i) => i % 2 === 0).slice(0, 14), all.filter((_, i) => i % 2 === 1).slice(0, 14)];
   const words = t.org.motto.split(/(?<=\.)\s+/);

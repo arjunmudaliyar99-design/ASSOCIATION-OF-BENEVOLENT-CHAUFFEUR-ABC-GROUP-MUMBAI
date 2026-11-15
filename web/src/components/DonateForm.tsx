@@ -1,5 +1,5 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { causes, features } from "@/data/site";
@@ -7,13 +7,12 @@ import { errorText, pay, preloadCheckout } from "@/lib/checkout";
 import { href, isLang } from "@/i18n/config";
 import type { Dict } from "@/i18n/en";
 
-export default function DonateForm({ t }: { t: { donate: Dict["donate"]; common: Dict["common"]; errors: Dict["errors"] } }) {
+export default function DonateForm({ t, initial = {} }: { initial?: { amount?: string; cause?: string }; t: { donate: Dict["donate"]; common: Dict["common"]; errors: Dict["errors"] } }) {
   const d = t.donate;
-  const params = useSearchParams();
   const lang = typeof document !== "undefined" && isLang(document.documentElement.lang) ? document.documentElement.lang : "en";
   const router = useRouter();
-  const [amount, setAmount] = useState(params.get("amount")?.replace(/[^\d.]/g, "") ?? "");
-  const [cause, setCause] = useState(causes.some((c) => c.id === params.get("cause")) ? params.get("cause")! : "general");
+  const [amount, setAmount] = useState(initial.amount?.replace(/[^\d.]/g, "") ?? "");
+  const [cause, setCause] = useState(causes.some((c) => c.id === initial.cause) ? initial.cause! : "general");
   const [f, setF] = useState({ name: "", email: "", phone: "", pan: "" });
   const [wants80g, setWants80g] = useState(features.has80G);
   const [busy, setBusy] = useState(false);

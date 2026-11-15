@@ -6,7 +6,7 @@ import { memberCode, one, today } from "@/lib/db";
 import { site } from "@/data/site";
 import { pageCtx } from "@/i18n";
 
-export const metadata: Metadata = { title: "Membership card", robots: { index: false, follow: false } };
+export const generateMetadata = async ({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> => ({ title: (await pageCtx(params)).t.card.title, robots: { index: false, follow: false } });
 export const dynamic = "force-dynamic";
 
 type M = { plan_id: string | null; id: number; name: string; phone: string; plan_label: string | null; paid_on: string; expires_on: string; status: string; in_group: number };

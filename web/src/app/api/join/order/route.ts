@@ -38,7 +38,7 @@ export async function POST(req: Request) {
 
   try {
     const order = await rp.orders.create({ amount: Number(plan.price_paise), currency: "INR", receipt: `mem_${Date.now()}`, notes: { kind: "membership", plan: plan.label, phone: d.phone } });
-    const meta = { name: d.name, phone: d.phone, email: d.email, licence_no: d.licence_no, pan: d.pan, area: d.area };
+    const meta = { name: d.name, phone: d.phone, email: d.email, area: d.area };
     await run("INSERT INTO payments (order_id, kind, amount_paise, name, email, phone, plan_id, meta) VALUES (?, 'membership', ?, ?, ?, ?, ?, ?)",
       [order.id, plan.price_paise, d.name, d.email ?? null, d.phone, plan.id, JSON.stringify(meta)]);
     for (const doc of docs) await saveDoc({ ...doc, orderId: order.id });

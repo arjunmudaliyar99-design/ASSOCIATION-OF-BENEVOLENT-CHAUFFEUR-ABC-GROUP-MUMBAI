@@ -282,7 +282,7 @@ footer b{color:#f3b80c}
       <p class="lede">A rough sketch of the home page. The real one will be fully designed, but the structure and mood will be like this.</p>
     </div>
     <div class="browser" role="img" aria-label="Sketch of the ABC home page">
-      <div class="bar"><i></i><i></i><i></i><span>abcgroupmumbai.org</span></div>
+      <div class="bar"><i></i><i></i><i></i><span>abcgroupmumbai.com</span></div>
       <div class="m-nav"><img src="{{logo}}" alt=""><b>ABC Group Mumbai</b><a>About</a><a>Our work</a><a>Gallery</a><a>News</a><a class="d">Donate</a></div>
       <div class="m-hero"><div><h4>To serve, to care, <span>to uplift.</span></h4><p>Mumbai's drivers looking after each other, and after the city's children.</p></div><img src="{{honour}}" alt=""></div>
       <div class="m-stats"><div><b>500+</b>members</div><div><b>2,000+</b>meals served</div><div><b>7</b>areas of work</div><div><b>₹0</b>commission on jobs</div></div>
@@ -329,9 +329,9 @@ footer b{color:#f3b80c}
       <div class="linkbox">
         <h3>Links you can send on WhatsApp</h3>
         <p style="font-size:15px;color:var(--muted)">Every link opens the donate page ready to go. Change the amount or cause in the demo and this link changes too.</p>
-        <div class="link"><code id="live">abcgroupmumbai.org/donate?amount=1000&amp;cause=general</code><button type="button" id="copy">Copy</button></div>
-        <div class="link"><code>abcgroupmumbai.org/donate</code></div>
-        <div class="link"><code>abcgroupmumbai.org/campaign/diwali-ashram-drive</code></div>
+        <div class="link"><code id="live">abcgroupmumbai.com/donate?amount=1000&amp;cause=general</code><button type="button" id="copy">Copy</button></div>
+        <div class="link"><code>abcgroupmumbai.com/donate</code></div>
+        <div class="link"><code>abcgroupmumbai.com/campaign/diwali-ashram-drive</code></div>
         <h3 style="margin-top:12px">What happens when someone pays</h3>
         <ol class="flow">
           <li>The donor opens the link and picks an amount.</li>
@@ -411,7 +411,7 @@ footer b{color:#f3b80c}
       <label for="n6"><input type="checkbox" id="n6"><span><b>Committee names and photos</b>For the About page.</span></label>
       <label for="n7"><input type="checkbox" id="n7"><span><b>Real impact numbers</b>Members, meals, children helped.</span></label>
       <label for="n8"><input type="checkbox" id="n8"><span><b>Event dates and places</b>For the gallery and the first news posts.</span></label>
-      <label for="n9"><input type="checkbox" id="n9"><span><b>Domain choice</b>For example abcgroupmumbai.org</span></label>
+      <label for="n9"><input type="checkbox" id="n9"><span><b>Domain choice</b>For example abcgroupmumbai.com</span></label>
     </div>
   </section>
 
@@ -441,7 +441,7 @@ footer b{color:#f3b80c}
   function fmt(n){return "₹"+Number(n).toLocaleString("en-IN")}
   function sync(){
     $("#paybtn").textContent="Donate "+fmt(amt)+(monthly?" a month":"");
-    $("#live").textContent="abcgroupmumbai.org/donate?amount="+amt+"&cause="+cause+(monthly?"&monthly=1":"");
+    $("#live").textContent="abcgroupmumbai.com/donate?amount="+amt+"&cause="+cause+(monthly?"&monthly=1":"");
     document.querySelectorAll(".amts button").forEach(function(b){b.setAttribute("aria-pressed",String(+b.dataset.a===amt))});
   }
   document.querySelectorAll(".amts button").forEach(function(b){b.addEventListener("click",function(){amt=+b.dataset.a;$("#amt").value=amt;sync()})});

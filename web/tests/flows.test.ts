@@ -97,17 +97,17 @@ describe("membership", () => {
   // Smallest valid JPEG / PDF headers are enough: the server checks the real file type from its bytes.
   const jpg = "data:image/jpeg;base64," + Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0, 16, 74, 70, 73, 70]).toString("base64");
   const pdf = Buffer.from("%PDF-1.4 test").toString("base64");
-  const docs = { aadhaar: jpg, pan: pdf, licence: jpg };
-  const driver = { planId: "1y", name: "Suresh Patil", phone: "+91 98200 11111", licence_no: "MH02 20180012345", docs };
+  const docs = { aadhaar_front: jpg, aadhaar_back: jpg, pan_front: pdf, pan_back: jpg, licence_front: jpg, licence_back: jpg };
+  const driver = { planId: "1y", name: "Suresh Patil", phone: "+91 98200 11111", docs };
 
   it("requires all three documents from new members and rejects fake files", async () => {
-    const noDocs = await joinOrder(post("/api/join/order", { ...driver, phone: "9820099999", docs: { aadhaar: jpg } }));
+    const noDocs = await joinOrder(post("/api/join/order", { ...driver, phone: "9820099999", docs: { aadhaar_front: jpg, aadhaar_back: jpg } }));
     expect(noDocs.status).toBe(400);
     expect((await noDocs.json()).error).toContain("PAN card");
-    const fake = await joinOrder(post("/api/join/order", { ...driver, phone: "9820099999", docs: { ...docs, licence: Buffer.from("<script>alert(1)</script>").toString("base64") } }));
+    const fake = await joinOrder(post("/api/join/order", { ...driver, phone: "9820099999", docs: { ...docs, licence_back: Buffer.from("<script>alert(1)</script>").toString("base64") } }));
     expect(fake.status).toBe(400);
     expect((await fake.json()).error).toContain("photo");
-    const huge = await joinOrder(post("/api/join/order", { ...driver, phone: "9820099999", docs: { ...docs, aadhaar: Buffer.concat([Buffer.from([0xff, 0xd8, 0xff]), Buffer.alloc(1_300_000)]).toString("base64") } }));
+    const huge = await joinOrder(post("/api/join/order", { ...driver, phone: "9820099999", docs: { ...docs, aadhaar_front: Buffer.concat([Buffer.from([0xff, 0xd8, 0xff]), Buffer.alloc(1_300_000)]).toString("base64") } }));
     expect(huge.status).toBe(400);
   });
 
@@ -118,7 +118,6 @@ describe("membership", () => {
 
   it("validates phone and licence", async () => {
     expect((await joinOrder(post("/api/join/order", { ...driver, phone: "12345" }))).status).toBe(400);
-    expect((await joinOrder(post("/api/join/order", { ...driver, licence_no: "" }))).status).toBe(400);
     expect((await joinOrder(post("/api/join/order", { ...driver, planId: "nope" }))).status).toBe(400);
   });
 
@@ -130,7 +129,8 @@ describe("membership", () => {
     const m1 = await dbm.one<{ id: number; status: string; phone: string; paid_on: string; expires_on: string }>("SELECT * FROM members WHERE token = ?", [v.token]);
     expect(m1).toMatchObject({ status: "pending", phone: "9820011111" });
     const linked = await dbm.q<{ kind: string; mime: string }>("SELECT kind, mime FROM documents WHERE member_id = ? ORDER BY kind", [m1!.id]);
-    expect(linked).toEqual([{ kind: "aadhaar", mime: "image/jpeg" }, { kind: "licence", mime: "image/jpeg" }, { kind: "pan", mime: "application/pdf" }]);
+    expect(linked.map((d) => d.kind)).toEqual(["aadhaar_back", "aadhaar_front", "licence_back", "licence_front", "pan_back", "pan_front"]);
+    expect(linked.find((d) => d.kind === "pan_front")?.mime).toBe("application/pdf");
     expect(m1!.expires_on).toBe(dbm.addMonths(dbm.today(), 12));
 
     // Admin approves, driver renews early with the 10-year plan: new period starts the day after current expiry.

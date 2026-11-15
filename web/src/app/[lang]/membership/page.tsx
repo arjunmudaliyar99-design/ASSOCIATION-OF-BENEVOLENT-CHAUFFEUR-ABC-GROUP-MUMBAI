@@ -4,10 +4,10 @@ import LookupForm from "@/components/LookupForm";
 import { limited, one } from "@/lib/db";
 import { clientIp } from "@/lib/auth";
 import { lookupSchema } from "@/lib/validate";
-import { getDict, pageCtx } from "@/i18n";
+import { getDict, pageCtx, pageMeta } from "@/i18n";
 import { href, isLang } from "@/i18n/config";
 
-export const metadata = { title: "Membership", robots: { index: false } };
+export const generateMetadata = async ({ params }: { params: Promise<{ lang: string }> }) => ({ ...(await pageMeta(params, (t) => ({ title: t.lookup.title }), "/membership")), robots: { index: false } });
 
 async function find(_: unknown, fd: FormData) {
   "use server";

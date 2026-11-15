@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Photo from "@/components/Photo";
 
-export type Slide = { src: string; caption?: string };
+export type Slide = { src: string; caption?: string; focus?: string };
 
 /** Crossfading photo slider with a slow zoom, swipe, arrows, keyboard and an autoplay progress bar. */
 export default function Slider({ slides, t, interval = 5000, className = "", sizes = "100vw", thumbs = false, priority = false }:
@@ -33,7 +33,7 @@ export default function Slider({ slides, t, interval = 5000, className = "", siz
             drag="x" dragConstraints={{ left: 0, right: 0 }} dragElastic={0.15}
             onDragEnd={(_, info) => { if (info.offset.x < -50) go(1); else if (info.offset.x > 50) go(-1); }}>
             <motion.div className="absolute inset-0" initial={{ scale: reduce ? 1 : 1.12 }} animate={{ scale: 1 }} transition={{ duration: interval / 1000 + 1, ease: "linear" }}>
-              <Photo src={s.src} alt={s.caption ?? ""} fill sizes={sizes} priority={priority && i === 0} className="pointer-events-none select-none object-cover" draggable={false} />
+              <Photo src={s.src} alt={s.caption ?? ""} fill sizes={sizes} priority={priority && i === 0} className="pointer-events-none select-none object-cover" style={{ objectPosition: s.focus ?? "50% 50%" }} draggable={false} />
             </motion.div>
           </motion.div>
         </AnimatePresence>

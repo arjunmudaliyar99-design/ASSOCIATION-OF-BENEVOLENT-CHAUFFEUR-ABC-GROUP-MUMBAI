@@ -1,5 +1,5 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { errorText, pay, preloadCheckout } from "@/lib/checkout";
@@ -10,22 +10,22 @@ import DocInput from "@/components/DocInput";
 type Plan = { id: string; label: string; months: number; price_paise: number };
 const inr = (p: number) => `₹${(p / 100).toLocaleString("en-IN")}`;
 
-export default function JoinForm({ plans, t }: { plans: Plan[]; t: { join: Dict["join"]; common: Dict["common"]; errors: Dict["errors"] } }) {
+export default function JoinForm({ plans, t, initialPhone = "" }: { plans: Plan[]; initialPhone?: string; t: { join: Dict["join"]; common: Dict["common"]; errors: Dict["errors"] } }) {
   const j = t.join;
   const lang = typeof document !== "undefined" && isLang(document.documentElement.lang) ? document.documentElement.lang : "en";
   const planName = (p: Plan) => j.plans[p.id] ?? p.label;
-  const docNames = { aadhaar: j.aadhaar, pan: j.panCard, licence: j.licenceCard };
+  const cards = [["aadhaar", j.aadhaar], ["pan", j.panCard], ["licence", j.licenceCard]] as const;
+  const docNames: Record<string, string> = Object.fromEntries(cards.flatMap(([k, n]) => [[`${k}_front`, `${n} – ${j.front}`], [`${k}_back`, `${n} – ${j.back}`]]));
   const docT = { frontSide: j.frontSide, photoOrPdf: j.photoOrPdf, preparing: j.preparing, added: j.added, tapChange: j.tapChange, tooBigPdf: j.docTooBigPdf, wrongType: j.docWrongType, unreadable: j.docUnreadable };
   const router = useRouter();
-  const params = useSearchParams();
   const [planId, setPlanId] = useState(plans[0].id);
-  const [f, setF] = useState({ name: "", phone: params.get("phone") ?? "", licence_no: "", pan: "", email: "", area: "" });
+  const [f, setF] = useState({ name: "", phone: initialPhone, email: "", area: "" });
   const [agree, setAgree] = useState(false);
-  const [docs, setDocs] = useState<{ aadhaar?: string; pan?: string; licence?: string }>({});
+  const [docs, setDocs] = useState<Record<string, string | undefined>>({});
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const plan = plans.find((p) => p.id === planId)!;
-  const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => setF({ ...f, [k]: k === "pan" ? e.target.value.toUpperCase() : e.target.value });
+  const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => setF({ ...f, [k]: e.target.value });
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -64,25 +64,31 @@ export default function JoinForm({ plans, t }: { plans: Plan[]; t: { join: Dict[
         {([
           ["name", j.name, "name", "text", true],
           ["phone", j.mobile, "tel", "tel", true],
-          ["licence_no", j.licence, "off", "text", true],
-          ["pan", j.pan, "off", "text", false],
           ["email", j.email, "email", "email", false],
           ["area", j.area, "address-level2", "text", false],
         ] as const).map(([k, label, ac, type, req]) => (
           <label key={k} htmlFor={`j-${k}`} className="grid gap-1.5">
             <span className="font-semibold">{label}</span>
-            <input id={`j-${k}`} type={type} autoComplete={ac} required={req} value={f[k]} onChange={set(k)} maxLength={k === "pan" ? 10 : 80}
-              inputMode={k === "phone" ? "numeric" : undefined} className={`field ${k === "pan" ? "uppercase tracking-widest" : ""}`} />
+            <input id={`j-${k}`} type={type} autoComplete={ac} required={req} value={f[k]} onChange={set(k)} maxLength={80}
+              inputMode={k === "phone" ? "numeric" : undefined} className="field" />
           </label>
         ))}
       </div>
 
       <fieldset className="grid gap-3">
         <legend className="mb-1 font-display text-xl font-bold">{j.docsTitle}</legend>
-        <p className="text-sm text-ink/70">{j.docsBody}</p>
-        <DocInput id="d-aadhaar" label={j.aadhaar} hint={j.frontSide} t={docT} value={docs.aadhaar} onChange={(v, e) => { setDocs({ ...docs, aadhaar: v }); setErr(e ?? ""); }} />
-        <DocInput id="d-pan" label={j.panCard} t={docT} value={docs.pan} onChange={(v, e) => { setDocs({ ...docs, pan: v }); setErr(e ?? ""); }} />
-        <DocInput id="d-licence" label={j.licenceCard} hint={j.frontSide} t={docT} value={docs.licence} onChange={(v, e) => { setDocs({ ...docs, licence: v }); setErr(e ?? ""); }} />
+        <p className="text-sm text-ink/70">{j.docsBodyFB}</p>
+        {cards.map(([k, n]) => (
+          <div key={k} className="grid gap-2">
+            <p className="font-semibold">{n}</p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {(["front", "back"] as const).map((side) => {
+                const key = `${k}_${side}`;
+                return <DocInput key={key} id={`d-${key}`} label={j[side]} hint={j.photoOrPdf} t={docT} value={docs[key]} onChange={(v, e) => { setDocs({ ...docs, [key]: v }); setErr(e ?? ""); }} />;
+              })}
+            </div>
+          </div>
+        ))}
       </fieldset>
 
       <label htmlFor="j-agree" className="flex cursor-pointer items-start gap-3">

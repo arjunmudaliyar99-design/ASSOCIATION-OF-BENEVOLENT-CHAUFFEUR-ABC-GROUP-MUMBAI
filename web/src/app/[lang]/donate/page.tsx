@@ -1,11 +1,11 @@
-import { Suspense } from "react";
 import DonateForm from "@/components/DonateForm";
 import { features } from "@/data/site";
 import { pageCtx, pageMeta } from "@/i18n";
 
 export const generateMetadata = ({ params }: { params: Promise<{ lang: string }> }) => pageMeta(params, (t) => ({ title: t.donate.title, description: t.donate.intro }), "/donate");
 
-export default async function Donate({ params }: { params: Promise<{ lang: string }> }) {
+export default async function Donate({ params, searchParams }: { params: Promise<{ lang: string }>; searchParams: Promise<{ amount?: string; cause?: string }> }) {
+  const sp = await searchParams;
   const { t } = await pageCtx(params);
   const d = t.donate;
   return (
@@ -20,9 +20,7 @@ export default async function Donate({ params }: { params: Promise<{ lang: strin
             ))}
           </ul>
         </div>
-        <Suspense fallback={<div className="h-[560px] rounded-3xl bg-card" />}>
-          <DonateForm t={{ donate: d, common: t.common, errors: t.errors }} />
-        </Suspense>
+          <DonateForm initial={{ amount: sp.amount, cause: sp.cause }} t={{ donate: d, common: t.common, errors: t.errors }} />
       </div>
       <div aria-hidden className="absolute inset-x-0 bottom-0 h-3 bg-navy"><div className="lane mt-1 h-1 animate-drive" /></div>
     </section>

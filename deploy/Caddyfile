@@ -1,11 +1,11 @@
 # /etc/caddy/Caddyfile — HTTPS (free, auto-renewing) in front of the Next.js app.
 # Replace the domain if it differs, then: sudo systemctl reload caddy
 
-abcgroupmumbai.org {
+abcgroupmumbai.com {
 	encode zstd gzip
 	reverse_proxy 127.0.0.1:3000
 }
 
-www.abcgroupmumbai.org {
-	redir https://abcgroupmumbai.org{uri} permanent
+www.abcgroupmumbai.com {
+	redir https://abcgroupmumbai.com{uri} permanent
 }

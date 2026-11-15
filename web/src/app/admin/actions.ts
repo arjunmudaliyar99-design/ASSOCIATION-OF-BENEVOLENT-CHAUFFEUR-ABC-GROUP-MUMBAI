@@ -7,6 +7,7 @@ import { addMonths, db, ensureSchema, memberCode, one, q, run, today } from "@/l
 import { importRow, type ImportRow } from "@/lib/validate";
 import { checkDoc, DOC_KINDS, saveDoc, type DocKind } from "@/lib/docs";
 import { adminDict } from "@/i18n";
+import { date } from "@/components/admin/ui";
 
 const id = z.coerce.number().int().positive();
 
@@ -61,7 +62,8 @@ export async function recordOfflineRenewal(_: unknown, fd: FormData) {
     [p.data.planId, Math.round(p.data.amount * 100), t, expires, p.data.mode, p.data.id]);
   await audit(admin, "offline renewal", `${memberCode(p.data.id)} ${p.data.amount} ${p.data.mode} until ${expires}`);
   revalidatePath("/admin", "layout");
-  return (await adminDict()).t.admin.renewedUntil.replace("{date}", expires);
+  const { lang, t: dict } = await adminDict();
+  return dict.admin.renewedUntil.replace("{date}", date(expires, lang));
 }
 
 function nextDay(iso: string) {
