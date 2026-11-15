@@ -1,0 +1,15 @@
+// Cloudflare Workers config for the website (built with @opennextjs/cloudflare).
+// Secrets (DATABASE_AUTH_TOKEN, AUTH_SECRET, RAZORPAY_*) are set with `wrangler secret put`, never here.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "abcgroupmumbai",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "observability": { "enabled": true },
+  "vars": {
+    "NEXT_PUBLIC_SITE_URL": "https://abcgroupmumbai.workers.dev",
+    "DATABASE_URL": "libsql://abc-mumbai-abcgroupmumbai.aws-us-east-2.turso.io"
+  }
+}

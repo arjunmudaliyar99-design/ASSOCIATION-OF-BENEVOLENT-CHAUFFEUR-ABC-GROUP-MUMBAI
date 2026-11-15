@@ -2,6 +2,7 @@ import "server-only";
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { createClient, type Client, type InValue } from "@libsql/client";
+// On Cloudflare the bundler resolves "@libsql/client" to its web (HTTP) build via the "workerd" export condition.
 
 /**
  * One database for everything. DATABASE_URL can be:

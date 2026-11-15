@@ -8,16 +8,19 @@
     "start": "next start",
     "lint": "next lint",
     "admin:create": "tsx scripts/create-admin.mts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "cf:build": "opennextjs-cloudflare build",
+    "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",
+    "@opennextjs/cloudflare": "^1.20.17",
     "bcryptjs": "^2.4.3",
     "framer-motion": "^11.18.2",
     "jose": "^5.9.6",
     "next": "^15.5.29",
     "papaparse": "^5.4.1",
-    "razorpay": "^2.9.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "server-only": "^0.0.1",
@@ -36,6 +39,7 @@
     "tailwindcss": "^3.4.1",
     "tsx": "^4.19.2",
     "typescript": "^5",
-    "vitest": "^2.1.8"
+    "vitest": "^2.1.8",
+    "wrangler": "^4.162.0"
   }
 }
