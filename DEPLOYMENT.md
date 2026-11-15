@@ -104,9 +104,9 @@ Everything (website, backend, database and member documents) fits on **free plan
 | CDN + HTTPS | Included with Netlify | – | ₹0 |
 | Domain | Cloudflare Registrar / GoDaddy / Hostinger | `.com` | **₹900–1,500 / year** |
 | Payments | Razorpay | No setup or yearly fee | ≈2% + GST per payment |
-| **Total fixed** | | | **≈ ₹800–1,200 / year** |
+| **Total fixed** | | | **≈ ₹900–1,500 / year** |
 
-That leaves ₹1,000–2,000 of the budget spare. Keep it for domain renewal price increases.
+That leaves about ₹500–2,000 of the ₹2,000–3,000 budget spare. Keep it for domain renewal price increases.
 
 **Will the free plans be enough?**
 - **Storage:** 800 members × 3 documents × about 300 KB is about **0.7 GB**, well inside Turso's 5 GB. The join form shrinks phone photos before upload.
