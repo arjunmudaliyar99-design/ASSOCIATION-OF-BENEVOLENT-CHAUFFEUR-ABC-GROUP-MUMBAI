@@ -5,7 +5,7 @@ import Image from "next/image";
 import Photo from "@/components/Photo";
 import PageHero from "@/components/PageHero";
 import { Reveal } from "@/components/Motion";
-import { leaders, serviceKeys, site } from "@/data/site";
+import { leaders, leaderTiers, serviceKeys, site } from "@/data/site";
 import { pageCtx, pageMeta } from "@/i18n";
 import { fill } from "@/i18n/config";
 
@@ -52,13 +52,16 @@ export default async function About({ params }: { params: Promise<{ lang: string
       <section className="relative overflow-hidden bg-sun">
         <div className="wrap grid gap-10 py-20">
           <Reveal><h2 className="h-sec">{a.leadersTitle}</h2></Reveal>
+          {leaderTiers.map((tier) => (
+          <div key={tier} className="grid gap-6">
+          <Reveal><h3 className="font-display text-2xl font-extrabold">{a.tiers[tier]}</h3></Reveal>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {leaders.map((p, i) => {
+            {leaders.filter((p) => p.tier === tier).sort((x, y) => x.n - y.n).map((p, i) => {
               const photo = `/team/${p.n}.jpg`;
               const has = existsSync(join(process.cwd(), "public", photo));
               const initials = p.name.replace(/^[A-Z]\.\s*/, "").split(/\s+/).slice(0, 2).map((w) => w[0]).join("");
               return (
-                <Reveal key={p.name} delay={(i % 3) * 0.08} className={`glass group grid justify-items-center gap-4 rounded-[2rem] p-8 text-center transition duration-500 hover:-translate-y-1 ${i === 0 ? "sm:col-span-2 lg:col-span-1 lg:row-span-1" : ""}`}>
+                <Reveal key={p.name} delay={(i % 3) * 0.08} className="glass group grid justify-items-center gap-4 rounded-[2rem] p-8 text-center transition duration-500 hover:-translate-y-1">
                   <span className="relative grid h-40 w-40 place-items-center overflow-hidden rounded-full bg-ink shadow-[0_20px_40px_-15px_rgb(var(--ink)/.6)] ring-4 ring-paper">
                     {has
                       ? <Image src={photo} alt={p.name} width={320} height={320} className="h-full w-full object-cover object-top transition duration-700 group-hover:scale-105" />
@@ -72,6 +75,8 @@ export default async function About({ params }: { params: Promise<{ lang: string
               );
             })}
           </div>
+          </div>
+          ))}
         </div>
       </section>
 

@@ -14,24 +14,30 @@ export const site = {
   mapUrl: "https://www.google.com/maps/search/?api=1&query=Subhash+Nagar+Vakola+Santacruz+East+Mumbai+400055",
 };
 
-/** Committee, in the order given by the association. Photos go in public/team/<n>.jpg */
+/**
+ * Committee, numbered as given by the association (numbers are for ordering only, never shown).
+ * Shown in three groups: office bearers, then admins, then members. Photos go in public/team/<n>.jpg
+ */
 export const leaders = [
-  { n: 1, name: "Mohan Muthu", role: "founder" },
-  { n: 2, name: "S. Ramachandran Nadar", role: "vicePresident" },
-  { n: 3, name: "Durairaj Bhagwati Nadar", role: "secretary" },
-  { n: 4, name: "Vigneshwaran", role: "treasurer" },
-  { n: 5, name: "Murugan Udaiyar", role: "chiefAdvisor" },
-  { n: 6, name: "Gandhi Rakkappan", role: "member" },
-  { n: 7, name: "Ganesh Kombaiya Thevar", role: "member" },
-  { n: 8, name: "Esakki Muthu Nadar", role: "member" },
-  { n: 9, name: "Muppudathi Durai Swamy", role: "member" },
-  { n: 10, name: "Muthu Kumar", role: "member" },
-  { n: 11, name: "Jebamani Iruthaya Swamy", role: "member" },
-  { n: 12, name: "Murugan Perumal", role: "admin" },
-  { n: 13, name: "Velusamy Chellaiya", role: "admin" },
-  { n: 14, name: "Arul Mani", role: "admin" },
-  { n: 15, name: "Moses Nadar", role: "admin" },
+  { n: 1, name: "Mohan Muthu", role: "founder", tier: "core" },
+  { n: 2, name: "S. Ramachandran Nadar", role: "vicePresident", tier: "core" },
+  { n: 3, name: "Durairaj Bhagwati Nadar", role: "secretary", tier: "core" },
+  { n: 4, name: "Vigneshwaran", role: "treasurer", tier: "core" },
+  { n: 5, name: "Murugan Udaiyar", role: "chiefAdvisor", tier: "core" },
+  { n: 6, name: "Gandhi Rakkappan", role: "member", tier: "member" },
+  { n: 7, name: "Ganesh Kombaiya Thevar", role: "member", tier: "member" },
+  { n: 8, name: "Esakki Muthu Nadar", role: "member", tier: "member" },
+  { n: 9, name: "Muppudathi Durai Swamy", role: "member", tier: "member" },
+  { n: 10, name: "Muthu Kumar", role: "member", tier: "member" },
+  { n: 11, name: "Jebamani Iruthaya Swamy", role: "member", tier: "member" },
+  { n: 12, name: "Murugan Perumal", role: "admin", tier: "admin" },
+  { n: 13, name: "Velusamy Chellaiya", role: "admin", tier: "admin" },
+  { n: 14, name: "Kartik Shethiyar", role: "admin", tier: "admin" },
+  { n: 15, name: "Arul Mani", role: "admin", tier: "admin" },
+  { n: 16, name: "Moses Nadar", role: "admin", tier: "admin" },
 ] as const;
+
+export const leaderTiers = ["core", "admin", "member"] as const;
 
 /** Driver hire rates from the association's rate cards (₹). */
 export const rates = {

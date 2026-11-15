@@ -93,6 +93,7 @@ const en = {
     missionTitle: "Our mission",
     mission: "To serve people beyond our profession: support drivers and their families, lift up underprivileged communities, and make a real difference in society.",
     leadersTitle: "Our leadership",
+    tiers: { core: "Office bearers", admin: "Admins", member: "Members" },
     founder: "Founder & President",
     vicePresident: "Vice President",
     secretary: "Secretary",
