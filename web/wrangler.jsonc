@@ -8,8 +8,13 @@
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
   "observability": { "enabled": true },
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "abcgroupmumbai.com", "custom_domain": true },
+    { "pattern": "www.abcgroupmumbai.com", "custom_domain": true }
+  ],
   "vars": {
-    "NEXT_PUBLIC_SITE_URL": "https://abcgroupmumbai.arjunmudaliyar99.workers.dev",
+    "NEXT_PUBLIC_SITE_URL": "https://abcgroupmumbai.com",
     "DATABASE_URL": "libsql://abc-mumbai-abcgroupmumbai.aws-us-east-2.turso.io"
   }
 }
