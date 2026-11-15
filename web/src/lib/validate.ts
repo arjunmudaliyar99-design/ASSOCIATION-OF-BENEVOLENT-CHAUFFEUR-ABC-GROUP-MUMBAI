@@ -22,7 +22,7 @@ export const importRow = z.object({
   name: text(80).min(2, "Name is missing"),
   mobile: phone,
   plan: z.string().trim().min(1, "Plan is missing"),
-  amount: z.coerce.number({ invalid_type_error: "Amount must be a number" }).min(0).max(1_000_000),
+  amount: z.coerce.number({ error: "Amount must be a number" }).min(0).max(1_000_000),
   paid_on: z.string().trim().transform(toIso).pipe(z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Paid date must look like 15-03-2025")),
   payment_mode: z.string().trim().max(20).optional().transform((s) => s || "cash"),
   expires_on: z.string().trim().optional().transform((s) => (s ? toIso(s) : undefined)).pipe(z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Expiry date must look like 14-03-2026").optional()),

@@ -14,10 +14,15 @@ export const site = {
   mapUrl: "https://www.google.com/maps/search/?api=1&query=Subhash+Nagar+Vakola+Santacruz+East+Mumbai+400055",
 };
 
+/** Committee, in the order given by the association. Photos go in public/team/<n>.jpg */
 export const leaders = [
-  { name: "Mohan Muthu", role: "founder" as const },
-  { name: "S. Ramchandran Nadar", role: "vicePresident" as const },
-];
+  { n: 1, name: "Mohan Muthu", role: "founder" },
+  { n: 2, name: "S. Ramachandran Nadar", role: "vicePresident" },
+  { n: 3, name: "Durairaj Bhagwati Nadar", role: "secretary" },
+  { n: 4, name: "Vigneshwaran", role: "treasurer" },
+  { n: 5, name: "Murugan Udaiyar", role: "chiefAdvisor" },
+  { n: 6, name: "Gandhi Rakkappan", role: "member" },
+] as const;
 
 /** Driver hire rates from the association's rate cards (₹). */
 export const rates = {

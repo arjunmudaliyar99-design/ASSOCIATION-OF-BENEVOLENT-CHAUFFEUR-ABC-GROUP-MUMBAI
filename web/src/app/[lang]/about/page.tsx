@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import Image from "next/image";
 import Photo from "@/components/Photo";
 import PageHero from "@/components/PageHero";
@@ -51,16 +53,24 @@ export default async function About({ params }: { params: Promise<{ lang: string
         <div className="wrap grid gap-10 py-20">
           <Reveal><h2 className="h-sec">{a.leadersTitle}</h2></Reveal>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {leaders.map((p, i) => (
-              <Reveal key={p.name} delay={i * 0.08} className="glass grid justify-items-center gap-3 rounded-[2rem] p-8 text-center">
-                <span className="relative grid h-32 w-32 place-items-center overflow-hidden rounded-full bg-paper ring-4 ring-paper shadow-lg">
-                  <Image src="/logo.jpg" alt="" width={128} height={128} className="opacity-90" />
-                </span>
-                <p className="font-display text-2xl font-extrabold">{p.name}</p>
-                <p className="rounded-full bg-ink px-4 py-1 text-sm font-bold text-sun">{p.role === "founder" ? a.founder : a.vicePresident}</p>
-              </Reveal>
-            ))}
-            <Reveal delay={0.16} className="grid place-items-center rounded-[2rem] border-2 border-dashed border-ink/30 p-8 text-center text-ink/70">{a.moreLeaders}</Reveal>
+            {leaders.map((p, i) => {
+              const photo = `/team/${p.n}.jpg`;
+              const has = existsSync(join(process.cwd(), "public", photo));
+              const initials = p.name.replace(/^[A-Z]\.\s*/, "").split(/\s+/).slice(0, 2).map((w) => w[0]).join("");
+              return (
+                <Reveal key={p.name} delay={(i % 3) * 0.08} className={`glass group grid justify-items-center gap-4 rounded-[2rem] p-8 text-center transition duration-500 hover:-translate-y-1 ${i === 0 ? "sm:col-span-2 lg:col-span-1 lg:row-span-1" : ""}`}>
+                  <span className="relative grid h-40 w-40 place-items-center overflow-hidden rounded-full bg-ink shadow-[0_20px_40px_-15px_rgb(var(--ink)/.6)] ring-4 ring-paper">
+                    {has
+                      ? <Image src={photo} alt={p.name} width={320} height={320} className="h-full w-full object-cover object-top transition duration-700 group-hover:scale-105" />
+                      : <span className="font-display text-5xl font-extrabold text-sun">{initials}</span>}
+                  </span>
+                  <span className="grid gap-2">
+                    <span className="font-display text-2xl font-extrabold leading-tight">{p.name}</span>
+                    <span className="mx-auto w-max rounded-full bg-ink px-4 py-1 text-sm font-bold text-sun">{a[p.role]}</span>
+                  </span>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
