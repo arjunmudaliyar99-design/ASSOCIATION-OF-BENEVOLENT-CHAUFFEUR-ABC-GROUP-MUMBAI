@@ -1,0 +1,20 @@
+# /etc/systemd/system/abc-web.service — keeps the website running and restarts it after a crash or reboot.
+# sudo systemctl daemon-reload && sudo systemctl enable --now abc-web
+
+[Unit]
+Description=ABC Group Mumbai website (Next.js)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=abc
+WorkingDirectory=/home/abc/site/web
+EnvironmentFile=/home/abc/site/web/.env.production
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/npx next start -H 127.0.0.1 -p 3000
+Restart=always
+RestartSec=3
+MemoryMax=1500M
+
+[Install]
+WantedBy=multi-user.target

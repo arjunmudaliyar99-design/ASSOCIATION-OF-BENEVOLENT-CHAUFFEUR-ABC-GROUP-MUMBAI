@@ -17,7 +17,78 @@ Everything lives in the `web/` folder. One deploy updates the site, the backend 
 
 ---
 
-## Hosting plan for a ₹2,000–3,000 yearly budget
+## Chosen plan: paid Mumbai server (≈ ₹6,000 / year)
+
+Approved by the founder in November 2026. One small server in India runs the website, backend, database and member documents. No usage limits that pause the site, no cold starts.
+
+| Part | Service | Cost |
+|---|---|---|
+| Server | **Hostinger KVM 1 VPS**, India (Mumbai) location, 12-month plan: 1 vCPU, 4 GB RAM, 50 GB disk | ≈ ₹4,500–5,500 / year |
+| Domain | Cloudflare Registrar / Hostinger | ≈ ₹800–1,200 / year |
+| HTTPS | Caddy (Let's Encrypt), auto-renewing | ₹0 |
+| CDN + protection | Cloudflare free plan | ₹0 |
+| Uptime alerts | UptimeRobot free | ₹0 |
+| Off-site backups | Trust Google Drive (15 GB free) | ₹0 |
+| **Total** | | **≈ ₹5,500–6,500 / year** |
+
+Alternative: AWS Lightsail Mumbai, 2 GB plan (≈ $12/month, ≈ ₹12,000/year). It's more expensive but billed monthly. Avoid 1 GB servers: building the site needs about 1.5 GB of memory.
+
+Prices change. Check hostinger.in/vps-hosting before paying. Pay with the trust's card, and note that renewal can cost more than the first year.
+
+### Set up the server (one time, about 1 hour)
+1. **Buy the VPS** with the trust Gmail. OS: **Ubuntu 24.04**, location **India**. Add your SSH key.
+2. **Point the domain:** add the domain to Cloudflare (free). Create `A` records for `@` and `www` → the server's IP, set to **DNS only** (grey cloud) for now.
+3. **Log in as root and prepare the server:**
+   ```bash
+   apt update && apt -y upgrade
+   apt -y install git sqlite3 rclone ufw
+   curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && apt -y install nodejs
+   apt -y install caddy
+   ufw allow OpenSSH && ufw allow 80 && ufw allow 443 && ufw --force enable
+   adduser --disabled-password --gecos "" abc
+   echo "abc ALL=(root) NOPASSWD: /usr/bin/systemctl restart abc-web" > /etc/sudoers.d/abc
+   ```
+4. **Get the code (as user `abc`):**
+   ```bash
+   su - abc
+   git clone <repo URL> site && cd site/web
+   mkdir -p data
+   ```
+   Create `web/.env.production` with the values from `web/.env.example`. Use `DATABASE_URL=file:./data/abc.db` and leave `DATABASE_AUTH_TOKEN` empty, so there is no Turso. Then build:
+   ```bash
+   npm ci && npm run build
+   npm run admin:create    # first admin login
+   ```
+5. **Start it (as root):**
+   ```bash
+   cp /home/abc/site/deploy/abc-web.service /etc/systemd/system/
+   systemctl daemon-reload && systemctl enable --now abc-web
+   cp /home/abc/site/deploy/Caddyfile /etc/caddy/Caddyfile && systemctl reload caddy
+   ```
+   Open `https://abcgroupmumbai.org`. HTTPS turns on automatically within a minute.
+6. **Turn on Cloudflare:** switch both DNS records to **Proxied** (orange cloud). Then set SSL/TLS mode to **Full (strict)**. Cloudflare now caches photos and pages close to visitors, and it blocks bot traffic.
+7. **Backups (as `abc`):** run `rclone config` and add a Google Drive remote named `gdrive`, signed in with the trust Gmail. Then add the cron line from `deploy/backup.sh`. Test it once with `~/site/deploy/backup.sh`.
+8. **Uptime monitor:** set up UptimeRobot as in step 7 below. You only need it for alerts here; the server never sleeps.
+9. **Razorpay webhook and go-live:** same as steps 5–6 below.
+
+### Updating the site later
+```bash
+ssh abc@<server-ip>
+~/site/deploy/update.sh
+```
+This pulls the latest code, rebuilds, restarts and checks `/api/health`. The site is down for a few seconds.
+
+### Monthly upkeep (10 minutes)
+- `apt update && apt -y upgrade` as root (Ubuntu installs security fixes automatically).
+- Check that last night's backup is in Google Drive.
+
+---
+
+## Alternative: free hosting (Netlify + Turso)
+
+Not chosen, but kept here in case costs need to drop to about ₹1,000 a year.
+
+### Free plan budget
 
 Everything (website, backend, database and member documents) fits on **free plans**. The only fixed cost is the **domain**.
 
