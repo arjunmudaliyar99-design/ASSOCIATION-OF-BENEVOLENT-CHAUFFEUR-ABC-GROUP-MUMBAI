@@ -46,3 +46,4 @@ data/
 .open-next
 .wrangler
 .dev.vars
+.secrets.json

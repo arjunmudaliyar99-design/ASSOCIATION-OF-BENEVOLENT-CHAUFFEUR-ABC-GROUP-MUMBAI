@@ -9,7 +9,7 @@
   "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
   "observability": { "enabled": true },
   "vars": {
-    "NEXT_PUBLIC_SITE_URL": "https://abcgroupmumbai.workers.dev",
+    "NEXT_PUBLIC_SITE_URL": "https://abcgroupmumbai.arjunmudaliyar99.workers.dev",
     "DATABASE_URL": "libsql://abc-mumbai-abcgroupmumbai.aws-us-east-2.turso.io"
   }
 }
