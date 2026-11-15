@@ -6,6 +6,12 @@ const LANG_PREFIX = /^\/(ta|hi|mr)(?=\/|$)/;
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
+  // One address for search engines: www.abcgroupmumbai.com and *.workers.dev -> abcgroupmumbai.com.
+  const host = req.headers.get("host") ?? "";
+  if (host === "www.abcgroupmumbai.com" || host.endsWith(".workers.dev")) {
+    return NextResponse.redirect(`https://abcgroupmumbai.com${pathname}${req.nextUrl.search}`, 301);
+  }
+
   // Admin area: block anyone without a valid session cookie (pages also re-check on the server).
   if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
     if (pathname === "/admin/login") return NextResponse.next();
