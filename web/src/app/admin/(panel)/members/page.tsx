@@ -27,6 +27,7 @@ export default async function Members({ searchParams }: { searchParams: Promise<
   return (
     <>
       <PageTitle title={a.nav.members} sub={a.found.replace("{n}", String(Number(tot?.n ?? 0)))}>
+        <Link href="/admin/members/new" className="btn-primary !px-5 !py-2.5 !text-base">{a.addMember}</Link>
         <Link href="/admin/import" className="btn-ghost !px-5 !py-2.5 !text-base">{a.importBtn}</Link>
         <a href={`/api/admin/export?type=members&${qs}`} className="btn-ghost !px-5 !py-2.5 !text-base">{a.csv}</a>
       </PageTitle>
@@ -35,14 +36,14 @@ export default async function Members({ searchParams }: { searchParams: Promise<
         <Field label={a.th.status}><select name="status" defaultValue={sp.status ?? "all"} className={input}>
           <option value="all">{a.status.all}</option><option value="pending">{a.stat.waiting}</option><option value="active">{a.status.active}</option><option value="expired">{a.status.expired}</option><option value="rejected">{a.status.rejected}</option></select></Field>
         <Field label={a.inGroup}><select name="group" defaultValue={sp.group ?? ""} className={input}><option value="">{a.any}</option><option value="no">{a.notAdded}</option><option value="yes">{a.addedYes}</option></select></Field>
-        <Field label={a.source}><select name="source" defaultValue={sp.source ?? ""} className={input}><option value="">{a.any}</option><option value="online">{a.online}</option><option value="imported">{a.imported}</option></select></Field>
+        <Field label={a.source}><select name="source" defaultValue={sp.source ?? ""} className={input}><option value="">{a.any}</option><option value="online">{a.online}</option><option value="imported">{a.imported}</option><option value="admin">{a.byAdmin}</option></select></Field>
       </Filters>
       <Table head={[a.th.member, a.th.mobile, a.th.plan, a.th.validUntil, a.th.status, a.th.group, a.th.actions]} empty={!rows.length} emptyText={a.empty}>
         {rows.map((m) => {
           const expired = m.status === "active" && m.expires_on < t;
           return (
             <tr key={m.id} className="align-top hover:bg-sun/10">
-              <td className="px-4 py-3"><Link href={`/admin/members/${m.id}`} className="font-semibold underline-offset-2 hover:underline">{m.name}</Link><br /><span className="font-mono text-xs text-ink/60">{memberCode(m.id)}{m.source === "imported" ? ` · ${a.imported}` : ""}</span></td>
+              <td className="px-4 py-3"><Link href={`/admin/members/${m.id}`} className="font-semibold underline-offset-2 hover:underline">{m.name}</Link><br /><span className="font-mono text-xs text-ink/60">{memberCode(m.id)}{m.source === "imported" ? ` · ${a.imported}` : m.source === "admin" ? ` · ${a.byAdmin}` : ""}</span></td>
               <td className="px-4 py-3"><a className="underline" href={`https://wa.me/91${m.phone}`} target="_blank" rel="noopener noreferrer">{m.phone}</a></td>
               <td className="px-4 py-3">{planName(m)}<br /><span className="text-ink/60">{inr(m.amount_paise)} · {date(m.paid_on, lang)}</span></td>
               <td className="whitespace-nowrap px-4 py-3">{date(m.expires_on, lang)}</td>

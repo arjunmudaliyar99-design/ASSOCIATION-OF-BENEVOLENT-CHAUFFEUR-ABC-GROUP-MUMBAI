@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { audit, requireAdmin } from "@/lib/auth";
 import { addMonths, db, ensureSchema, memberCode, one, q, run, today } from "@/lib/db";
-import { importRow, type ImportRow } from "@/lib/validate";
+import { adminMemberSchema, blacklistSchema, importRow, type ImportRow } from "@/lib/validate";
 import { checkDoc, DOC_KINDS, saveDoc, type DocKind } from "@/lib/docs";
 import { adminDict } from "@/i18n";
 import { date } from "@/components/admin/ui";
@@ -86,7 +86,7 @@ export async function savePlan(_: unknown, fd: FormData) {
     [d.id, d.label, d.months, Math.round(d.price * 100), d.active ? 1 : 0, d.sort]);
   await audit(admin, "plan saved", `${d.id} ${d.label} ₹${d.price} ${d.months}m ${d.active ? "on" : "off"}`);
   revalidatePath("/admin/plans");
-  revalidatePath("/[lang]/join", "page");
+  revalidatePath("/admin/members/new", "page");
   return (await adminDict()).t.admin.saved;
 }
 
@@ -145,6 +145,81 @@ export async function commitImport(rows: Record<string, string>[]) {
   await audit(admin, "import", `${good.length} imported, ${results.length - good.length} skipped`);
   revalidatePath("/admin", "layout");
   return { imported: good.length, updated: good.filter((g) => g.duplicate).length, skipped: results.length - good.length };
+}
+
+const fromDataUrl = (v: string) => new Uint8Array(Buffer.from(v.replace(/^data:[^,]*,/, ""), "base64"));
+
+/** Admin onboards a member directly (no plan, no payment): details, valid-until date and optional documents. */
+export async function createMember(input: unknown): Promise<{ error: string } | { id: number }> {
+  const admin = await requireAdmin();
+  const { t } = await adminDict();
+  const p = adminMemberSchema.safeParse(input);
+  if (!p.success) return { error: p.error.issues[0].message };
+  const d = p.data;
+  if (d.expires_on < today()) return { error: t.admin.validPast };
+  const dup = await one<{ id: number }>("SELECT id FROM members WHERE phone = ?", [d.phone]);
+  if (dup) return { error: t.admin.phoneTaken.replace("{code}", memberCode(dup.id)) };
+  const banned = await one<{ name: string }>("SELECT name FROM blacklist WHERE phone = ?", [d.phone]);
+  if (banned) return { error: t.admin.bl.isBlacklisted.replace("{name}", banned.name) };
+
+  const raw = ((input as { docs?: Record<string, unknown> })?.docs ?? {}) as Record<string, unknown>;
+  const docs: { kind: DocKind; mime: string; buf: Uint8Array }[] = [];
+  for (const kind of Object.keys(DOC_KINDS) as DocKind[]) {
+    const v = raw[kind];
+    if (typeof v !== "string" || !v) continue;
+    const c = checkDoc(kind, fromDataUrl(v));
+    if ("error" in c) return { error: c.error };
+    docs.push({ kind, ...c });
+  }
+
+  const r = await run(
+    `INSERT INTO members (token, name, phone, email, area, plan_id, amount_paise, paid_on, expires_on, status, source, payment_mode)
+     VALUES (?, ?, ?, ?, ?, NULL, 0, ?, ?, 'active', 'admin', 'none')`,
+    [crypto.randomBytes(16).toString("hex"), d.name, d.phone, d.email ?? null, d.area ?? null, today(), d.expires_on],
+  );
+  const memberId = Number(r.lastInsertRowid);
+  for (const doc of docs) await saveDoc({ ...doc, memberId, by: admin });
+  await audit(admin, "member added by admin", `${memberCode(memberId)} (${docs.length} documents)`);
+  revalidatePath("/admin", "layout");
+  return { id: memberId };
+}
+
+/** Blacklist a person: details, an optional photo and up to 4 documents (photos or PDFs). */
+export async function addBlacklist(input: unknown): Promise<{ error: string } | { id: number }> {
+  const admin = await requireAdmin();
+  const p = blacklistSchema.safeParse(input);
+  if (!p.success) return { error: p.error.issues[0].message };
+  const d = p.data;
+  const raw = (input ?? {}) as { photo?: unknown; docs?: unknown };
+  const files: { kind: string; mime: string; buf: Uint8Array }[] = [];
+  if (typeof raw.photo === "string" && raw.photo) {
+    const c = checkDoc("photo", fromDataUrl(raw.photo));
+    if ("error" in c) return { error: c.error };
+    if (c.mime === "application/pdf") return { error: "Photo: upload a JPG or PNG image." };
+    files.push({ kind: "photo", ...c });
+  }
+  for (const v of (Array.isArray(raw.docs) ? raw.docs : []).slice(0, 4)) {
+    if (typeof v !== "string" || !v) continue;
+    const c = checkDoc("document", fromDataUrl(v));
+    if ("error" in c) return { error: c.error };
+    files.push({ kind: "document", ...c });
+  }
+  const r = await run("INSERT INTO blacklist (name, phone, reason, details, added_by) VALUES (?, ?, ?, ?, ?)", [d.name, d.phone ?? null, d.reason, d.details ?? null, admin]);
+  const entry = Number(r.lastInsertRowid);
+  for (const f of files) await run("INSERT INTO blacklist_files (entry_id, kind, mime, size, data) VALUES (?, ?, ?, ?, ?)", [entry, f.kind, f.mime, f.buf.length, f.buf]);
+  await audit(admin, "blacklisted", `${d.name}${d.phone ? ` (${d.phone})` : ""}`);
+  revalidatePath("/admin/blacklist");
+  return { id: entry };
+}
+
+export async function removeBlacklist(fd: FormData) {
+  const admin = await requireAdmin();
+  const e = id.parse(fd.get("id"));
+  const row = await one<{ name: string }>("SELECT name FROM blacklist WHERE id = ?", [e]);
+  await run("DELETE FROM blacklist_files WHERE entry_id = ?", [e]);
+  await run("DELETE FROM blacklist WHERE id = ?", [e]);
+  await audit(admin, "removed from blacklist", row?.name ?? String(e));
+  revalidatePath("/admin/blacklist");
 }
 
 export async function uploadDoc(_: unknown, fd: FormData) {

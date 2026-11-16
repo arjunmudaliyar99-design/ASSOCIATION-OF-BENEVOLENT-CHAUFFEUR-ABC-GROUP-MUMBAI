@@ -52,7 +52,7 @@ function orgJsonLd() {
         name: site.fullName,
         alternateName: [site.name, "abcgroupmumbai", "ABC Group", "Association of Benevolent Chauffeur"],
         url: site.url, logo: `${site.url}/logo.jpg`, image: `${site.url}/photos/drivers-felicitation-bus-event/03.jpg`,
-        description: "Registered public trust of chauffeurs in Mumbai: commission-free driver jobs, member welfare, and support for ashrams and children.",
+        description: "Registered public trust of chauffeurs in Mumbai: commission-free chauffeur jobs, member welfare, and support for ashrams and children.",
         foundingDate: "2023-06-02", identifier: site.regNo,
         email: site.email, telephone: site.phone,
         address: { "@type": "PostalAddress", streetAddress: "136, Subhash Nagar, Gaondevi, Vakola Pipe Line, Santacruz (E)", addressLocality: "Mumbai", addressRegion: "Maharashtra", postalCode: "400055", addressCountry: "IN" },

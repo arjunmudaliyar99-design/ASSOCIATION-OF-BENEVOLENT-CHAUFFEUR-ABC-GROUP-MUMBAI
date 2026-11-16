@@ -27,7 +27,7 @@ export default async function Membership({ params }: { params: Promise<{ lang: s
   return (
     <>
       <PageHero title={t.lookup.title} intro={t.lookup.intro} />
-      <section className="bg-paper"><div className="wrap py-16"><LookupForm action={find} lang={lang} t={t.lookup} joinHref={L("/join")} /></div></section>
+      <section className="bg-paper"><div className="wrap py-16"><LookupForm action={find} lang={lang} t={t.lookup} joinHref={L("/contact")} /></div></section>
     </>
   );
 }

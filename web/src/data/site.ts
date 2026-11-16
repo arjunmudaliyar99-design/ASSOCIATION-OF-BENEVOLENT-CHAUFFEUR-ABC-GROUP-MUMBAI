@@ -51,19 +51,18 @@ export const nav = [
   { href: "/", key: "home" },
   { href: "/about", key: "about" },
   { href: "/our-work", key: "work" },
-  { href: "/hire-a-driver", key: "rates" },
+  { href: "/hire-a-chauffeur", key: "rates" },
   { href: "/gallery", key: "gallery" },
-  { href: "/join", key: "join" },
   { href: "/contact", key: "contact" },
 ] as const;
 
 export const objectives = [
-  { slug: "employment", title: "Employment support for drivers", body: "Driving jobs and duties for drivers, without charging any commission, so every opportunity is fair and transparent.", photo: "/photos/drivers-felicitation-bus-event/03.jpg" },
-  { slug: "welfare", title: "Drivers' welfare", body: "Help with salary delays, payment disputes and problems at work, so no driver faces them alone.", photo: "/photos/drivers-felicitation-bus-event/13.jpg" },
+  { slug: "employment", title: "Employment support for chauffeurs", body: "Driving jobs and duties for chauffeurs, without charging any commission, so every opportunity is fair and transparent.", photo: "/photos/drivers-felicitation-bus-event/03.jpg" },
+  { slug: "welfare", title: "Chauffeurs' welfare", body: "Help with salary delays, payment disputes and problems at work, so no chauffeur faces them alone.", photo: "/photos/drivers-felicitation-bus-event/13.jpg" },
   { slug: "education", title: "Education for children", body: "Notebooks, stationery and learning material for the children of our members.", photo: "/photos/childrens-home-visit/04.jpg" },
   { slug: "ashram", title: "Ashrams and needy children", body: "Food, groceries and essentials delivered to ashrams and children who need them.", photo: "/photos/ashram-food-seva/21.jpg" },
   { slug: "medical", title: "Medical and emergency help", body: "Money and support for members' families during medical emergencies, accidents and family crises, based on available resources.", photo: "/photos/home-visits-family-support/01.jpg" },
-  { slug: "family", title: "Family welfare", body: "Welfare activities, humanitarian help and community programmes for the wellbeing of drivers' families.", photo: "/photos/team-moments/01.jpg" },
+  { slug: "family", title: "Family welfare", body: "Welfare activities, humanitarian help and community programmes for the wellbeing of chauffeurs' families.", photo: "/photos/team-moments/01.jpg" },
   { slug: "social", title: "Social service", body: "Food drives, grocery help and charity work for anyone in Mumbai who needs it.", photo: "/photos/grocery-supplies-drive/05.jpg" },
 ];
 
@@ -76,5 +75,5 @@ export const causes = [
   { id: "education", label: "Children's education" },
   { id: "ashram", label: "Ashram meals" },
   { id: "medical", label: "Medical emergencies" },
-  { id: "welfare", label: "Drivers' welfare" },
+  { id: "welfare", label: "Chauffeurs' welfare" },
 ];

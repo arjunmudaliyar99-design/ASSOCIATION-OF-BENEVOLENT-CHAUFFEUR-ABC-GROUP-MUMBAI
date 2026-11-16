@@ -13,6 +13,24 @@ export const joinSchema = z.object({
   area: optional(80),
 });
 
+/** A member added by an admin: no plan or payment, just the date the membership is valid until. */
+export const adminMemberSchema = z.object({
+  name: text(80).min(2, "Enter the member's full name."),
+  phone,
+  email: z.string().trim().max(120).email("Enter a valid email.").optional().or(z.literal("")).transform((s) => s || undefined),
+  area: optional(80),
+  expires_on: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Choose the date the membership is valid until."),
+});
+
+/** A blacklist entry. Phone is optional because some people are known only by name and photo. */
+export const blacklistSchema = z.object({
+  name: text(80).min(2, "Enter the person's name."),
+  phone: z.string().optional().transform((s) => s?.replace(/\D/g, "").replace(/^(91|0)(?=\d{10}$)/, "") || undefined)
+    .pipe(z.string().regex(/^[6-9]\d{9}$/, "Enter a valid 10-digit mobile number, or leave it empty.").optional()),
+  reason: text(200).min(3, "Write the reason for blacklisting."),
+  details: optional(1000),
+});
+
 export const lookupSchema = z.object({ phone, member: z.string().trim().toUpperCase().regex(/^(ABC-?)?\d{1,6}$/, "Enter your member number, like ABC-00012.") });
 
 /** One row of the import sheet. Dates accept DD-MM-YYYY, DD/MM/YYYY or YYYY-MM-DD. */

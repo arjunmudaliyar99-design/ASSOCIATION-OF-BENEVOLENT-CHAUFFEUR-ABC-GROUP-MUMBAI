@@ -62,8 +62,7 @@ export default async function Contact({ params }: { params: Promise<{ lang: stri
               {[c.jobsPoints[0], c.jobsDocs, c.jobsPoints[2]].map((p) => <li key={p} className="flex items-start gap-3"><span aria-hidden className="mt-2.5 h-2.5 w-2.5 shrink-0 rounded-full bg-ink" />{p}</li>)}
             </ul>
             <div className="flex flex-wrap gap-3">
-              <Link href={L("/join")} className="btn-primary">{c.joinOnline}</Link>
-              <a href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(c.waMessage)}`} target="_blank" rel="noopener noreferrer" className="btn-ghost">{c.ask}</a>
+              <a href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(c.waMessage)}`} target="_blank" rel="noopener noreferrer" className="btn-primary">{c.ask}</a>
             </div>
           </Reveal>
           <Reveal delay={0.1} className="relative aspect-[4/3] overflow-hidden rounded-[2rem] shadow-[0_30px_70px_-25px_rgb(var(--ink)/.5)]">

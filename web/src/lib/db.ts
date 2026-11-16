@@ -46,6 +46,14 @@ const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS audit (
      id INTEGER PRIMARY KEY AUTOINCREMENT, admin TEXT, action TEXT NOT NULL, detail TEXT,
      at TEXT NOT NULL DEFAULT (datetime('now')))`,
+  // People the association has blacklisted, with their photo and documents (admins only).
+  `CREATE TABLE IF NOT EXISTS blacklist (
+     id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, phone TEXT, reason TEXT NOT NULL, details TEXT,
+     added_by TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT (datetime('now')))`,
+  `CREATE INDEX IF NOT EXISTS blacklist_phone ON blacklist(phone)`,
+  `CREATE TABLE IF NOT EXISTS blacklist_files (
+     id INTEGER PRIMARY KEY AUTOINCREMENT, entry_id INTEGER NOT NULL, kind TEXT NOT NULL,
+     mime TEXT NOT NULL, size INTEGER NOT NULL, data BLOB NOT NULL, created_at TEXT NOT NULL DEFAULT (datetime('now')))`,
   // Prices confirmed by the association. Editable in Admin > Plans.
   `INSERT OR IGNORE INTO plans (id, label, months, price_paise, sort) VALUES
      ('1y', '1 year', 12, 36500, 1), ('10y', '10 years', 120, 300000, 2)`,

@@ -8,7 +8,7 @@ export default function Footer({ lang, t }: { lang: Lang; t: Dict }) {
   const L = (p: string) => href(lang, p);
   const pages: [string, string][] = [
     [t.nav.home, "/"], [t.nav.about, "/about"], [t.nav.work, "/our-work"], [t.nav.rates, "/hire-a-driver"], [t.nav.benefits, "/member-benefits"],
-    [t.nav.gallery, "/gallery"], [t.nav.join, "/join"], [t.footer.myMembership, "/membership"], [t.nav.contact, "/contact"],
+    [t.nav.gallery, "/gallery"], [t.footer.myMembership, "/membership"], [t.nav.contact, "/contact"],
     [t.footer.privacy, "/privacy"], [t.footer.terms, "/terms"], [t.footer.refund, "/refund-policy"],
   ];
   return (

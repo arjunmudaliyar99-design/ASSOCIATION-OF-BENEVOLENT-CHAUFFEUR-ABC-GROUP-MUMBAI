@@ -46,7 +46,7 @@ export default async function Card({ params, searchParams }: { params: Promise<{
         </div>
         <div className="grid max-w-md gap-3 text-center text-ink/80">
           {m.status === "pending" && !expired && <p>{c.pendingNote.replace("{phone}", site.phone)}</p>}
-          {(expired || m.status === "active") && <Link href={`${L("/join")}?phone=${m.phone}`} className="btn-primary">{expired ? c.renew : c.renewEarly}</Link>}
+          {(expired || m.status === "active") && <Link href={L("/contact")} className="btn-primary">{expired ? c.renew : c.renewEarly}</Link>}
           <Link href={L("/")} className="font-semibold underline">{t.common.home}</Link>
         </div>
       </div>

@@ -120,7 +120,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <h2 className="h-sec">{fill(h.networkTitle, { n: jobNetwork.members })}</h2>
             <p className="max-w-xl text-lg text-ink/80">{h.networkBody}</p>
             <div className="flex flex-wrap gap-3">
-              <Link href={L("/join")} className="btn-primary">{h.networkCta}</Link>
+              <Link href={L("/contact")} className="btn-primary">{h.networkCta}</Link>
               <Link href={L("/member-benefits")} className="btn-ghost">{t.nav.benefits}</Link>
             </div>
           </Reveal>

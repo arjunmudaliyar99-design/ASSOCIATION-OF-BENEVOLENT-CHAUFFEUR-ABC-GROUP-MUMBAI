@@ -43,7 +43,7 @@ export default async function Benefits({ params }: { params: Promise<{ lang: str
             </ol>
             <p className="pt-2 font-display font-bold text-ink/80">— {b.signed}</p>
           </Reveal>
-          <Reveal delay={0.1}><Link href={L("/join")} className="btn-primary w-full py-5 text-2xl">{b.joinCta}</Link></Reveal>
+          <Reveal delay={0.1}><Link href={L("/contact")} className="btn-primary w-full py-5 text-2xl">{b.joinCta}</Link></Reveal>
         </div>
       </section>
     </>
