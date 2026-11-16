@@ -130,7 +130,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <div className="relative grid content-end gap-3 p-8 text-paper">
               <h3 className="font-display text-3xl font-extrabold text-sun">{h.hireTitle}</h3>
               <p className="max-w-md text-paper/90">{h.hireBody}</p>
-              <Link href={L("/hire-a-driver")} className="btn w-fit max-w-full bg-sun text-ink hover:-translate-y-0.5">{h.hireCta}</Link>
+              <Link href={L("/hire-a-chauffeur")} className="btn w-fit max-w-full bg-sun text-ink hover:-translate-y-0.5">{h.hireCta}</Link>
             </div>
           </Reveal>
         </div>

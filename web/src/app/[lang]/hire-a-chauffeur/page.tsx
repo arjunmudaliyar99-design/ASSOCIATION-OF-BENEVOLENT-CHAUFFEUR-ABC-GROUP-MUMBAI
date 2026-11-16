@@ -4,7 +4,7 @@ import { rates, site } from "@/data/site";
 import { pageCtx, pageMeta } from "@/i18n";
 import { fill } from "@/i18n/config";
 
-export const generateMetadata = ({ params }: { params: Promise<{ lang: string }> }) => pageMeta(params, (t) => ({ title: t.rates.title, description: t.rates.intro }), "/hire-a-driver");
+export const generateMetadata = ({ params }: { params: Promise<{ lang: string }> }) => pageMeta(params, (t) => ({ title: t.rates.title, description: t.rates.intro }), "/hire-a-chauffeur");
 
 const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
 

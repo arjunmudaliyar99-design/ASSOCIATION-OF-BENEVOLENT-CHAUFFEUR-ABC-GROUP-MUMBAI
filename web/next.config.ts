@@ -32,6 +32,13 @@ const nextConfig: NextConfig = {
   experimental: { serverActions: { bodySizeLimit: "10mb" } },
   serverExternalPackages: ["@libsql/client", "libsql"],
   images: { formats: ["image/avif", "image/webp"], minimumCacheTTL: 31536000 },
+  // Old address of the hire page (renamed with the driver -> chauffeur wording). Keeps Google and shared links working.
+  async redirects() {
+    return [
+      { source: "/hire-a-driver", destination: "/hire-a-chauffeur", permanent: true },
+      { source: "/:lang/hire-a-driver", destination: "/:lang/hire-a-chauffeur", permanent: true },
+    ];
+  },
   async headers() {
     return [
       { source: "/:path*", headers: security },
