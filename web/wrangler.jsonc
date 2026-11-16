@@ -15,6 +15,7 @@
   ],
   "vars": {
     "NEXT_PUBLIC_SITE_URL": "https://abcgroupmumbai.com",
-    "DATABASE_URL": "libsql://abc-mumbai-abcgroupmumbai.aws-us-east-2.turso.io"
+    "DATABASE_URL": "libsql://abc-india-abcgroupmumbai.aws-ap-south-1.turso.io",
+    "SCHEMA_READY": "1"
   }
 }

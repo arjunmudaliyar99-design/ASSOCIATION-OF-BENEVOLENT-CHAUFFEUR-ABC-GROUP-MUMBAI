@@ -71,8 +71,14 @@ export function db(): Client {
   return client;
 }
 
+/** Creates missing tables. On the live site this runs once at deploy (npm run db:migrate), not on every request. */
+export async function migrate() {
+  await db().batch(SCHEMA, "write");
+}
+
 export async function ensureSchema() {
-  if (!ready) ready = db().batch(SCHEMA, "write").then(() => undefined).catch((e) => { ready = null; throw e; });
+  if (process.env.SCHEMA_READY === "1") return;
+  if (!ready) ready = migrate().catch((e) => { ready = null; throw e; });
   return ready;
 }
 

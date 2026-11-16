@@ -4,3 +4,6 @@ private/
 _original-zips/
 # Large raw videos - host on YouTube/Instagram instead
 media/videos/
+
+# Member data files (Excel/CSV with personal details) never go to GitHub
+/data/
