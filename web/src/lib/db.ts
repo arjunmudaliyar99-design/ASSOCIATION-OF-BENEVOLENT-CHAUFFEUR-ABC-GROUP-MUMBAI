@@ -59,21 +59,59 @@ const SCHEMA = [
      ('1y', '1 year', 12, 36500, 1), ('10y', '10 years', 120, 300000, 2)`,
 ];
 
-export function db(): Client {
-  if (!client) {
-    const url = process.env.DATABASE_URL ?? "file:./data/abc.db";
-    if (url.startsWith("file:")) mkdirSync(dirname(url.slice(5)), { recursive: true });
-    client = createClient({
-      url,
-      authToken: process.env.DATABASE_AUTH_TOKEN,
-    });
+/** The small part of a database client the site uses. libSQL's client fits it, and so does the D1 adapter below. */
+export type Stmt = string | { sql: string; args?: InValue[] };
+export type Result = { rows: Record<string, unknown>[]; lastInsertRowid?: number | bigint; rowsAffected: number };
+export type Db = { execute(s: Stmt): Promise<Result>; batch(s: Stmt[], mode?: "write" | "read"): Promise<Result[]> };
+
+/** libSQL file or Turso: used for local development, tests and scripts. */
+export function libsql(url = process.env.DATABASE_URL ?? "file:./data/abc.db", authToken = process.env.DATABASE_AUTH_TOKEN): Client {
+  if (url.startsWith("file:")) mkdirSync(dirname(url.slice(5)), { recursive: true });
+  return createClient({ url, authToken });
+}
+
+// Minimal D1 types, so the project doesn't need the full Workers type package.
+type D1Prepared = { bind(...v: unknown[]): D1Prepared; all(): Promise<{ results?: Record<string, unknown>[]; meta?: { last_row_id?: number; changes?: number } }> };
+type D1 = { prepare(sql: string): D1Prepared; batch(s: D1Prepared[]): Promise<{ results?: Record<string, unknown>[]; meta?: { last_row_id?: number; changes?: number } }[]> };
+
+/** On Cloudflare the database is D1, reached through the "DB" binding. Returns undefined elsewhere. */
+function d1Binding(): D1 | undefined {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { getCloudflareContext } = require("@opennextjs/cloudflare") as typeof import("@opennextjs/cloudflare");
+    return (getCloudflareContext().env as { DB?: D1 }).DB;
+  } catch {
+    return undefined;
   }
-  return client;
+}
+
+/** D1 takes ArrayBuffer for blobs, numbers for booleans/bigints, and null for undefined. */
+const toD1 = (v: unknown) =>
+  v === undefined ? null : typeof v === "boolean" ? (v ? 1 : 0) : typeof v === "bigint" ? Number(v)
+    : v instanceof Uint8Array ? v.buffer.slice(v.byteOffset, v.byteOffset + v.byteLength) : v;
+
+export function d1Db(D: D1): Db {
+  const prep = (s: Stmt) => {
+    const { sql, args = [] } = typeof s === "string" ? { sql: s, args: [] } : s;
+    return D.prepare(sql).bind(...args.map(toD1));
+  };
+  const res = (r: Awaited<ReturnType<D1Prepared["all"]>>): Result => ({ rows: r.results ?? [], lastInsertRowid: r.meta?.last_row_id, rowsAffected: r.meta?.changes ?? 0 });
+  return {
+    execute: async (s) => res(await prep(s).all()),
+    batch: async (list) => (list.length ? (await D.batch(list.map(prep))).map(res) : []),
+  };
+}
+
+export function db(): Db {
+  const D = d1Binding();
+  if (D) return d1Db(D); // cheap: the binding object is reused by the runtime
+  if (!client) client = libsql();
+  return client as unknown as Db;
 }
 
 /** Creates missing tables. On the live site this runs once at deploy (npm run db:migrate), not on every request. */
-export async function migrate() {
-  await db().batch(SCHEMA, "write");
+export async function migrate(target: Db = db()) {
+  await target.batch(SCHEMA, "write");
 }
 
 export async function ensureSchema() {

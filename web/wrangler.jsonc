@@ -8,6 +8,8 @@
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
   "observability": { "enabled": true },
+  // The site's database: Cloudflare D1 in Asia-Pacific (no separate connection to open, so it's fast).
+  "d1_databases": [{ "binding": "DB", "database_name": "abc-db", "database_id": "5710264b-eae0-4c91-a770-10661233d61a" }],
   "workers_dev": true,
   "routes": [
     { "pattern": "abcgroupmumbai.com", "custom_domain": true },
