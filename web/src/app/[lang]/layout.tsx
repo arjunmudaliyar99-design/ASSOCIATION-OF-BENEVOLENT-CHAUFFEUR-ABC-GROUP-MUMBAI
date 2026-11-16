@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
     openGraph: {
       type: "website", siteName: site.name, title, description: t.home.intro, url: href(l, "/"),
-      locale: { en: "en_IN", hi: "hi_IN", mr: "mr_IN", ta: "ta_IN" }[l],
+      locale: { en: "en_IN", hi: "hi_IN", mr: "mr_IN", ta: "ta_IN", kn: "kn_IN", te: "te_IN", ml: "ml_IN" }[l],
       images: [{ url: "/photos/drivers-felicitation-bus-event/03.jpg", alt: site.fullName }],
     },
     twitter: { card: "summary_large_image", title, description: t.home.intro, images: ["/photos/drivers-felicitation-bus-event/03.jpg"] },
@@ -58,9 +58,9 @@ function orgJsonLd() {
         address: { "@type": "PostalAddress", streetAddress: "136, Subhash Nagar, Gaondevi, Vakola Pipe Line, Santacruz (E)", addressLocality: "Mumbai", addressRegion: "Maharashtra", postalCode: "400055", addressCountry: "IN" },
         areaServed: { "@type": "City", name: "Mumbai" },
         sameAs: [`https://www.instagram.com/${site.instagram}/`],
-        contactPoint: [{ "@type": "ContactPoint", telephone: site.phone, contactType: "customer support", areaServed: "IN", availableLanguage: ["English", "Hindi", "Marathi", "Tamil"] }],
+        contactPoint: [{ "@type": "ContactPoint", telephone: site.phone, contactType: "customer support", areaServed: "IN", availableLanguage: ["English", "Hindi", "Marathi", "Tamil", "Kannada", "Telugu", "Malayalam"] }],
       },
-      { "@type": "WebSite", "@id": `${site.url}/#website`, url: site.url, name: site.name, alternateName: [site.fullName, "abcgroupmumbai"], publisher: { "@id": `${site.url}/#org` }, inLanguage: ["en", "hi", "mr", "ta"] },
+      { "@type": "WebSite", "@id": `${site.url}/#website`, url: site.url, name: site.name, alternateName: [site.fullName, "abcgroupmumbai"], publisher: { "@id": `${site.url}/#org` }, inLanguage: ["en", "hi", "mr", "ta", "kn", "te", "ml"] },
     ],
   };
 }

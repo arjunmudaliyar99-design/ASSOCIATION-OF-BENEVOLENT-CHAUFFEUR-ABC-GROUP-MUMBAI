@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
-const LANG_PREFIX = /^\/(ta|hi|mr)(?=\/|$)/;
+const LANG_PREFIX = /^\/(ta|hi|mr|kn|te|ml)(?=\/|$)/;
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;

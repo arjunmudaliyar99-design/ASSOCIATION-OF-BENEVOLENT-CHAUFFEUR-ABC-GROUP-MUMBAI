@@ -3,6 +3,9 @@ import en from "@/i18n/en";
 import ta from "@/i18n/ta";
 import hi from "@/i18n/hi";
 import mr from "@/i18n/mr";
+import kn from "@/i18n/kn";
+import te from "@/i18n/te";
+import ml from "@/i18n/ml";
 import { href, stripLang } from "@/i18n/config";
 
 /** Every translation must have the same keys, list lengths and {placeholders} as English. */
@@ -23,7 +26,7 @@ function problems(a: unknown, b: unknown, path = ""): string[] {
 }
 
 describe("translations", () => {
-  for (const [name, d] of [["Tamil", ta], ["Hindi", hi], ["Marathi", mr]] as const) {
+  for (const [name, d] of [["Tamil", ta], ["Hindi", hi], ["Marathi", mr], ["Kannada", kn], ["Telugu", te], ["Malayalam", ml]] as const) {
     it(`${name} matches English`, () => expect(problems(en, d)).toEqual([]));
   }
 

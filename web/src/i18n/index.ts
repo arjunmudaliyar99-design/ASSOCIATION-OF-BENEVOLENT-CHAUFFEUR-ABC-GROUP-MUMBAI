@@ -4,9 +4,12 @@ import en, { type Dict } from "./en";
 import ta from "./ta";
 import hi from "./hi";
 import mr from "./mr";
+import kn from "./kn";
+import te from "./te";
+import ml from "./ml";
 import { DEFAULT_LANG, href, isLang, LANG_COOKIE, LANGS, type Lang } from "./config";
 
-const dicts: Record<Lang, Dict> = { en, ta, hi, mr };
+const dicts: Record<Lang, Dict> = { en, ta, hi, mr, kn, te, ml };
 
 export function getDict(lang: Lang): Dict {
   return dicts[lang] ?? en;
