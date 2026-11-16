@@ -1,4 +1,4 @@
-import { q } from "@/lib/db";
+import { memberCode, q } from "@/lib/db";
 import { removeBlacklist } from "@/app/admin/actions";
 import { date, Field, Filters, input, PageTitle } from "@/components/admin/ui";
 import BlacklistForm from "@/components/admin/BlacklistForm";
@@ -7,7 +7,7 @@ import { adminDict } from "@/i18n";
 export const metadata = { title: "Blacklist" };
 export const dynamic = "force-dynamic";
 
-type Entry = { id: number; name: string; phone: string | null; reason: string; details: string | null; added_by: string; created_at: string };
+type Entry = { id: number; name: string; phone: string | null; reason: string; details: string | null; member_id: number | null; added_by: string; created_at: string };
 type File = { id: number; entry_id: number; kind: string; mime: string };
 
 export default async function Blacklist({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
@@ -16,8 +16,8 @@ export default async function Blacklist({ searchParams }: { searchParams: Promis
   const b = t.admin.bl;
   const like = `%${(term ?? "").trim()}%`;
   const rows = await q<Entry>(
-    term?.trim() ? "SELECT * FROM blacklist WHERE name LIKE ? OR phone LIKE ? ORDER BY created_at DESC" : "SELECT * FROM blacklist ORDER BY created_at DESC",
-    term?.trim() ? [like, like] : [],
+    term?.trim() ? "SELECT * FROM blacklist WHERE name LIKE ? OR phone LIKE ? OR printf('ABC-%04d', member_id) LIKE ? ORDER BY created_at DESC" : "SELECT * FROM blacklist ORDER BY created_at DESC",
+    term?.trim() ? [like, like, like.toUpperCase()] : [],
   );
   const files = rows.length
     ? await q<File>(`SELECT id, entry_id, kind, mime FROM blacklist_files WHERE entry_id IN (${rows.map(() => "?").join(",")}) ORDER BY id`, rows.map((r) => r.id))
@@ -26,7 +26,9 @@ export default async function Blacklist({ searchParams }: { searchParams: Promis
 
   return (
     <>
-      <PageTitle title={b.title} sub={b.sub} />
+      <PageTitle title={b.title} sub={b.sub}>
+        <a href={`/api/admin/export?type=${"blacklist"}`} download className="btn-ghost !px-5 !py-2.5 !text-base">{t.admin.csv}</a>
+      </PageTitle>
       <div className="grid gap-8">
         <BlacklistForm t={{ admin: t.admin, join: t.join }} />
 
@@ -48,6 +50,7 @@ export default async function Blacklist({ searchParams }: { searchParams: Promis
                     : <span className="grid h-28 w-28 place-items-center rounded-2xl bg-line text-sm text-ink/60">{b.noPhoto}</span>}
                   <div className="grid content-start gap-2">
                     <div className="flex flex-wrap items-baseline gap-x-3">
+                      {r.member_id && <span className="rounded-full bg-ink px-2.5 py-0.5 font-mono text-xs font-bold text-sun">{memberCode(r.member_id)}</span>}
                       <h3 className="font-display text-xl font-extrabold">{r.name}</h3>
                       {r.phone && <a href={`tel:+91${r.phone}`} className="font-mono text-sm underline">{r.phone}</a>}
                     </div>

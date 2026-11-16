@@ -212,6 +212,23 @@ export async function addBlacklist(input: unknown): Promise<{ error: string } | 
   return { id: entry };
 }
 
+/** Moves a member to the blacklist: copies name, phone, ID and documents, then marks the member rejected (record kept). */
+export async function moveToBlacklist(fd: FormData) {
+  const admin = await requireAdmin();
+  const { t } = await adminDict();
+  const m = id.parse(fd.get("id"));
+  const reason = String(fd.get("reason") ?? "").trim().slice(0, 200) || t.admin.bl.fromMembers;
+  const mem = await one<{ name: string; phone: string; notes: string | null }>("SELECT name, phone, notes FROM members WHERE id = ?", [m]);
+  if (!mem) return;
+  const details = `${t.admin.bl.fromMembers} (${memberCode(m)}).${mem.notes ? ` ${mem.notes}` : ""}`.slice(0, 1000);
+  const r = await run("INSERT INTO blacklist (name, phone, reason, details, member_id, added_by) VALUES (?, ?, ?, ?, ?, ?)", [mem.name, mem.phone, reason, details, m, admin]);
+  const entry = Number(r.lastInsertRowid);
+  await run("INSERT INTO blacklist_files (entry_id, kind, mime, size, data) SELECT ?, 'document', mime, size, data FROM documents WHERE member_id = ?", [entry, m]);
+  await run("UPDATE members SET status = 'rejected', in_group = 0, updated_at = datetime('now') WHERE id = ?", [m]);
+  await audit(admin, "moved to blacklist", `${memberCode(m)} ${mem.name}`);
+  revalidatePath("/admin", "layout");
+}
+
 export async function removeBlacklist(fd: FormData) {
   const admin = await requireAdmin();
   const e = id.parse(fd.get("id"));

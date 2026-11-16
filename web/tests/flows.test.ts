@@ -143,6 +143,20 @@ describe("blacklist", () => {
     expect(await dbm.one("SELECT 1 FROM blacklist_files WHERE entry_id = ?", [id])).toBeUndefined();
   });
 
+  it("moves a member to the blacklist with their ID and documents, keeping the member as rejected", async () => {
+    const { createMember, moveToBlacklist } = await import("@/app/admin/actions");
+    const jpg2 = "data:image/jpeg;base64," + Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0, 16, 74, 70, 73, 70]).toString("base64");
+    const r = await createMember({ name: "Move Me", phone: "9820066666", expires_on: dbm.addMonths(dbm.today(), 12), docs: { aadhaar_front: jpg2 } });
+    const id = (r as { id: number }).id;
+    const fd = new FormData(); fd.set("id", String(id)); fd.set("reason", "Misbehaved with client");
+    await moveToBlacklist(fd);
+    const e = await dbm.one<{ id: number; member_id: number; phone: string; reason: string }>("SELECT * FROM blacklist WHERE member_id = ?", [id]);
+    expect(e).toMatchObject({ member_id: id, phone: "9820066666", reason: "Misbehaved with client" });
+    expect(Number((await dbm.one<{ n: number }>("SELECT COUNT(*) AS n FROM blacklist_files WHERE entry_id = ?", [e!.id]))!.n)).toBe(1);
+    expect((await dbm.one<{ status: string }>("SELECT status FROM members WHERE id = ?", [id]))!.status).toBe("rejected");
+    expect(dbm.memberCode(25)).toBe("ABC-0025");
+  });
+
   it("rejects missing reason, bad phone and a PDF as photo", async () => {
     const { addBlacklist } = await import("@/app/admin/actions");
     expect(await addBlacklist({ name: "A B", reason: "" })).toHaveProperty("error");

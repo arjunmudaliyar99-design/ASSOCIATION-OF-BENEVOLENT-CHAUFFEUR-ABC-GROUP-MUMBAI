@@ -31,7 +31,7 @@ export const blacklistSchema = z.object({
   details: optional(1000),
 });
 
-export const lookupSchema = z.object({ phone, member: z.string().trim().toUpperCase().regex(/^(ABC-?)?\d{1,6}$/, "Enter your member number, like ABC-00012.") });
+export const lookupSchema = z.object({ phone, member: z.string().trim().toUpperCase().regex(/^(ABC-?)?\d{1,6}$/, "Enter your member number, like ABC-0012.") });
 
 /** One row of the import sheet. Dates accept DD-MM-YYYY, DD/MM/YYYY or YYYY-MM-DD. */
 export const importRow = z.object({

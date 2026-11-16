@@ -48,7 +48,7 @@ const SCHEMA = [
      at TEXT NOT NULL DEFAULT (datetime('now')))`,
   // People the association has blacklisted, with their photo and documents (admins only).
   `CREATE TABLE IF NOT EXISTS blacklist (
-     id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, phone TEXT, reason TEXT NOT NULL, details TEXT,
+     id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, phone TEXT, reason TEXT NOT NULL, details TEXT, member_id INTEGER,
      added_by TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT (datetime('now')))`,
   `CREATE INDEX IF NOT EXISTS blacklist_phone ON blacklist(phone)`,
   `CREATE TABLE IF NOT EXISTS blacklist_files (
@@ -145,7 +145,7 @@ export async function limited(key: string, max: number, windowSec: number) {
   return false;
 }
 
-export const memberCode = (id: number | bigint) => `ABC-${String(id).padStart(5, "0")}`;
+export const memberCode = (id: number | bigint) => `ABC-${String(id).padStart(4, "0")}`; // matches the association's own numbers (ABC-0025)
 export const today = () => new Date(Date.now() + 5.5 * 3600_000).toISOString().slice(0, 10); // IST date
 
 export function addMonths(isoDate: string, months: number) {

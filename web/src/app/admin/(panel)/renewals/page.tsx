@@ -13,17 +13,18 @@ export default async function Renewals() {
   const rows = await q<{ id: number; name: string; phone: string; expires_on: string }>(
     "SELECT id, name, phone, expires_on FROM members WHERE status = 'active' AND expires_on BETWEEN ? AND ? ORDER BY expires_on", [shift(-60), shift(30)]);
   const site = process.env.NEXT_PUBLIC_SITE_URL ?? "";
-  const msg = (r: (typeof rows)[number]) => encodeURIComponent(a.reminderMsg.replace("{name}", r.name).replace("{code}", memberCode(r.id)).replace("{state}", r.expires_on < t ? a.reminderExpired : a.reminderExpires).replace("{date}", date(r.expires_on, lang)).replace("{link}", `${site}${lang === "en" ? "" : `/${lang}`}/join?phone=${r.phone}`));
+  const msg = (r: (typeof rows)[number]) => encodeURIComponent(a.reminderMsg.replace("{name}", r.name).replace("{code}", memberCode(r.id)).replace("{state}", r.expires_on < t ? a.reminderExpired : a.reminderExpires).replace("{date}", date(r.expires_on, lang)).replace("{link}", `${site}${lang === "en" ? "" : `/${lang}`}/contact`));
 
   return (
     <>
       <PageTitle title={a.nav.renewals} sub={a.renewalsSub} />
-      <Table head={[a.th.member, a.th.mobile, a.th.expiry, "", ""]} empty={!rows.length} emptyText={a.empty}>
+      <Table head={[a.th.id, a.th.member, a.th.mobile, a.th.expiry, "", ""]} empty={!rows.length} emptyText={a.empty}>
         {rows.map((r) => {
           const left = Math.round((Date.parse(`${r.expires_on}T00:00:00Z`) - Date.parse(`${t}T00:00:00Z`)) / 864e5);
           return (
             <tr key={r.id}>
-              <td className="px-4 py-3"><Link href={`/admin/members/${r.id}`} className="font-semibold hover:underline">{r.name}</Link><br /><span className="font-mono text-xs text-ink/60">{memberCode(r.id)}</span></td>
+              <td className="whitespace-nowrap px-4 py-3 font-mono font-bold">{memberCode(r.id)}</td>
+              <td className="px-4 py-3"><Link href={`/admin/members/${r.id}`} className="font-semibold hover:underline">{r.name}</Link></td>
               <td className="px-4 py-3">{r.phone}</td>
               <td className="px-4 py-3">{date(r.expires_on, lang)}</td>
               <td className="px-4 py-3"><Pill s={left < 0 ? "expired" : "pending"} label={left < 0 ? a.expiredAgo.replace("{n}", String(-left)) : left === 0 ? a.expiresToday : a.daysLeft.replace("{n}", String(left))} /></td>

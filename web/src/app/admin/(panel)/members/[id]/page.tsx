@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { memberCode, one, q, today } from "@/lib/db";
+import MemberMenu from "@/components/admin/MemberMenu";
 import { deleteDoc, setInGroup, setMemberStatus } from "@/app/admin/actions";
 import { date, inr, PageTitle, Pill, Table } from "@/components/admin/ui";
 import { DocUpload, MemberEdit, OfflineRenewal } from "@/components/admin/MemberForms";
@@ -27,12 +28,12 @@ export default async function Member({ params }: { params: Promise<{ id: string 
   const kinds: Record<string, string> = Object.fromEntries(([['aadhaar', d.join.aadhaar], ['pan', d.join.panCard], ['licence', d.join.licenceCard]] as const).flatMap(([k, n]) => [[`${k}_front`, `${n} – ${d.join.front}`], [`${k}_back`, `${n} – ${d.join.back}`]]));
   const legacy: Record<string, string> = { aadhaar: d.join.aadhaar, pan: d.join.panCard, licence: d.join.licenceCard };
   const expired = m.status === "active" && m.expires_on < today();
-  const reminder = encodeURIComponent(a.reminderMsg.replace("{name}", m.name).replace("{code}", memberCode(m.id)).replace("{state}", expired ? a.reminderExpired : a.reminderExpires).replace("{date}", date(m.expires_on, lang)).replace("{link}", `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}${lang === "en" ? "" : `/${lang}`}/join?phone=${m.phone}`));
+  const reminder = encodeURIComponent(a.reminderMsg.replace("{name}", m.name).replace("{code}", memberCode(m.id)).replace("{state}", expired ? a.reminderExpired : a.reminderExpires).replace("{date}", date(m.expires_on, lang)).replace("{link}", `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}${lang === "en" ? "" : `/${lang}`}/contact`));
 
   return (
     <>
       <Link href="/admin/members" className="mb-3 inline-block font-semibold text-ink/70 hover:text-ink">{a.allMembers}</Link>
-      <PageTitle title={m.name} sub={`${memberCode(m.id)} · ${a.joinedOn.replace("{how}", m.source === "imported" ? a.imported : a.online).replace("{date}", date(m.created_at, lang))}`}>
+      <PageTitle title={m.name} sub={`${memberCode(m.id)} · ${a.joinedOn.replace("{how}", m.source === "imported" ? a.imported : m.source === "admin" ? a.byAdmin : a.online).replace("{date}", date(m.created_at, lang))}`}>
         <a href={`https://wa.me/91${m.phone}?text=${reminder}`} target="_blank" rel="noopener noreferrer" className="btn-ghost !px-5 !py-2.5 !text-base">{a.waReminder}</a>
         <a href={`/membership/${m.token}`} target="_blank" className="btn-ghost !px-5 !py-2.5 !text-base">{a.viewCard}</a>
       </PageTitle>
@@ -44,6 +45,7 @@ export default async function Member({ params }: { params: Promise<{ id: string 
           {m.status !== "active" && <form action={setMemberStatus}><input type="hidden" name="id" value={m.id} /><input type="hidden" name="status" value="active" /><button className="rounded-full bg-ink px-4 py-2 text-sm font-bold text-sun">{a.approve}</button></form>}
           {m.status !== "rejected" && <form action={setMemberStatus}><input type="hidden" name="id" value={m.id} /><input type="hidden" name="status" value="rejected" /><button className="rounded-full bg-sindoor/15 px-4 py-2 text-sm font-bold text-sindoor">{a.reject}</button></form>}
           <form action={setInGroup}><input type="hidden" name="id" value={m.id} /><input type="hidden" name="v" value={m.in_group ? "0" : "1"} /><button className={`rounded-full px-4 py-2 text-sm font-bold ${m.in_group ? "bg-ink text-sun" : "bg-line"}`}>{m.in_group ? a.inGroupTick : a.markGroup}</button></form>
+          {m.status !== "rejected" && <MemberMenu id={m.id} name={m.name} t={a.bl} />}
         </span>
       </div>
 

@@ -15,7 +15,7 @@ export function memberWhere(sp: Record<string, string | undefined>, t: string, a
   if (s === "expired") { where.push(`${a}status = 'active' AND ${a}expires_on < ?`); args.push(t); }
   else if (s === "active") { where.push(`${a}status = 'active' AND ${a}expires_on >= ?`); args.push(t); }
   else if (s !== "all") { where.push(`${a}status = ?`); args.push(s); }
-  if (sp.q) { where.push(`(${a}name LIKE ? OR ${a}phone LIKE ? OR ${a}licence_no LIKE ? OR printf('ABC-%05d', ${a}id) LIKE ?)`); const l = `%${sp.q}%`; args.push(l, l, l, l.toUpperCase()); }
+  if (sp.q) { where.push(`(${a}name LIKE ? OR ${a}phone LIKE ? OR ${a}licence_no LIKE ? OR printf('ABC-%04d', ${a}id) LIKE ?)`); const l = `%${sp.q}%`; args.push(l, l, l, l.toUpperCase()); }
   if (sp.group === "no") where.push(`${a}in_group = 0`);
   if (sp.group === "yes") where.push(`${a}in_group = 1`);
   if (sp.source) { where.push(`${a}source = ?`); args.push(sp.source); }

@@ -316,6 +316,7 @@ const en = {
     },
     latest: "Latest payments",
     th: {
+      id: "ID no",
       date: "Date", type: "Type", name: "Name", amount: "Amount", status: "Status", contact: "Contact", cause: "Cause", pan: "PAN", paymentId: "Payment ID",
       member: "Member", mobile: "Mobile", plan: "Plan", validUntil: "Valid until", group: "WhatsApp group", actions: "Actions", expiry: "Expiry", row: "Row", paidOn: "Paid on", result: "Result",
     },
@@ -352,7 +353,7 @@ const en = {
     addMemberSub: "Onboard a new member directly. No online payment is needed.",
     addMemberNoPay: "No payment is taken here. The member is added as active, valid until the date you choose.",
     validPast: "The valid-until date can't be in the past.",
-    bl: { title: "Blacklist", sub: "People the association has blacklisted. Only admins can see this page.", add: "Add to blacklist", name: "Full name", phone: "Mobile number (optional)", reason: "Reason", details: "Other details (optional)", photo: "Photo of the person", docs: "Documents (Aadhaar, PAN, licence, complaint letter, etc.)", docN: "Document {n}", save: "Add to blacklist", saving: "Saving…", added: "Added to the blacklist.", empty: "No one is on the blacklist.", remove: "Remove from blacklist", confirm: "Remove this person from the blacklist?", addedBy: "Added by {who} on {date}", noPhoto: "No photo", isBlacklisted: "This mobile number is on the blacklist ({name}). Remove them from the blacklist first if this is a mistake.", count: "On the blacklist: {n}", search: "Search name or mobile" },
+    bl: { more: "More actions", move: "Move to Blacklist", moveReason: "Reason for blacklisting", moveConfirm: "Move", moved: "Moved to the blacklist.", memberNo: "Member {code}", fromMembers: "Moved from the member list", title: "Blacklist", sub: "People the association has blacklisted. Only admins can see this page.", add: "Add to blacklist", name: "Full name", phone: "Mobile number (optional)", reason: "Reason", details: "Other details (optional)", photo: "Photo of the person", docs: "Documents (Aadhaar, PAN, licence, complaint letter, etc.)", docN: "Document {n}", save: "Add to blacklist", saving: "Saving…", added: "Added to the blacklist.", empty: "No one is on the blacklist.", remove: "Remove from blacklist", confirm: "Remove this person from the blacklist?", addedBy: "Added by {who} on {date}", noPhoto: "No photo", isBlacklisted: "This mobile number is on the blacklist ({name}). Remove them from the blacklist first if this is a mistake.", count: "On the blacklist: {n}", search: "Search name or mobile" },
     addMemberDocs: "Optional. Upload clear photos or PDFs of the front and back of each card. Only admins can see these.",
     validity: "Membership validity",
     saving: "Saving…",

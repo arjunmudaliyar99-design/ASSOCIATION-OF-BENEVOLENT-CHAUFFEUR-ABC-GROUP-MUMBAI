@@ -11,7 +11,7 @@ export default function LookupForm({ action, lang, t, joinHref }: { action: (s: 
       <label htmlFor="l-phone" className="grid gap-1.5"><span className="font-semibold">{t.mobile}</span>
         <input id="l-phone" name="phone" inputMode="numeric" autoComplete="tel" required className="field" /></label>
       <label htmlFor="l-member" className="grid gap-1.5"><span className="font-semibold">{t.member}</span>
-        <input id="l-member" name="member" placeholder="ABC-00012" required className="field uppercase" /></label>
+        <input id="l-member" name="member" placeholder="ABC-0012" required className="field uppercase" /></label>
       {err && <p role="alert" className="rounded-xl bg-sindoor/10 px-4 py-3 font-semibold text-sindoor">{err}</p>}
       <button disabled={pending} className="btn-primary disabled:opacity-60">{pending ? t.checking : t.show}</button>
       <p className="text-center text-ink/70">{t.notMember} <Link href={joinHref} className="font-semibold underline">{t.joinLink}</Link></p>

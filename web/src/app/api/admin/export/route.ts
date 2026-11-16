@@ -24,6 +24,11 @@ export async function GET(req: Request) {
       rows.map((m) => [memberCode(Number(m.id)), m.name, m.phone, m.email, m.licence_no, m.pan, m.area, m.plan_label, Number(m.amount_paise) / 100, m.paid_on, m.expires_on,
         m.status === "active" && String(m.expires_on) < t ? "expired" : m.status, m.in_group ? "yes" : "no", m.source, m.payment_mode, m.notes]));
     name = "members";
+  } else if (sp.type === "blacklist") {
+    const rows = await q<Record<string, string | number | null>>("SELECT id, member_id, name, phone, reason, details, added_by, created_at FROM blacklist ORDER BY created_at DESC");
+    body = csv(["ID no", "Name", "Mobile", "Reason", "Details", "Added by", "Added on"],
+      rows.map((r) => [r.member_id ? memberCode(Number(r.member_id)) : "", r.name, r.phone, r.reason, r.details, r.added_by, r.created_at]));
+    name = "blacklist";
   } else {
     const w = donationWhere(sp);
     const rows = await q<Record<string, string | number>>(`SELECT * FROM payments WHERE ${w.sql} ORDER BY created_at`, w.args);
