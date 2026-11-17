@@ -23,7 +23,7 @@ export default async function Login() {
     <section className="glow grid min-h-[75vh] place-items-center px-4 py-16">
       <div className="grid w-full max-w-sm gap-6">
         <div className="grid justify-items-center gap-3 text-center">
-          <Image src="/logo.jpg" alt="" width={72} height={72} className="rounded-full shadow-lg ring-4 ring-paper" />
+          <Image src="/logo.jpg" alt="" width={72} height={72} className="rounded-full shadow-lg" />
           <h1 className="font-display text-3xl font-extrabold">{a.signInTitle}</h1>
           <p className="text-ink/70">{a.signInSub}</p>
         </div>

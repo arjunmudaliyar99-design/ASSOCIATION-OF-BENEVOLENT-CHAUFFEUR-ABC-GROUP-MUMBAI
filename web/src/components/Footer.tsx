@@ -17,7 +17,7 @@ export default function Footer({ lang, t }: { lang: Lang; t: Dict }) {
       <div className="wrap relative grid gap-12 py-16 md:grid-cols-[1.3fr_1fr_1.2fr]">
         <div className="grid content-start gap-5">
           <div className="flex items-center gap-4">
-            <Image src="/logo.jpg" alt="" width={72} height={72} className="rounded-full shadow-lg ring-4 ring-paper" />
+            <Image src="/logo.jpg" alt="" width={72} height={72} className="rounded-full shadow-lg" />
             <p className="font-display text-2xl font-extrabold leading-tight">{t.org.fullName}<span className="block text-base font-semibold text-ink/70">{t.org.city}</span></p>
           </div>
           <p className="max-w-sm text-ink/80">{fill(t.footer.about, { reg: site.regNo })}</p>

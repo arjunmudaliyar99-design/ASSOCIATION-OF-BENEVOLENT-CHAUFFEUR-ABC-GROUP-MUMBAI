@@ -76,8 +76,7 @@ export default function Header({ lang, t, admin }: { lang: Lang; t: T; admin?: b
       <div className="wrap flex h-20 items-center gap-3 xl:gap-5">
         <Link href={admin ? "/admin" : L("/")} className="group mr-auto flex min-w-0 items-center gap-3" aria-label={`${t.org.fullName} – ${t.nav.home}`}>
           <span className="relative shrink-0">
-            <span aria-hidden className="absolute -inset-1 rounded-full bg-gradient-to-tr from-honey via-paper to-honey opacity-80 blur-[2px] transition duration-700 group-hover:rotate-180" />
-            <Image src="/logo.jpg" alt="" width={60} height={60} priority className="relative h-12 w-12 rounded-full shadow-lg ring-2 ring-paper transition duration-500 group-hover:scale-105 sm:h-[60px] sm:w-[60px]" />
+            <Image src="/logo.jpg" alt="" width={60} height={60} priority className="relative h-12 w-12 rounded-full shadow-lg transition duration-500 group-hover:scale-105 sm:h-[60px] sm:w-[60px]" />
           </span>
           <span className="min-w-0 leading-tight">
             <span className={`block font-display text-[0.95rem] font-extrabold sm:text-lg 2xl:text-base ${admin ? "" : wide.name}`}>{t.org.fullName}</span>
