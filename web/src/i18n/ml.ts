@@ -306,7 +306,7 @@ const ml: Dict = {
     signingIn: "സൈൻ ഇൻ ചെയ്യുന്നു…",
     signedInAs: "സൈൻ ഇൻ ചെയ്തത്",
     signOut: "സൈൻ ഔട്ട്",
-    nav: { overview: "അവലോകനം", donations: "സംഭാവനകൾ", members: "അംഗങ്ങൾ", renewals: "പുതുക്കലുകൾ", import: "അംഗങ്ങളെ ഇമ്പോർട്ട് ചെയ്യുക", plans: "പ്ലാനുകളും വിലകളും", blacklist: "ബ്ലാക്ക്‌ലിസ്റ്റ്" },
+    nav: { overview: "അവലോകനം", donations: "സംഭാവനകൾ", members: "അംഗങ്ങൾ", renewals: "പുതുക്കലുകൾ", import: "അംഗങ്ങളെ ഇമ്പോർട്ട് ചെയ്യുക", plans: "പ്ലാനുകളും വിലകളും", blacklist: "ബ്ലാക്ക്‌ലിസ്റ്റ്", loans: "വായ്പകൾ" },
     today: "ഇന്ന് {date}",
     stat: {
       donMonth: "ഈ മാസത്തെ സംഭാവനകൾ", donCount: "{n} സംഭാവനകൾ", feesMonth: "ഈ മാസത്തെ അംഗത്വ ഫീസ്", active: "സജീവ അംഗങ്ങൾ",

@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { audit, requireAdmin } from "@/lib/auth";
-import { addMonths, db, ensureSchema, memberCode, one, q, run, today } from "@/lib/db";
+import { addMonths, db, ensureSchema, memberCode, one, q, run, SYNC_MEMBER_PAYMENTS, today } from "@/lib/db";
 import { adminMemberSchema, blacklistSchema, importRow, type ImportRow } from "@/lib/validate";
 import { checkDoc, DOC_KINDS, saveDoc, type DocKind } from "@/lib/docs";
 import { adminDict } from "@/i18n";
@@ -60,6 +60,7 @@ export async function recordOfflineRenewal(_: unknown, fd: FormData) {
   const expires = addMonths(from, Number(plan.months));
   await run(`UPDATE members SET plan_id = ?, amount_paise = ?, paid_on = ?, expires_on = ?, payment_mode = ?, status = CASE WHEN status = 'rejected' THEN 'pending' ELSE status END, updated_at = datetime('now') WHERE id = ?`,
     [p.data.planId, Math.round(p.data.amount * 100), t, expires, p.data.mode, p.data.id]);
+  await run(SYNC_MEMBER_PAYMENTS);
   await audit(admin, "offline renewal", `${memberCode(p.data.id)} ${p.data.amount} ${p.data.mode} until ${expires}`);
   revalidatePath("/admin", "layout");
   const { lang, t: dict } = await adminDict();
@@ -142,6 +143,7 @@ export async function commitImport(rows: Record<string, string>[]) {
     };
   });
   for (let i = 0; i < stmts.length; i += 200) await db().batch(stmts.slice(i, i + 200), "write");
+  await run(SYNC_MEMBER_PAYMENTS);
   await audit(admin, "import", `${good.length} imported, ${results.length - good.length} skipped`);
   revalidatePath("/admin", "layout");
   return { imported: good.length, updated: good.filter((g) => g.duplicate).length, skipped: results.length - good.length };
@@ -176,20 +178,12 @@ export async function createMember(input: unknown): Promise<{ error: string } | 
   const paidOn = d.paid_on ?? today();
   if (paise > 0 && !d.payment_mode) return { error: t.admin.payModeNeeded };
   const r = await run(
-    `INSERT INTO members (token, name, phone, email, area, plan_id, amount_paise, paid_on, expires_on, status, source, payment_mode)
-     VALUES (?, ?, ?, ?, ?, NULL, ?, ?, ?, 'active', 'admin', ?)`,
-    [crypto.randomBytes(16).toString("hex"), d.name, d.phone, d.email ?? null, d.area ?? null, paise, paidOn, d.expires_on, paise > 0 ? d.payment_mode! : "none"],
+    `INSERT INTO members (token, name, phone, email, area, plan_id, amount_paise, paid_on, expires_on, status, source, payment_mode, notes)
+     VALUES (?, ?, ?, ?, ?, NULL, ?, ?, ?, 'active', 'admin', ?, ?)`,
+    [crypto.randomBytes(16).toString("hex"), d.name, d.phone, d.email ?? null, d.area ?? null, paise, paidOn, d.expires_on, paise > 0 ? d.payment_mode! : "none", d.reference ? `Payment ref: ${d.reference}` : null],
   );
   const memberId = Number(r.lastInsertRowid);
-  // Offline fee goes into payments too, so it shows in Latest payments and the fee totals.
-  if (paise > 0) {
-    await run(
-      `INSERT INTO payments (order_id, kind, amount_paise, status, payment_id, name, email, phone, member_id, meta, created_at, paid_at)
-       VALUES (?, 'membership', ?, 'paid', ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [`offline_${crypto.randomBytes(8).toString("hex")}`, paise, d.reference ?? null, d.name, d.email ?? null, d.phone, memberId,
-       JSON.stringify({ mode: d.payment_mode, by: admin }), `${paidOn} 00:00:00`, `${paidOn} 00:00:00`],
-    );
-  }
+  if (paise > 0) await run(SYNC_MEMBER_PAYMENTS); // shows in Latest payments and the fee totals
   for (const doc of docs) await saveDoc({ ...doc, memberId, by: admin });
   await audit(admin, "member added by admin", `${memberCode(memberId)} (${docs.length} documents)`);
   revalidatePath("/admin", "layout");

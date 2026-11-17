@@ -306,7 +306,7 @@ const kn: Dict = {
     signingIn: "ಸೈನ್ ಇನ್ ಆಗುತ್ತಿದೆ…",
     signedInAs: "ಸೈನ್ ಇನ್ ಆಗಿರುವವರು",
     signOut: "ಸೈನ್ ಔಟ್",
-    nav: { overview: "ಸಾರಾಂಶ", donations: "ದೇಣಿಗೆಗಳು", members: "ಸದಸ್ಯರು", renewals: "ನವೀಕರಣಗಳು", import: "ಸದಸ್ಯರನ್ನು ಇಂಪೋರ್ಟ್ ಮಾಡಿ", plans: "ಪ್ಲಾನ್‌ಗಳು ಮತ್ತು ಬೆಲೆಗಳು", blacklist: "ಕಪ್ಪುಪಟ್ಟಿ" },
+    nav: { overview: "ಸಾರಾಂಶ", donations: "ದೇಣಿಗೆಗಳು", members: "ಸದಸ್ಯರು", renewals: "ನವೀಕರಣಗಳು", import: "ಸದಸ್ಯರನ್ನು ಇಂಪೋರ್ಟ್ ಮಾಡಿ", plans: "ಪ್ಲಾನ್‌ಗಳು ಮತ್ತು ಬೆಲೆಗಳು", blacklist: "ಕಪ್ಪುಪಟ್ಟಿ", loans: "ಸಾಲಗಳು" },
     today: "ಇಂದು {date}",
     stat: {
       donMonth: "ಈ ತಿಂಗಳ ದೇಣಿಗೆಗಳು", donCount: "{n} ದೇಣಿಗೆಗಳು", feesMonth: "ಈ ತಿಂಗಳ ಸದಸ್ಯತ್ವ ಶುಲ್ಕ", active: "ಸಕ್ರಿಯ ಸದಸ್ಯರು",

@@ -306,7 +306,7 @@ const te: Dict = {
     signingIn: "సైన్ ఇన్ అవుతోంది…",
     signedInAs: "సైన్ ఇన్ అయినవారు",
     signOut: "సైన్ అవుట్",
-    nav: { overview: "సారాంశం", donations: "విరాళాలు", members: "సభ్యులు", renewals: "పునరుద్ధరణలు", import: "సభ్యులను ఇంపోర్ట్ చేయండి", plans: "ప్లాన్లు & ధరలు", blacklist: "బ్లాక్‌లిస్ట్" },
+    nav: { overview: "సారాంశం", donations: "విరాళాలు", members: "సభ్యులు", renewals: "పునరుద్ధరణలు", import: "సభ్యులను ఇంపోర్ట్ చేయండి", plans: "ప్లాన్లు & ధరలు", blacklist: "బ్లాక్‌లిస్ట్", loans: "రుణాలు" },
     today: "ఈ రోజు {date}",
     stat: {
       donMonth: "ఈ నెల విరాళాలు", donCount: "{n} విరాళాలు", feesMonth: "ఈ నెల సభ్యత్వ రుసుములు", active: "యాక్టివ్ సభ్యులు",

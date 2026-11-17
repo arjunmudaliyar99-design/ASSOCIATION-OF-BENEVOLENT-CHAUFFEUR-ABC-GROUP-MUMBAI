@@ -308,7 +308,7 @@ const en = {
     signingIn: "Signing in…",
     signedInAs: "Signed in as",
     signOut: "Sign out",
-    nav: { overview: "Overview", donations: "Donations", members: "Members", renewals: "Renewals", import: "Import members", plans: "Plans & prices", blacklist: "Blacklist" },
+    nav: { overview: "Overview", donations: "Donations", members: "Members", renewals: "Renewals", import: "Import members", plans: "Plans & prices", blacklist: "Blacklist", loans: "Loans" },
     today: "Today is {date}",
     stat: {
       donMonth: "Donations this month", donCount: "{n} donations", feesMonth: "Membership fees this month", active: "Active members",

@@ -54,6 +54,17 @@ const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS blacklist_files (
      id INTEGER PRIMARY KEY AUTOINCREMENT, entry_id INTEGER NOT NULL, kind TEXT NOT NULL,
      mime TEXT NOT NULL, size INTEGER NOT NULL, data BLOB NOT NULL, created_at TEXT NOT NULL DEFAULT (datetime('now')))`,
+  // Member loans and every payment against them (repayment, monthly interest, late penalty).
+  `CREATE TABLE IF NOT EXISTS loans (
+     id INTEGER PRIMARY KEY AUTOINCREMENT, member_id INTEGER, name TEXT NOT NULL, phone TEXT,
+     ref_name TEXT, ref_relation TEXT, ref_phone TEXT, amount_paise INTEGER NOT NULL, given_on TEXT NOT NULL,
+     scheme TEXT NOT NULL DEFAULT 'small', status TEXT NOT NULL DEFAULT 'open', closed_on TEXT, notes TEXT,
+     added_by TEXT NOT NULL DEFAULT 'admin', created_at TEXT NOT NULL DEFAULT (datetime('now')))`,
+  `CREATE INDEX IF NOT EXISTS loans_member ON loans(member_id)`,
+  `CREATE TABLE IF NOT EXISTS loan_payments (
+     id INTEGER PRIMARY KEY AUTOINCREMENT, loan_id INTEGER NOT NULL, kind TEXT NOT NULL, amount_paise INTEGER NOT NULL,
+     paid_on TEXT NOT NULL, account TEXT, note TEXT, added_by TEXT NOT NULL DEFAULT 'admin', created_at TEXT NOT NULL DEFAULT (datetime('now')))`,
+  `CREATE INDEX IF NOT EXISTS loan_payments_loan ON loan_payments(loan_id)`,
   // Prices confirmed by the association. Editable in Admin > Plans.
   `INSERT OR IGNORE INTO plans (id, label, months, price_paise, sort) VALUES
      ('1y', '1 year', 12, 36500, 1), ('10y', '10 years', 120, 300000, 2)`,
@@ -144,6 +155,16 @@ export async function limited(key: string, max: number, windowSec: number) {
   await run("INSERT INTO rate (key, at) VALUES (?, ?)", [key, now]);
   return false;
 }
+
+/**
+ * Membership fees kept on the member row (imports, offline renewals) also need a row in payments,
+ * so they count in the overview totals and Latest payments. Safe to run again: one row per member per paid date.
+ */
+export const SYNC_MEMBER_PAYMENTS = `INSERT INTO payments (order_id, kind, amount_paise, status, name, email, phone, plan_id, member_id, meta, created_at, paid_at)
+  SELECT 'member_' || id || '_' || paid_on, 'membership', amount_paise, 'paid', name, email, phone, plan_id, id,
+         json_object('mode', payment_mode, 'source', source), paid_on || ' 00:00:00', paid_on || ' 00:00:00'
+  FROM members WHERE amount_paise > 0 AND paid_on IS NOT NULL AND (source IN ('imported', 'admin') OR payment_mode IN ('cash', 'upi', 'bank', 'cheque'))
+  ON CONFLICT(order_id) DO UPDATE SET amount_paise = excluded.amount_paise, name = excluded.name, plan_id = excluded.plan_id`;
 
 export const memberCode = (id: number | bigint) => `ABC-${String(id).padStart(4, "0")}`; // matches the association's own numbers (ABC-0025)
 export const today = () => new Date(Date.now() + 5.5 * 3600_000).toISOString().slice(0, 10); // IST date

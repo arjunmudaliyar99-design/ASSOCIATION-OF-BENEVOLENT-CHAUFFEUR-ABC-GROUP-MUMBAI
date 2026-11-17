@@ -306,7 +306,7 @@ const hi: Dict = {
     signingIn: "साइन इन हो रहा है…",
     signedInAs: "इस नाम से साइन इन",
     signOut: "साइन आउट",
-    nav: { overview: "सारांश", donations: "दान", members: "सदस्य", renewals: "रिन्यूअल", import: "सदस्य इंपोर्ट करें", plans: "प्लान और कीमतें", blacklist: "ब्लैकलिस्ट" },
+    nav: { overview: "सारांश", donations: "दान", members: "सदस्य", renewals: "रिन्यूअल", import: "सदस्य इंपोर्ट करें", plans: "प्लान और कीमतें", blacklist: "ब्लैकलिस्ट", loans: "लोन" },
     today: "आज {date} है",
     stat: {
       donMonth: "इस महीने का दान", donCount: "{n} दान", feesMonth: "इस महीने का सदस्यता शुल्क", active: "चालू सदस्य",

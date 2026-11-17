@@ -306,7 +306,7 @@ const ta: Dict = {
     signingIn: "உள்நுழைகிறது…",
     signedInAs: "உள்நுழைந்தவர்",
     signOut: "வெளியேறு",
-    nav: { overview: "சுருக்கம்", donations: "நன்கொடைகள்", members: "உறுப்பினர்கள்", renewals: "புதுப்பித்தல்கள்", import: "உறுப்பினர்களை இறக்குமதி", plans: "திட்டங்கள் & விலைகள்", blacklist: "தடைப்பட்டியல்" },
+    nav: { overview: "சுருக்கம்", donations: "நன்கொடைகள்", members: "உறுப்பினர்கள்", renewals: "புதுப்பித்தல்கள்", import: "உறுப்பினர்களை இறக்குமதி", plans: "திட்டங்கள் & விலைகள்", blacklist: "தடைப்பட்டியல்", loans: "கடன்கள்" },
     today: "இன்று {date}",
     stat: {
       donMonth: "இந்த மாத நன்கொடைகள்", donCount: "{n} நன்கொடைகள்", feesMonth: "இந்த மாத உறுப்பினர் கட்டணம்", active: "செயலில் உள்ள உறுப்பினர்கள்",
