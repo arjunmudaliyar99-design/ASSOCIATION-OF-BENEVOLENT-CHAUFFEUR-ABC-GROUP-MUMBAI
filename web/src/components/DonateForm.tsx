@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { causes, features } from "@/data/site";
+import { causes } from "@/data/site";
 import { errorText, pay, preloadCheckout } from "@/lib/checkout";
 import { href, isLang } from "@/i18n/config";
 import type { Dict } from "@/i18n/en";
@@ -13,8 +13,7 @@ export default function DonateForm({ t, initial = {} }: { initial?: { amount?: s
   const router = useRouter();
   const [amount, setAmount] = useState(initial.amount?.replace(/[^\d.]/g, "") ?? "");
   const [cause, setCause] = useState(causes.some((c) => c.id === initial.cause) ? initial.cause! : "general");
-  const [f, setF] = useState({ name: "", email: "", phone: "", pan: "" });
-  const [wants80g, setWants80g] = useState(features.has80G);
+  const [f, setF] = useState({ name: "", email: "", phone: "" });
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const rupees = Number(amount);
@@ -24,12 +23,11 @@ export default function DonateForm({ t, initial = {} }: { initial?: { amount?: s
     e.preventDefault();
     setErr("");
     if (!(rupees >= 1)) return setErr(d.needAmount);
-    if (wants80g && !/^[A-Z]{5}\d{4}[A-Z]$/.test(f.pan)) return setErr(d.badPan);
     setBusy(true);
     try {
       const r = await pay({
         endpoint: "/api/donate/order",
-        body: { amount: rupees, cause, ...f, pan: wants80g ? f.pan : "" },
+        body: { amount: rupees, cause, ...f, pan: "" },
         description: d.causes[cause as keyof typeof d.causes] ?? d.button,
         prefill: { name: f.name, email: f.email, contact: f.phone },
       });
@@ -75,17 +73,6 @@ export default function DonateForm({ t, initial = {} }: { initial?: { amount?: s
           <input id="phone" type="tel" autoComplete="tel" className="field" value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} /></label>
       </div>
 
-      {features.has80G && <div className="grid gap-3 rounded-2xl bg-sun/40 p-4">
-        <label htmlFor="g80" className="flex cursor-pointer items-start gap-3">
-          <input id="g80" type="checkbox" checked={wants80g} onChange={(e) => setWants80g(e.target.checked)} className="mt-1 h-5 w-5 shrink-0 accent-[rgb(var(--ink))]" />
-          <span><span className="font-semibold">{d.want80g}</span><span className="block text-sm text-ink/70">{d.want80gHint}</span></span>
-        </label>
-        {wants80g && (
-          <label htmlFor="pan" className="grid gap-1.5"><span className="font-semibold">{d.pan} <span className="font-normal text-ink/70">{d.panHint}</span></span>
-            <input id="pan" autoComplete="off" maxLength={10} placeholder="ABCDE1234F" className="field uppercase tracking-widest" value={f.pan}
-              onChange={(e) => setF({ ...f, pan: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "") })} /></label>
-        )}
-      </div>}
 
       <AnimatePresence>
         {err && <motion.p role="alert" initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="rounded-xl bg-sindoor/10 px-4 py-3 font-semibold text-sindoor">{err}</motion.p>}

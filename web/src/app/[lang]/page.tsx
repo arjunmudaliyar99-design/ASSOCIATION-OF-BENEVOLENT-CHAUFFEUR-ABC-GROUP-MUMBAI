@@ -4,7 +4,7 @@ import Photo from "@/components/Photo";
 import Slider from "@/components/Slider";
 import PhotoMarquee from "@/components/PhotoMarquee";
 import { CountUp, Reveal } from "@/components/Motion";
-import { features, jobNetwork, objectives, site } from "@/data/site";
+import { jobNetwork, objectives, site } from "@/data/site";
 import { albums } from "@/data/gallery";
 import { pageCtx } from "@/i18n";
 import { fill } from "@/i18n/config";
@@ -152,7 +152,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <div aria-hidden className="absolute -right-20 -top-20 h-80 w-80 animate-spin-slow rounded-full border-[36px] border-sun/20" />
             <div className="relative grid gap-4">
               <h2 className="h-sec text-sun">{h.ctaTitle}</h2>
-              <p className="max-w-xl text-lg text-paper/85">{h.ctaBody}{features.has80G && ` ${h.ctaBody80g}`}</p>
+              <p className="max-w-xl text-lg text-paper/85">{h.ctaBody}</p>
             </div>
             <div className="relative flex md:justify-end">
               <Link href={L("/donate")} className="btn bg-sun px-10 py-5 text-2xl text-ink shadow-xl hover:-translate-y-1 hover:shadow-2xl">{h.ctaButton}</Link>

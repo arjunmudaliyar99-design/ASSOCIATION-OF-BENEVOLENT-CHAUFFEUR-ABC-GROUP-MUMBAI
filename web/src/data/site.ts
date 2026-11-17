@@ -66,7 +66,6 @@ export const objectives = [
   { slug: "social", title: "Social service", body: "Food drives, grocery help and charity work for anyone in Mumbai who needs it.", photo: "/photos/grocery-supplies-drive/05.jpg" },
 ];
 
-export const features = { has80G: false }; // set true once the trust confirms its 80G certificate
 
 export const jobNetwork = { members: "1300+", note: "A WhatsApp group where members share driving jobs with each other." };
 
