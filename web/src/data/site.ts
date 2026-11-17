@@ -19,13 +19,13 @@ export const site = {
  * Shown in three groups: office bearers, then admins, then members. Photos go in public/team/<n>.jpg
  */
 export const leaders = [
-  { n: 1, name: "Mohan Muthu", role: "founder", tier: "core" },
+  { n: 1, name: "Mohan Muthu", role: "founder", tier: "core", zoomOut: true },
   { n: 2, name: "S. Ramachandran Nadar", role: "vicePresident", tier: "core" },
   { n: 3, name: "Durairaj Bhagwati Nadar", role: "secretary", tier: "core" },
   { n: 4, name: "Vigneshwaran", role: "treasurer", tier: "core" },
   { n: 5, name: "Murugan Udaiyar", role: "member", tier: "member" },
   { n: 6, name: "Gandhi Rakkappan", role: "member", tier: "member" },
-  { n: 7, name: "Ganesh Kombaiya Thevar", role: "member", tier: "member" },
+  { n: 7, name: "Ganesh Kombaiya Thevar", role: "member", tier: "member", zoomOut: true },
   { n: 8, name: "Esakki Muthu Nadar", role: "member", tier: "member" },
   { n: 9, name: "Muppudathi Durai Swamy", role: "member", tier: "member" },
   { n: 10, name: "Muthu Kumar", role: "member", tier: "member" },

@@ -65,9 +65,11 @@ export default function Header({ lang, t, admin }: { lang: Lang; t: T; admin?: b
   }, []);
   const isActive = (h: string) => (h === "/" ? path === "/" : path.startsWith(h));
   const L = (p: string) => href(lang, p);
-  // The full menu only shows when it fits next to the organisation name; otherwise the menu button is used.
-  // Translated labels are too long to fit beside the name, so those languages always use the menu button.
-  const wide = lang === "en" ? { show: "2xl:flex", hide: "2xl:hidden" } : { show: "", hide: "" };
+  // Links sit in the header on wide screens; below that they collapse into the menu button.
+  // English fits from xl (1280px); translated labels are longer, so they wait for 2xl.
+  const wide = lang === "en"
+    ? { show: "xl:flex", hide: "xl:hidden", name: "xl:hidden 2xl:block" }
+    : { show: "2xl:flex", hide: "2xl:hidden", name: "" };
 
   return (
     <header className={`sticky top-0 z-40 transition-all duration-500 ${scrolled ? "bg-paper/85 shadow-[0_8px_30px_-12px_rgb(var(--ink)/.25)] backdrop-blur-xl" : "bg-sun"}`}>
@@ -78,7 +80,7 @@ export default function Header({ lang, t, admin }: { lang: Lang; t: T; admin?: b
             <Image src="/logo.jpg" alt="" width={60} height={60} priority className="relative h-12 w-12 rounded-full shadow-lg ring-2 ring-paper transition duration-500 group-hover:scale-105 sm:h-[60px] sm:w-[60px]" />
           </span>
           <span className="min-w-0 leading-tight">
-            <span className="block font-display text-[0.95rem] font-extrabold sm:text-lg 2xl:text-base">{t.org.fullName}</span>
+            <span className={`block font-display text-[0.95rem] font-extrabold sm:text-lg 2xl:text-base ${admin ? "" : wide.name}`}>{t.org.fullName}</span>
             <span className="block text-xs font-semibold tracking-wide text-ink/70 sm:text-sm">{t.org.city}</span>
           </span>
         </Link>
@@ -86,7 +88,7 @@ export default function Header({ lang, t, admin }: { lang: Lang; t: T; admin?: b
           <nav aria-label="Main" className={`glass hidden shrink-0 items-center gap-1 rounded-full p-1.5 ${wide.show}`}>
             {nav.map((n) => (
               <Link key={n.href} href={L(n.href)} aria-current={isActive(n.href) ? "page" : undefined}
-                className={`relative whitespace-nowrap rounded-full px-3.5 py-2 font-semibold transition-colors 2xl:px-4 ${isActive(n.href) ? "text-sun" : "hover:text-ink/70"}`}>
+                className={`relative whitespace-nowrap rounded-full px-3 py-2 font-semibold transition-colors 2xl:px-4 ${isActive(n.href) ? "text-sun" : "hover:text-ink/70"}`}>
                 {isActive(n.href) && <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-full bg-ink" transition={{ type: "spring", stiffness: 380, damping: 32 }} />}
                 <span className="relative">{t.nav[n.key]}</span>
               </Link>

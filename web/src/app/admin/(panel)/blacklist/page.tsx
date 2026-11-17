@@ -1,7 +1,6 @@
 import { memberCode, q } from "@/lib/db";
 import { removeBlacklist } from "@/app/admin/actions";
 import { date, Field, Filters, input, PageTitle } from "@/components/admin/ui";
-import BlacklistForm from "@/components/admin/BlacklistForm";
 import { adminDict } from "@/i18n";
 
 export const metadata = { title: "Blacklist" };
@@ -30,8 +29,6 @@ export default async function Blacklist({ searchParams }: { searchParams: Promis
         <a href={`/api/admin/export?type=${"blacklist"}`} download className="btn-ghost !px-5 !py-2.5 !text-base">{t.admin.csv}</a>
       </PageTitle>
       <div className="grid gap-8">
-        <BlacklistForm t={{ admin: t.admin, join: t.join }} />
-
         <div className="grid gap-4">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <h2 className="font-display text-2xl font-extrabold">{b.count.replace("{n}", String(rows.length))}</h2>

@@ -172,12 +172,24 @@ export async function createMember(input: unknown): Promise<{ error: string } | 
     docs.push({ kind, ...c });
   }
 
+  const paise = Math.round(d.amount * 100);
+  const paidOn = d.paid_on ?? today();
+  if (paise > 0 && !d.payment_mode) return { error: t.admin.payModeNeeded };
   const r = await run(
     `INSERT INTO members (token, name, phone, email, area, plan_id, amount_paise, paid_on, expires_on, status, source, payment_mode)
-     VALUES (?, ?, ?, ?, ?, NULL, 0, ?, ?, 'active', 'admin', 'none')`,
-    [crypto.randomBytes(16).toString("hex"), d.name, d.phone, d.email ?? null, d.area ?? null, today(), d.expires_on],
+     VALUES (?, ?, ?, ?, ?, NULL, ?, ?, ?, 'active', 'admin', ?)`,
+    [crypto.randomBytes(16).toString("hex"), d.name, d.phone, d.email ?? null, d.area ?? null, paise, paidOn, d.expires_on, paise > 0 ? d.payment_mode! : "none"],
   );
   const memberId = Number(r.lastInsertRowid);
+  // Offline fee goes into payments too, so it shows in Latest payments and the fee totals.
+  if (paise > 0) {
+    await run(
+      `INSERT INTO payments (order_id, kind, amount_paise, status, payment_id, name, email, phone, member_id, meta, created_at, paid_at)
+       VALUES (?, 'membership', ?, 'paid', ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [`offline_${crypto.randomBytes(8).toString("hex")}`, paise, d.reference ?? null, d.name, d.email ?? null, d.phone, memberId,
+       JSON.stringify({ mode: d.payment_mode, by: admin }), `${paidOn} 00:00:00`, `${paidOn} 00:00:00`],
+    );
+  }
   for (const doc of docs) await saveDoc({ ...doc, memberId, by: admin });
   await audit(admin, "member added by admin", `${memberCode(memberId)} (${docs.length} documents)`);
   revalidatePath("/admin", "layout");

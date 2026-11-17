@@ -20,6 +20,12 @@ export const adminMemberSchema = z.object({
   email: z.string().trim().max(120).email("Enter a valid email.").optional().or(z.literal("")).transform((s) => s || undefined),
   area: optional(80),
   expires_on: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Choose the date the membership is valid until."),
+  // Optional fee received offline. Empty amount = no payment recorded.
+  amount: z.union([z.string(), z.number()]).optional().transform((v) => (v === undefined || v === "" ? 0 : Number(v)))
+    .pipe(z.number().min(0, "Amount cannot be negative.").max(100000, "Amount looks too large.")),
+  paid_on: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().or(z.literal("")).transform((s) => s || undefined),
+  payment_mode: z.enum(["cash", "upi", "bank", "cheque"]).optional().or(z.literal("")).transform((s) => s || undefined),
+  reference: z.string().trim().max(60).optional().transform((s) => s || undefined),
 });
 
 /** A blacklist entry. Phone is optional because some people are known only by name and photo. */

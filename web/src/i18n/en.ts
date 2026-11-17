@@ -312,7 +312,7 @@ const en = {
     today: "Today is {date}",
     stat: {
       donMonth: "Donations this month", donCount: "{n} donations", feesMonth: "Membership fees this month", active: "Active members",
-      waiting: "Waiting for approval", waitingHint: "Paid online, check and approve", expiring: "Expiring in 30 days", expired: "Expired", donAll: "All-time donations",
+      waiting: "Waiting for approval", waitingHint: "Paid online, check and approve", expiring: "Expiring in 30 days", expired: "Expired", donAll: "All-time donations", feesAll: "Membership fees, all time", feesCount: "{n} paid subscriptions",
     },
     latest: "Latest payments",
     th: {
@@ -350,7 +350,9 @@ const en = {
     addedTick: "Added ✓",
     importBtn: "Import from Excel",
     addMember: "Add member",
-    addMemberSub: "Onboard a new member directly. No online payment is needed.",
+    addMemberSub: "Onboard a new member directly. If they paid offline, you can record the payment too.",
+    payTitle: "Payment received (optional)", payHint: "If the member paid in cash, UPI, bank transfer or cheque, record it here. It will show in Latest payments and the fee totals. Leave the amount empty if no payment was taken.", payAmount: "Amount (₹)", payMode: "Paid by", payDate: "Date paid (default today)", payRef: "Reference / UTR (optional)", payModeNeeded: "Choose how the member paid.",
+    payModes: { cash: "Cash", upi: "UPI", bank: "Bank transfer", cheque: "Cheque" },
     addMemberNoPay: "No payment is taken here. The member is added as active, valid until the date you choose.",
     validPast: "The valid-until date can't be in the past.",
     bl: { more: "More actions", move: "Move to Blacklist", moveReason: "Reason for blacklisting", moveConfirm: "Move", moved: "Moved to the blacklist.", memberNo: "Member {code}", fromMembers: "Moved from the member list", title: "Blacklist", sub: "People the association has blacklisted. Only admins can see this page.", add: "Add to blacklist", name: "Full name", phone: "Mobile number (optional)", reason: "Reason", details: "Other details (optional)", photo: "Photo of the person", docs: "Documents (Aadhaar, PAN, licence, complaint letter, etc.)", docN: "Document {n}", save: "Add to blacklist", saving: "Saving…", added: "Added to the blacklist.", empty: "No one is on the blacklist.", remove: "Remove from blacklist", confirm: "Remove this person from the blacklist?", addedBy: "Added by {who} on {date}", noPhoto: "No photo", isBlacklisted: "This mobile number is on the blacklist ({name}). Remove them from the blacklist first if this is a mistake.", count: "On the blacklist: {n}", search: "Search name or mobile" },
@@ -388,7 +390,7 @@ const en = {
     upload: "Upload",
     uploaded: "Uploaded.",
     onlinePayments: "Online payments",
-    renewalsSub: "Memberships that expire in the next 30 days or expired in the last 60 days. Tap “Send reminder” to open WhatsApp with the message ready.",
+    renewalsSub: "Memberships that expire in the next 30 days or have already expired. Tap “Send reminder” to open WhatsApp with the message ready.",
     daysLeft: "{n} days left",
     expiresToday: "Expires today",
     expiredAgo: "Expired {n} days ago",

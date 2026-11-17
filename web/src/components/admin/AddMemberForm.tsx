@@ -13,7 +13,7 @@ const lab = "grid gap-1 text-sm font-semibold";
 export default function AddMemberForm({ defaultValidUntil, t }: { defaultValidUntil: string; t: { admin: Dict["admin"]; join: Dict["join"] } }) {
   const a = t.admin, j = t.join;
   const router = useRouter();
-  const [f, setF] = useState({ name: "", phone: "", email: "", area: "", expires_on: defaultValidUntil });
+  const [f, setF] = useState({ name: "", phone: "", email: "", area: "", expires_on: defaultValidUntil, amount: "", payment_mode: "", paid_on: "", reference: "" });
   const [docs, setDocs] = useState<Record<string, string | undefined>>({});
   const [err, setErr] = useState("");
   const [pending, start] = useTransition();
@@ -42,7 +42,22 @@ export default function AddMemberForm({ defaultValidUntil, t }: { defaultValidUn
           <label className={lab}>{j.area}<input value={f.area} onChange={set("area")} maxLength={80} className={input} /></label>
           <label className={lab}>{a.th.validUntil}<input type="date" value={f.expires_on} onChange={set("expires_on")} required className={input} /></label>
         </div>
-        <p className="text-sm text-ink/70">{a.addMemberNoPay}</p>
+      </div>
+
+      <div className={box}>
+        <h2 className="font-display text-2xl font-extrabold">{a.payTitle}</h2>
+        <p className="text-sm text-ink/70">{a.payHint}</p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className={lab}>{a.payAmount}<input type="number" min={0} step="1" inputMode="numeric" value={f.amount} onChange={set("amount")} placeholder="365" className={input} /></label>
+          <label className={lab}>{a.payMode}
+            <select value={f.payment_mode} onChange={set("payment_mode")} required={Number(f.amount) > 0} className={input}>
+              <option value="">–</option>
+              {(["cash", "upi", "bank", "cheque"] as const).map((m) => <option key={m} value={m}>{a.payModes[m]}</option>)}
+            </select>
+          </label>
+          <label className={lab}>{a.payDate}<input type="date" value={f.paid_on} onChange={set("paid_on")} className={input} /></label>
+          <label className={lab}>{a.payRef}<input value={f.reference} onChange={set("reference")} maxLength={60} className={input} /></label>
+        </div>
       </div>
 
       <div className={box}>

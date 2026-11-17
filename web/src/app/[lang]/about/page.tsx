@@ -64,7 +64,13 @@ export default async function About({ params }: { params: Promise<{ lang: string
                 <Reveal key={p.name} delay={(i % 3) * 0.08} className="glass group grid justify-items-center gap-4 rounded-[2rem] p-8 text-center transition duration-500 hover:-translate-y-1">
                   <span className="relative grid h-40 w-40 place-items-center overflow-hidden rounded-full bg-ink shadow-[0_20px_40px_-15px_rgb(var(--ink)/.6)] ring-4 ring-paper">
                     {has
-                      ? <Image src={photo} alt={p.name} width={320} height={320} className="h-full w-full object-cover object-top transition duration-700 group-hover:scale-105" />
+                      ? "zoomOut" in p && p.zoomOut
+                        ? <>
+                            {/* Close-up photo: blurred copy fills the circle, the photo itself sits smaller on top. */}
+                            <Image src={photo} alt="" aria-hidden width={160} height={160} className="absolute inset-0 h-full w-full scale-125 object-cover blur-md" />
+                            <Image src={photo} alt={p.name} width={320} height={320} className="relative h-[80%] w-[80%] rounded-full object-cover object-top transition duration-700 group-hover:scale-105" />
+                          </>
+                        : <Image src={photo} alt={p.name} width={320} height={320} className="h-full w-full object-cover object-top transition duration-700 group-hover:scale-105" />
                       : <span className="font-display text-5xl font-extrabold text-sun">{initials}</span>}
                   </span>
                   <span className="grid gap-2">

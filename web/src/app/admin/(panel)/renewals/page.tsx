@@ -11,7 +11,7 @@ export default async function Renewals() {
   const t = today();
   const shift = (d: number) => new Date(Date.parse(`${t}T00:00:00Z`) + d * 864e5).toISOString().slice(0, 10);
   const rows = await q<{ id: number; name: string; phone: string; expires_on: string }>(
-    "SELECT id, name, phone, expires_on FROM members WHERE status = 'active' AND expires_on BETWEEN ? AND ? ORDER BY expires_on", [shift(-60), shift(30)]);
+    "SELECT id, name, phone, expires_on FROM members WHERE status = 'active' AND expires_on <= ? ORDER BY expires_on", [shift(30)]);
   const site = process.env.NEXT_PUBLIC_SITE_URL ?? "";
   const msg = (r: (typeof rows)[number]) => encodeURIComponent(a.reminderMsg.replace("{name}", r.name).replace("{code}", memberCode(r.id)).replace("{state}", r.expires_on < t ? a.reminderExpired : a.reminderExpires).replace("{date}", date(r.expires_on, lang)).replace("{link}", `${site}${lang === "en" ? "" : `/${lang}`}/contact`));
 
