@@ -22,7 +22,7 @@ export default async function Donations({ searchParams }: { searchParams: Promis
 
   return (
     <>
-      <PageTitle title={a.nav.donations} sub={`${a.found.replace("{n}", String(Number(tot?.n ?? 0)))} · ${a.total.replace("{sum}", inr(tot?.sum))}`}>
+      <PageTitle section="donations" title={a.nav.donations} sub={`${a.found.replace("{n}", String(Number(tot?.n ?? 0)))} · ${a.total.replace("{sum}", inr(tot?.sum))}`}>
         <a href={`/api/admin/export?type=donations&${qs}`} className="btn-ghost !px-5 !py-2.5 !text-base">{a.csv}</a>
       </PageTitle>
       <Filters apply={a.apply}>

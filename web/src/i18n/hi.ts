@@ -299,6 +299,7 @@ const hi: Dict = {
     signIn: "साइन इन करें",
     signingIn: "साइन इन हो रहा है…",
     signedInAs: "इस नाम से साइन इन",
+    home: { home: "होम", hello: "नमस्ते, {name}", ask: "आप क्या करना चाहते हैं?", findTitle: "सदस्य खोजें", findHint: "नाम, मोबाइल नंबर या ABC नंबर लिखें", find: "खोजें", numbers: "इस महीने का हिसाब", members: "सदस्य", add: "सदस्य जोड़ें", renewals: "रिन्यूअल बाकी", loans: "लोन", donations: "दान", blacklist: "ब्लैकलिस्ट", upload: "Excel अपलोड", total: "{n} लोग", due: "{n} को फ़ोन करें", open: "{n} चालू", thisMonth: "इस महीने {amount}", call: "फ़ोन करें", whatsapp: "WhatsApp", back: "वापस", menu: "मेनू" },
     signOut: "साइन आउट",
     nav: { overview: "सारांश", donations: "दान", members: "सदस्य", renewals: "रिन्यूअल", import: "सदस्य इंपोर्ट करें", plans: "प्लान और कीमतें", blacklist: "ब्लैकलिस्ट", loans: "लोन" },
     today: "आज {date} है",

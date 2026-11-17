@@ -28,7 +28,7 @@ export default async function LoanPage({ params, searchParams }: { params: Promi
   return (
     <>
       <p className="mb-2"><Link href="/admin/loans" className="text-sm font-semibold underline">← All loans</Link></p>
-      <PageTitle title={l.name} sub={`${l.member_id ? `${memberCode(l.member_id)} · ` : ""}${schemes[l.scheme as keyof typeof schemes] ?? l.scheme} · given ${date(l.given_on, lang)}`}>
+      <PageTitle section="loans" title={l.name} sub={`${l.member_id ? `${memberCode(l.member_id)} · ` : ""}${schemes[l.scheme as keyof typeof schemes] ?? l.scheme} · given ${date(l.given_on, lang)}`}>
         <Pill s={l.status === "open" ? "pending" : l.status === "closed" ? "paid" : "failed"} label={loanStatus[l.status as keyof typeof loanStatus]} />
       </PageTitle>
 

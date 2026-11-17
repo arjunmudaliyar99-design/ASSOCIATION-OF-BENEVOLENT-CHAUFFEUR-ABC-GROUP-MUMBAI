@@ -299,6 +299,7 @@ const ml: Dict = {
     signIn: "സൈൻ ഇൻ",
     signingIn: "സൈൻ ഇൻ ചെയ്യുന്നു…",
     signedInAs: "സൈൻ ഇൻ ചെയ്തത്",
+    home: { home: "ഹോം", hello: "നമസ്കാരം, {name}", ask: "എന്താണ് ചെയ്യേണ്ടത്?", findTitle: "അംഗത്തെ തിരയുക", findHint: "പേര്, മൊബൈൽ നമ്പർ അല്ലെങ്കിൽ ABC നമ്പർ എഴുതുക", find: "തിരയുക", numbers: "ഈ മാസത്തെ കണക്ക്", members: "അംഗങ്ങൾ", add: "അംഗത്തെ ചേർക്കുക", renewals: "പുതുക്കാനുള്ളവർ", loans: "വായ്പകൾ", donations: "സംഭാവനകൾ", blacklist: "ബ്ലാക്ക്‌ലിസ്റ്റ്", upload: "Excel അപ്‌ലോഡ്", total: "{n} പേർ", due: "{n} പേരെ വിളിക്കുക", open: "{n} നിലവിൽ", thisMonth: "ഈ മാസം {amount}", call: "വിളിക്കുക", whatsapp: "WhatsApp", back: "തിരികെ", menu: "മെനു" },
     signOut: "സൈൻ ഔട്ട്",
     nav: { overview: "അവലോകനം", donations: "സംഭാവനകൾ", members: "അംഗങ്ങൾ", renewals: "പുതുക്കലുകൾ", import: "അംഗങ്ങളെ ഇമ്പോർട്ട് ചെയ്യുക", plans: "പ്ലാനുകളും വിലകളും", blacklist: "ബ്ലാക്ക്‌ലിസ്റ്റ്", loans: "വായ്പകൾ" },
     today: "ഇന്ന് {date}",

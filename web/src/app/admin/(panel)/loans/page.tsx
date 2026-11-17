@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Loans({ searchParams }: { searchParams: Promise<{ q?: string; status?: string; scheme?: string }> }) {
   const sp = await searchParams;
-  const { lang } = await adminDict();
+  const { lang, t } = await adminDict();
   const where: string[] = [], args: string[] = [];
   const term = sp.q?.trim();
   if (term) { where.push("(l.name LIKE ? OR l.phone LIKE ? OR printf('ABC-%04d', l.member_id) LIKE ?)"); args.push(`%${term}%`, `%${term}%`, `%${term.toUpperCase()}%`); }
@@ -26,7 +26,7 @@ export default async function Loans({ searchParams }: { searchParams: Promise<{ 
 
   return (
     <>
-      <PageTitle title="Loans" sub="Money lent to members, what has come back, and interest or penalty collected.">
+      <PageTitle section="loans" title={t.admin.home.loans} sub="Money lent to members, what has come back, and interest or penalty collected.">
         <Link href="/admin/loans/new" className="btn-primary !px-5 !py-2.5 !text-base">Give a loan</Link>
       </PageTitle>
       <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

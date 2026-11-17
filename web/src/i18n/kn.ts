@@ -299,6 +299,7 @@ const kn: Dict = {
     signIn: "ಸೈನ್ ಇನ್",
     signingIn: "ಸೈನ್ ಇನ್ ಆಗುತ್ತಿದೆ…",
     signedInAs: "ಸೈನ್ ಇನ್ ಆಗಿರುವವರು",
+    home: { home: "ಮುಖಪುಟ", hello: "ನಮಸ್ಕಾರ, {name}", ask: "ನೀವು ಏನು ಮಾಡಬೇಕು?", findTitle: "ಸದಸ್ಯರನ್ನು ಹುಡುಕಿ", findHint: "ಹೆಸರು, ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಅಥವಾ ABC ಸಂಖ್ಯೆ ಬರೆಯಿರಿ", find: "ಹುಡುಕಿ", numbers: "ಈ ತಿಂಗಳ ಲೆಕ್ಕ", members: "ಸದಸ್ಯರು", add: "ಸದಸ್ಯರನ್ನು ಸೇರಿಸಿ", renewals: "ನವೀಕರಣ ಬಾಕಿ", loans: "ಸಾಲಗಳು", donations: "ದೇಣಿಗೆಗಳು", blacklist: "ಕಪ್ಪುಪಟ್ಟಿ", upload: "Excel ಅಪ್‌ಲೋಡ್", total: "{n} ಜನ", due: "{n} ಜನರಿಗೆ ಕರೆ ಮಾಡಿ", open: "{n} ಚಾಲ್ತಿಯಲ್ಲಿ", thisMonth: "ಈ ತಿಂಗಳು {amount}", call: "ಕರೆ ಮಾಡಿ", whatsapp: "WhatsApp", back: "ಹಿಂದೆ", menu: "ಮೆನು" },
     signOut: "ಸೈನ್ ಔಟ್",
     nav: { overview: "ಸಾರಾಂಶ", donations: "ದೇಣಿಗೆಗಳು", members: "ಸದಸ್ಯರು", renewals: "ನವೀಕರಣಗಳು", import: "ಸದಸ್ಯರನ್ನು ಇಂಪೋರ್ಟ್ ಮಾಡಿ", plans: "ಪ್ಲಾನ್‌ಗಳು ಮತ್ತು ಬೆಲೆಗಳು", blacklist: "ಕಪ್ಪುಪಟ್ಟಿ", loans: "ಸಾಲಗಳು" },
     today: "ಇಂದು {date}",

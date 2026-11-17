@@ -17,7 +17,7 @@ export default async function Renewals() {
 
   return (
     <>
-      <PageTitle title={a.nav.renewals} sub={a.renewalsSub} />
+      <PageTitle section="renewals" title={a.nav.renewals} sub={a.renewalsSub} />
       <Table head={[a.th.id, a.th.member, a.th.mobile, a.th.expiry, "", ""]} empty={!rows.length} emptyText={a.empty}>
         {rows.map((r) => {
           const left = Math.round((Date.parse(`${r.expires_on}T00:00:00Z`) - Date.parse(`${t}T00:00:00Z`)) / 864e5);

@@ -27,7 +27,7 @@ export default async function Members({ searchParams }: { searchParams: Promise<
 
   return (
     <>
-      <PageTitle title={a.nav.members} sub={a.found.replace("{n}", String(Number(tot?.n ?? 0)))}>
+      <PageTitle section="members" title={a.nav.members} sub={a.found.replace("{n}", String(Number(tot?.n ?? 0)))}>
         <Link href="/admin/members/new" className="btn-primary !px-5 !py-2.5 !text-base">{a.addMember}</Link>
         <Link href="/admin/import" className="btn-ghost !px-5 !py-2.5 !text-base">{a.importBtn}</Link>
         <a href={`/api/admin/export?type=members&${qs}`} className="btn-ghost !px-5 !py-2.5 !text-base">{a.csv}</a>

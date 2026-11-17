@@ -299,6 +299,7 @@ const ta: Dict = {
     signIn: "உள்நுழை",
     signingIn: "உள்நுழைகிறது…",
     signedInAs: "உள்நுழைந்தவர்",
+    home: { home: "முகப்பு", hello: "வணக்கம், {name}", ask: "என்ன செய்ய வேண்டும்?", findTitle: "உறுப்பினரைத் தேடு", findHint: "பெயர், மொபைல் எண் அல்லது ABC எண்ணை எழுதுங்கள்", find: "தேடு", numbers: "இந்த மாதக் கணக்கு", members: "உறுப்பினர்கள்", add: "உறுப்பினர் சேர்", renewals: "புதுப்பிக்க வேண்டியவை", loans: "கடன்கள்", donations: "நன்கொடைகள்", blacklist: "தடைப்பட்டியல்", upload: "Excel பதிவேற்று", total: "{n} பேர்", due: "{n} பேரை அழைக்கவும்", open: "{n} நடப்பில்", thisMonth: "இந்த மாதம் {amount}", call: "அழை", whatsapp: "WhatsApp", back: "பின்செல்", menu: "மெனு" },
     signOut: "வெளியேறு",
     nav: { overview: "சுருக்கம்", donations: "நன்கொடைகள்", members: "உறுப்பினர்கள்", renewals: "புதுப்பித்தல்கள்", import: "உறுப்பினர்களை இறக்குமதி", plans: "திட்டங்கள் & விலைகள்", blacklist: "தடைப்பட்டியல்", loans: "கடன்கள்" },
     today: "இன்று {date}",

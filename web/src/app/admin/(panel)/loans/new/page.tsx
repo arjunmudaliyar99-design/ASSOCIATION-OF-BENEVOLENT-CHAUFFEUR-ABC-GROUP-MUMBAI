@@ -13,7 +13,7 @@ export default async function NewLoan({ searchParams }: { searchParams: Promise<
   const { err, member } = await searchParams;
   return (
     <>
-      <PageTitle title="Give a loan" sub="Enter the member ID and the name and mobile fill in from the member list. For someone who is not a member, leave the ID empty." />
+      <PageTitle section="loans" title="Give a loan" sub="Enter the member ID and the name and mobile fill in from the member list. For someone who is not a member, leave the ID empty." />
       <form action={createLoan} className="grid gap-6">
         <div className={box}>
           <h2 className="font-display text-2xl font-extrabold">Borrower</h2>

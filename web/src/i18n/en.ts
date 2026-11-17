@@ -301,6 +301,7 @@ const en = {
     signIn: "Sign in",
     signingIn: "Signing in…",
     signedInAs: "Signed in as",
+    home: { home: "Home", hello: "Namaste, {name}", ask: "What do you want to do?", findTitle: "Find a member", findHint: "Type a name, mobile number or ABC number", find: "Find", numbers: "This month at a glance", members: "Members", add: "Add member", renewals: "Renewals due", loans: "Loans", donations: "Donations", blacklist: "Blacklist", upload: "Upload Excel", total: "{n} people", due: "{n} to call", open: "{n} open", thisMonth: "{amount} this month", call: "Call", whatsapp: "WhatsApp", back: "Back", menu: "Menu" },
     signOut: "Sign out",
     nav: { overview: "Overview", donations: "Donations", members: "Members", renewals: "Renewals", import: "Import members", plans: "Plans & prices", blacklist: "Blacklist", loans: "Loans" },
     today: "Today is {date}",

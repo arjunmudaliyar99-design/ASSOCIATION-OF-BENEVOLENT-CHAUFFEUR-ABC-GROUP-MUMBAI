@@ -41,6 +41,18 @@ h1, h2, h3 { @apply font-display; text-wrap: balance; overflow-wrap: break-word;
   .glow { background: radial-gradient(60% 60% at 70% 30%, rgb(255 236 160 / .9), transparent 70%), rgb(var(--sun)); }
 }
 
+/* Admin tables become cards on phones: one card per row, each value labelled from its column heading. */
+@media (max-width: 767px) {
+  .adm-table thead { display: none; }
+  .adm-table table, .adm-table tbody { display: block; }
+  .adm-table tbody > tr { display: grid; gap: 0.15rem; padding: 1rem 1.1rem; }
+  .adm-table tbody > tr > td { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.3rem 0 !important; text-align: right; white-space: normal; }
+  .adm-table tbody > tr > td::before { content: attr(data-label); flex-shrink: 0; text-align: left; font-size: 0.9rem; font-weight: 700; color: rgb(var(--ink) / 0.6); }
+  .adm-table tbody > tr > td[data-label=""]::before { display: none; }
+  .adm-table tbody > tr > td[data-label=""] { justify-content: flex-start; }
+  .adm-table tbody > tr > td:empty { display: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }

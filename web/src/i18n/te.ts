@@ -299,6 +299,7 @@ const te: Dict = {
     signIn: "సైన్ ఇన్",
     signingIn: "సైన్ ఇన్ అవుతోంది…",
     signedInAs: "సైన్ ఇన్ అయినవారు",
+    home: { home: "హోమ్", hello: "నమస్తే, {name}", ask: "మీరు ఏమి చేయాలి?", findTitle: "సభ్యుడిని వెతకండి", findHint: "పేరు, మొబైల్ నంబర్ లేదా ABC నంబర్ రాయండి", find: "వెతకండి", numbers: "ఈ నెల లెక్క", members: "సభ్యులు", add: "సభ్యుడిని చేర్చండి", renewals: "రెన్యువల్ బాకీ", loans: "రుణాలు", donations: "విరాళాలు", blacklist: "బ్లాక్‌లిస్ట్", upload: "Excel అప్‌లోడ్", total: "{n} మంది", due: "{n} మందికి ఫోన్ చేయండి", open: "{n} నడుస్తున్నవి", thisMonth: "ఈ నెల {amount}", call: "ఫోన్ చేయండి", whatsapp: "WhatsApp", back: "వెనక్కి", menu: "మెనూ" },
     signOut: "సైన్ అవుట్",
     nav: { overview: "సారాంశం", donations: "విరాళాలు", members: "సభ్యులు", renewals: "పునరుద్ధరణలు", import: "సభ్యులను ఇంపోర్ట్ చేయండి", plans: "ప్లాన్లు & ధరలు", blacklist: "బ్లాక్‌లిస్ట్", loans: "రుణాలు" },
     today: "ఈ రోజు {date}",

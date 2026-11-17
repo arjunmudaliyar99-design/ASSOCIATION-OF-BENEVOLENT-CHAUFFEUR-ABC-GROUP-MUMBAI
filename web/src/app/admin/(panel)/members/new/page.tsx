@@ -10,7 +10,7 @@ export default async function NewMember() {
   const { t } = await adminDict();
   return (
     <>
-      <PageTitle title={t.admin.addMember} sub={t.admin.addMemberSub} />
+      <PageTitle section="add" title={t.admin.addMember} sub={t.admin.addMemberSub} />
       <AddMemberForm defaultValidUntil={addMonths(today(), 12)} t={{ admin: t.admin, join: t.join }} />
     </>
   );

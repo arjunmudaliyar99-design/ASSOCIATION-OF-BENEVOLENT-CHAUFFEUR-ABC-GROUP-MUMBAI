@@ -33,7 +33,7 @@ export default async function Member({ params }: { params: Promise<{ id: string 
   return (
     <>
       <Link href="/admin/members" className="mb-3 inline-block font-semibold text-ink/70 hover:text-ink">{a.allMembers}</Link>
-      <PageTitle title={m.name} sub={`${memberCode(m.id)} · ${a.joinedOn.replace("{how}", m.source === "imported" ? a.imported : m.source === "admin" ? a.byAdmin : a.online).replace("{date}", date(m.created_at, lang))}`}>
+      <PageTitle section="members" title={m.name} sub={`${memberCode(m.id)} · ${a.joinedOn.replace("{how}", m.source === "imported" ? a.imported : m.source === "admin" ? a.byAdmin : a.online).replace("{date}", date(m.created_at, lang))}`}>
         <a href={`https://wa.me/91${m.phone}?text=${reminder}`} target="_blank" rel="noopener noreferrer" className="btn-ghost !px-5 !py-2.5 !text-base">{a.waReminder}</a>
         <a href={`/membership/${m.token}`} target="_blank" className="btn-ghost !px-5 !py-2.5 !text-base">{a.viewCard}</a>
       </PageTitle>

@@ -25,7 +25,7 @@ export default async function Blacklist({ searchParams }: { searchParams: Promis
 
   return (
     <>
-      <PageTitle title={b.title} sub={b.sub}>
+      <PageTitle section="blacklist" title={b.title} sub={b.sub}>
         <a href={`/api/admin/export?type=${"blacklist"}`} download className="btn-ghost !px-5 !py-2.5 !text-base">{t.admin.csv}</a>
       </PageTitle>
       <div className="grid gap-8">
