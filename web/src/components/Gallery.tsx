@@ -32,7 +32,7 @@ export default function Gallery({ t }: { t: T }) {
         {/* Carousel */}
         <motion.div key={slug} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="grid gap-4">
           <h2 className="h-sec">{t.albums[album.slug] ?? album.title}</h2>
-          <Slider slides={slides} t={t.slider} thumbs className="[&>div:first-child]:aspect-[16/10] [&>div:first-child]:max-h-[78vh] [&>div:first-child]:w-full" sizes="(min-width:1440px) 1300px, 100vw" interval={4500} />
+          <Slider slides={slides} t={t.slider} thumbs fit="contain" className="[&>div:first-child]:aspect-[16/10] [&>div:first-child]:max-h-[78vh] [&>div:first-child]:w-full" sizes="(min-width:1440px) 1300px, 100vw" interval={4500} />
         </motion.div>
       </div>
     </section>

@@ -6,8 +6,8 @@ import Photo from "@/components/Photo";
 export type Slide = { src: string; caption?: string; focus?: string };
 
 /** Crossfading photo slider with a slow zoom, swipe, arrows, keyboard and an autoplay progress bar. */
-export default function Slider({ slides, t, interval = 5000, className = "", sizes = "100vw", thumbs = false, priority = false }:
-  { slides: Slide[]; t: { prev: string; next: string; show: string }; interval?: number; className?: string; sizes?: string; thumbs?: boolean; priority?: boolean }) {
+export default function Slider({ slides, t, interval = 5000, className = "", sizes = "100vw", thumbs = false, priority = false, fit = "cover" }:
+  { fit?: "cover" | "contain"; slides: Slide[]; t: { prev: string; next: string; show: string }; interval?: number; className?: string; sizes?: string; thumbs?: boolean; priority?: boolean }) {
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
   const reduce = useReducedMotion();
@@ -32,8 +32,16 @@ export default function Slider({ slides, t, interval = 5000, className = "", siz
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.9, ease: "easeInOut" }}
             drag="x" dragConstraints={{ left: 0, right: 0 }} dragElastic={0.15}
             onDragEnd={(_, info) => { if (info.offset.x < -50) go(1); else if (info.offset.x > 50) go(-1); }}>
-            <motion.div className="absolute inset-0" initial={{ scale: reduce ? 1 : 1.12 }} animate={{ scale: 1 }} transition={{ duration: interval / 1000 + 1, ease: "linear" }}>
-              <Photo src={s.src} alt={s.caption ?? ""} fill sizes={sizes} priority={priority && i === 0} className="pointer-events-none select-none object-cover" style={{ objectPosition: s.focus ?? "50% 50%" }} draggable={false} />
+            <motion.div className="absolute inset-0" initial={{ scale: reduce || fit === "contain" ? 1 : 1.12 }} animate={{ scale: 1 }} transition={{ duration: interval / 1000 + 1, ease: "linear" }}>
+              {fit === "contain" ? (
+                <>
+                  {/* Whole photo always visible: a blurred copy fills the frame around tall or wide pictures. */}
+                  <Photo src={s.src} alt="" aria-hidden fill sizes="64px" className="pointer-events-none scale-110 select-none object-cover opacity-70 blur-2xl" draggable={false} />
+                  <Photo src={s.src} alt={s.caption ?? ""} fill sizes={sizes} priority={priority && i === 0} className="pointer-events-none select-none object-contain" draggable={false} />
+                </>
+              ) : (
+                <Photo src={s.src} alt={s.caption ?? ""} fill sizes={sizes} priority={priority && i === 0} className="pointer-events-none select-none object-cover" style={{ objectPosition: s.focus ?? "50% 50%" }} draggable={false} />
+              )}
             </motion.div>
           </motion.div>
         </AnimatePresence>
