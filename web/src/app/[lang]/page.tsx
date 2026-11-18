@@ -48,7 +48,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </div>
           </div>
           <div className="animate-rise relative h-[22rem] sm:h-[30rem] lg:h-[36rem]" style={{ animationDelay: "300ms" }}>
-            <Slider slides={heroSlides} t={t.slider} className="h-full [&>div]:h-full" sizes="(min-width:1024px) 55vw, 100vw" priority />
+            <Slider slides={heroSlides} t={t.slider} fit="contain" className="h-full [&>div]:h-full" sizes="(min-width:1024px) 55vw, 100vw" priority />
             <div className="glass absolute -left-4 top-10 hidden animate-float rounded-2xl px-5 py-3 sm:block lg:-left-10">
               <p className="font-display text-3xl font-extrabold leading-none">₹0</p>
               <p className="text-sm font-semibold text-ink/75">{h.chipCommission}</p>
