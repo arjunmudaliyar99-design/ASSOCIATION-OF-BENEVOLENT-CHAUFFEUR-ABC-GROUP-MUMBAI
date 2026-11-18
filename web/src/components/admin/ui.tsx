@@ -41,7 +41,7 @@ export function Table({ head, children, empty, emptyText = "Nothing here yet." }
   return (
     <TableLabels className="adm-table rounded-3xl bg-card ring-1 ring-line md:overflow-x-auto">
       <table className="w-full text-left text-base md:min-w-[720px]">
-        <thead className="bg-sun/50"><tr>{head.map((h, i) => <th key={`${h}-${i}`} className="whitespace-nowrap px-4 py-3 font-bold">{h}</th>)}</tr></thead>
+        <thead className="bg-sun/50"><tr>{head.map((h, i) => <th key={`${h}-${i}`} className="px-3 py-3 align-bottom font-bold">{h}</th>)}</tr></thead>
         <tbody className="divide-y divide-line">{children}</tbody>
       </table>
       {empty && <p className="p-8 text-center text-lg text-ink/60">{emptyText}</p>}

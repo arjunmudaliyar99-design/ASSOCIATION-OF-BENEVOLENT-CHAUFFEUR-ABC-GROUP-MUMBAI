@@ -44,18 +44,18 @@ export default async function Members({ searchParams }: { searchParams: Promise<
           const expired = m.status === "active" && m.expires_on < t;
           return (
             <tr key={m.id} className="align-top hover:bg-sun/10">
-              <td className="whitespace-nowrap px-4 py-3 font-mono font-bold">{memberCode(m.id)}</td>
-              <td className="px-4 py-3"><Link href={`/admin/members/${m.id}`} className="font-semibold underline-offset-2 hover:underline">{m.name}</Link><br /><span className="text-xs text-ink/60">{m.source === "imported" ? a.imported : m.source === "admin" ? a.byAdmin : ""}</span></td>
-              <td className="px-4 py-3"><a className="underline" href={`https://wa.me/91${m.phone}`} target="_blank" rel="noopener noreferrer">{m.phone}</a></td>
-              <td className="px-4 py-3">{planName(m)}<br /><span className="text-ink/60">{inr(m.amount_paise)} · {date(m.paid_on, lang)}</span></td>
-              <td className="whitespace-nowrap px-4 py-3">{date(m.expires_on, lang)}</td>
-              <td className="px-4 py-3"><Pill s={expired ? "expired" : m.status} label={a.status[(expired ? "expired" : m.status) as keyof typeof a.status]} /></td>
-              <td className="px-4 py-3">
+              <td className="whitespace-nowrap px-3 py-3 font-mono font-bold">{memberCode(m.id)}</td>
+              <td className="px-3 py-3"><Link href={`/admin/members/${m.id}`} className="font-semibold underline-offset-2 hover:underline">{m.name}</Link><br /><span className="text-xs text-ink/60">{m.source === "imported" ? a.imported : m.source === "admin" ? a.byAdmin : ""}</span></td>
+              <td className="px-3 py-3"><a className="underline" href={`https://wa.me/91${m.phone}`} target="_blank" rel="noopener noreferrer">{m.phone}</a></td>
+              <td className="px-3 py-3">{planName(m)}<br /><span className="text-ink/60"><span className="whitespace-nowrap">{inr(m.amount_paise)}</span> · <span className="whitespace-nowrap">{date(m.paid_on, lang)}</span></span></td>
+              <td className="whitespace-nowrap px-3 py-3">{date(m.expires_on, lang)}</td>
+              <td className="px-3 py-3"><Pill s={expired ? "expired" : m.status} label={a.status[(expired ? "expired" : m.status) as keyof typeof a.status]} /></td>
+              <td className="px-3 py-3">
                 <form action={setInGroup}><input type="hidden" name="id" value={m.id} /><input type="hidden" name="v" value={m.in_group ? "0" : "1"} />
                   <button className={`rounded-full px-3 py-1 text-xs font-bold ${m.in_group ? "bg-ink text-sun" : "bg-line"}`}>{m.in_group ? a.addedTick : a.markAdded}</button></form>
               </td>
-              <td className="px-4 py-3">
-                <div className="flex items-center gap-2">
+              <td className="px-3 py-3">
+                <div className="flex flex-wrap items-center gap-2">
                   {m.status !== "active" && <form action={setMemberStatus}><input type="hidden" name="id" value={m.id} /><input type="hidden" name="status" value="active" /><button className="rounded-full bg-ink px-3 py-1 text-xs font-bold text-sun">{a.approve}</button></form>}
                   {m.status === "pending" && <form action={setMemberStatus}><input type="hidden" name="id" value={m.id} /><input type="hidden" name="status" value="rejected" /><button className="rounded-full bg-sindoor/15 px-3 py-1 text-xs font-bold text-sindoor">{a.reject}</button></form>}
                   <Link href={`/admin/members/${m.id}`} className="rounded-full bg-line px-3 py-1 text-xs font-bold">{a.open}</Link>
