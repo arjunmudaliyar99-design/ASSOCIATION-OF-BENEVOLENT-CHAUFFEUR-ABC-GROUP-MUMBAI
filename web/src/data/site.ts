@@ -4,7 +4,11 @@ export const site = {
   motto: "To serve, to care, to uplift.",
   regNo: "MU/000566/2023",
   founded: "2 June 2023",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://abcgroupmumbai.com",
+  // A production build must never point at localhost (canonical tags, sitemap, JSON-LD), even if a local .env sets it.
+  url:
+    process.env.NODE_ENV === "production" && /localhost|127\.0\.0\.1/.test(process.env.NEXT_PUBLIC_SITE_URL ?? "")
+      ? "https://abcgroupmumbai.com"
+      : (process.env.NEXT_PUBLIC_SITE_URL ?? "https://abcgroupmumbai.com"),
   address: "136, Subhash Nagar, Gaondevi, Vakola Pipe Line, Santacruz (E), Mumbai 400055",
   phone: "+91 98929 42264",
   phone2: "+91 98929 56995",

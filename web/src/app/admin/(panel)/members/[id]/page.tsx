@@ -7,6 +7,7 @@ import { deleteDoc, setInGroup, setMemberStatus } from "@/app/admin/actions";
 import { date, inr, PageTitle, Pill, Table } from "@/components/admin/ui";
 import { DocUpload, MemberEdit, OfflineRenewal } from "@/components/admin/MemberForms";
 import { adminDict } from "@/i18n";
+import { site } from "@/data/site";
 
 export const metadata = { title: "Member" };
 
@@ -28,7 +29,7 @@ export default async function Member({ params }: { params: Promise<{ id: string 
   const kinds: Record<string, string> = Object.fromEntries(([['aadhaar', d.join.aadhaar], ['pan', d.join.panCard], ['licence', d.join.licenceCard]] as const).flatMap(([k, n]) => [[`${k}_front`, `${n} – ${d.join.front}`], [`${k}_back`, `${n} – ${d.join.back}`]]));
   const legacy: Record<string, string> = { aadhaar: d.join.aadhaar, pan: d.join.panCard, licence: d.join.licenceCard };
   const expired = m.status === "active" && m.expires_on < today();
-  const reminder = encodeURIComponent(a.reminderMsg.replace("{name}", m.name).replace("{code}", memberCode(m.id)).replace("{state}", expired ? a.reminderExpired : a.reminderExpires).replace("{date}", date(m.expires_on, lang)).replace("{link}", `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}${lang === "en" ? "" : `/${lang}`}/contact`));
+  const reminder = encodeURIComponent(a.reminderMsg.replace("{name}", m.name).replace("{code}", memberCode(m.id)).replace("{state}", expired ? a.reminderExpired : a.reminderExpires).replace("{date}", date(m.expires_on, lang)).replace("{link}", `${site.url}${lang === "en" ? "" : `/${lang}`}/contact`));
 
   return (
     <>
