@@ -22,8 +22,12 @@ const en = {
   },
   footer: {
     about: "Association of Benevolent Chauffeur, Group Mumbai. Registered public trust, Reg. No. {reg}.",
-    visit: "Visit or call",
-    pages: "Pages",
+    visit: "Contact us",
+    pages: "Quick links",
+
+    credit: "Website designed & developed by {name}",
+
+    creatorRole: "AI/ML Engineer",
     myMembership: "My membership",
     privacy: "Privacy policy",
     terms: "Terms",
@@ -80,6 +84,12 @@ const en = {
     story2: "The association helps chauffeurs find work without charging commission, supports them with problems at work, and helps members' families with education and emergencies. It also takes food, groceries and supplies to ashrams and children in need.",
     story3: "It is registered under the Societies Registration Act, 1860 and as a public trust under the Bombay Public Trusts Act, 1950. Reg. No. {reg}.",
     purposeTitle: "Why we exist",
+
+    creatorLabel: "About this website",
+
+    creatorBio: "Designed and built this website end to end: the public site in seven languages, the membership and donation flows, the photo gallery, and the admin panel used to run it.",
+
+    portfolio: "Portfolio",
     purpose: [
       "We started this group so that our chauffeurs never have to suffer alone, or feel hurt asking others for help.",
       "This is service, nothing else. The group is not run for income, business or profit.",

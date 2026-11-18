@@ -87,6 +87,28 @@ export default async function About({ params }: { params: Promise<{ lang: string
         </div>
       </section>
 
+      {/* Website credit */}
+      <section className="bg-paper">
+        <div className="wrap pt-20">
+          <Reveal className="grid gap-6 rounded-[2rem] bg-card p-8 ring-1 ring-line md:grid-cols-[auto_1fr] md:items-center md:p-10">
+            {existsSync(join(process.cwd(), "public", creator.photo))
+              ? <Image src={creator.photo} alt={creator.name} width={224} height={224} className="h-28 w-28 rounded-full object-cover object-top shadow-lg ring-4 ring-sun md:h-36 md:w-36" />
+              : <span className="grid h-28 w-28 place-items-center rounded-full bg-ink font-display text-4xl font-extrabold text-sun shadow-lg" aria-hidden>AM</span>}
+            <div className="grid gap-3">
+              <p className="text-sm font-bold uppercase tracking-wider text-ink/60">{a.creatorLabel}</p>
+              <h2 className="font-display text-3xl font-extrabold leading-tight">{creator.name}</h2>
+              <span className="w-fit max-w-full rounded-full bg-ink px-4 py-1 text-sm font-bold text-sun">{t.footer.creatorRole}</span>
+              <p className="text-lg leading-relaxed">{a.creatorBio}</p>
+              <div className="flex flex-wrap items-center gap-3 pt-1">
+                <a href={creator.portfolio} target="_blank" rel="noopener noreferrer" className="btn-primary">{a.portfolio}</a>
+                <a href={creator.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn" className="grid h-14 w-14 place-items-center rounded-xl bg-[#0A66C2] text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" /></svg>
+                </a>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
       {/* Purpose, from the association's letter */}
       <section className="bg-paper">
         <div className="wrap grid gap-8 py-20 lg:grid-cols-[1fr_1.4fr]">
@@ -110,28 +132,6 @@ export default async function About({ params }: { params: Promise<{ lang: string
         <div className="wrap pb-16"><Link href={L("/contact")} className="btn-primary">{a.contactCta}</Link></div>
       </section>
 
-      {/* Website credit */}
-      <section className="bg-paper">
-        <div className="wrap py-20">
-          <Reveal className="grid gap-6 rounded-[2rem] bg-card p-8 ring-1 ring-line md:grid-cols-[auto_1fr] md:items-center md:p-10">
-            {existsSync(join(process.cwd(), "public", creator.photo))
-              ? <Image src={creator.photo} alt={creator.name} width={224} height={224} className="h-28 w-28 rounded-full object-cover object-top shadow-lg ring-4 ring-sun md:h-36 md:w-36" />
-              : <span className="grid h-28 w-28 place-items-center rounded-full bg-ink font-display text-4xl font-extrabold text-sun shadow-lg" aria-hidden>AM</span>}
-            <div className="grid gap-3">
-              <p className="text-sm font-bold uppercase tracking-wider text-ink/60">About this website</p>
-              <h2 className="font-display text-3xl font-extrabold leading-tight">{creator.name}</h2>
-              <span className="w-fit max-w-full rounded-full bg-ink px-4 py-1 text-sm font-bold text-sun">{creator.role}</span>
-              <p className="text-lg leading-relaxed">{creator.bio}</p>
-              <div className="flex flex-wrap items-center gap-3 pt-1">
-                <a href={creator.portfolio} target="_blank" rel="noopener noreferrer" className="btn-primary">Portfolio</a>
-                <a href={creator.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn" className="grid h-14 w-14 place-items-center rounded-xl bg-[#0A66C2] text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" /></svg>
-                </a>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
     </>
   );
 }
