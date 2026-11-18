@@ -6,6 +6,7 @@ import Photo from "@/components/Photo";
 import PageHero from "@/components/PageHero";
 import { Reveal } from "@/components/Motion";
 import { leaders, leaderTiers, serviceKeys, site } from "@/data/site";
+import { creator } from "@/data/creator";
 import { pageCtx, pageMeta } from "@/i18n";
 import { fill } from "@/i18n/config";
 
@@ -107,6 +108,30 @@ export default async function About({ params }: { params: Promise<{ lang: string
           ))}
         </div>
         <div className="wrap pb-16"><Link href={L("/contact")} className="btn-primary">{a.contactCta}</Link></div>
+      </section>
+
+      {/* Website credit */}
+      <section className="bg-paper">
+        <div className="wrap py-20">
+          <Reveal className="grid gap-6 rounded-[2rem] bg-card p-8 ring-1 ring-line md:grid-cols-[auto_1fr] md:items-center md:p-10">
+            {existsSync(join(process.cwd(), "public", creator.photo))
+              ? <Image src={creator.photo} alt={creator.name} width={224} height={224} className="h-28 w-28 rounded-full object-cover object-top shadow-lg ring-4 ring-sun md:h-36 md:w-36" />
+              : <span className="grid h-28 w-28 place-items-center rounded-full bg-ink font-display text-4xl font-extrabold text-sun shadow-lg" aria-hidden>AM</span>}
+            <div className="grid gap-3">
+              <p className="text-sm font-bold uppercase tracking-wider text-ink/60">About this website</p>
+              <h2 className="font-display text-3xl font-extrabold leading-tight">{creator.name}</h2>
+              <span className="w-fit max-w-full rounded-full bg-ink px-4 py-1 text-sm font-bold text-sun">{creator.role}</span>
+              <p className="text-lg leading-relaxed">{creator.bio}</p>
+              <ul className="flex flex-wrap gap-2">
+                {creator.skills.map((s) => <li key={s} className="rounded-full bg-sun px-3 py-1 text-sm font-semibold">{s}</li>)}
+              </ul>
+              <div className="flex flex-wrap gap-3 pt-1">
+                <a href={creator.portfolio} target="_blank" rel="noopener noreferrer" className="btn-primary">Portfolio</a>
+                <a href={creator.linkedin} target="_blank" rel="noopener noreferrer" className="rounded-full px-5 py-2.5 font-semibold ring-2 ring-ink transition hover:bg-ink hover:text-sun">LinkedIn</a>
+              </div>
+            </div>
+          </Reveal>
+        </div>
       </section>
     </>
   );

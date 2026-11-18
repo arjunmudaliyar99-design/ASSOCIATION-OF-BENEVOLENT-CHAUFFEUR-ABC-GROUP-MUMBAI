@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { site } from "@/data/site";
+import { creator } from "@/data/creator";
 import { fill, href, type Lang } from "@/i18n/config";
 import type { Dict } from "@/i18n/en";
 
@@ -39,7 +40,14 @@ export default function Footer({ lang, t }: { lang: Lang; t: Dict }) {
           </div>
         </div>
       </div>
-      <div className="relative border-t border-ink/15 py-5 text-center text-sm text-ink/70">© {new Date().getFullYear()} {t.org.fullName}, {t.org.city}</div>
+      <div className="relative grid gap-1 border-t border-ink/15 px-4 py-5 text-center text-sm text-ink/70">
+        <span>© {new Date().getFullYear()} {t.org.fullName}, {t.org.city}</span>
+        <span>
+          Website designed &amp; developed by{" "}
+          <a href={creator.portfolio} target="_blank" rel="noopener noreferrer" className="font-semibold text-ink hover:underline">{creator.name}</a>
+          {" · "}{creator.role}
+        </span>
+      </div>
     </footer>
   );
 }
