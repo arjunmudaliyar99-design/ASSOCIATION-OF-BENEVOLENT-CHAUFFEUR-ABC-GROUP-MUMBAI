@@ -38,11 +38,11 @@ export default function Footer({ lang, t }: { lang: Lang; t: Dict }) {
           <Link href={L("/donate")} className="btn-primary w-fit max-w-full">{t.common.donate}</Link>
         </div>
         <div className="grid content-start gap-2.5">
-          <p className="mb-1 font-display text-xl font-extrabold">{t.footer.visit}</p>
-          <p className="flex gap-3 text-ink/80"><Icon d={ICON.pin} />{site.address}</p>
-          <a className={row} href={`tel:${site.phone.replace(/\s/g, "")}`}><Icon d={ICON.phone} />{site.phone}</a>
-          <a className={row} href={`tel:${site.phone2.replace(/\s/g, "")}`}><Icon d={ICON.phone} />{site.phone2}</a>
-          <a className={row} href={`mailto:${site.email}`}><Icon d={ICON.mail} />{site.email}</a>
+          <p className="mb-1 font-display text-xl font-extrabold">{t.footer.visit}</p>{" "}
+          <p className="flex gap-3 text-ink/80"><Icon d={ICON.pin} />{site.address}</p>{" "}
+          <a className={row} href={`tel:${site.phone.replace(/\s/g, "")}`}><Icon d={ICON.phone} />{site.phone}</a>{" "}
+          <a className={row} href={`tel:${site.phone2.replace(/\s/g, "")}`}><Icon d={ICON.phone} />{site.phone2}</a>{" "}
+          <a className={row} href={`mailto:${site.email}`}><Icon d={ICON.mail} />{site.email}</a>{" "}
           <a className={row} href={`https://instagram.com/${site.instagram}`} target="_blank" rel="noopener noreferrer"><Icon d={ICON.insta} />@{site.instagram}</a>
         </div>
         <div className="grid content-start gap-2.5">

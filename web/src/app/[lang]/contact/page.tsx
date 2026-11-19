@@ -36,17 +36,17 @@ export default async function Contact({ params }: { params: Promise<{ lang: stri
                 <span className="grid h-12 w-12 place-items-center rounded-full bg-sun">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d={icons[it.k]} /></svg>
                 </span>
-                <span className="font-display text-2xl font-extrabold">{it.h}</span>
+                <span className="font-display text-2xl font-extrabold">{it.h}</span>{" "}
                 <span className="grid gap-1">
                   {it.lines.map(([label, link]) => (
-                    <a key={link} href={link} target={link.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="w-fit max-w-full break-all font-semibold underline-offset-4 hover:underline">{label}</a>
+                    <a key={link} href={link} target={link.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="w-fit max-w-full break-all font-semibold underline-offset-4 hover:underline">{label}{" "}</a>
                   ))}
                 </span>
               </Reveal>
             ))}
           </div>
           <Reveal delay={0.1} className="grid content-start gap-5 rounded-[1.75rem] bg-sun p-8 shadow-[0_20px_50px_-30px_rgb(var(--ink)/.5)]">
-            <h2 className="font-display text-3xl font-extrabold">{c.office}</h2>
+            <h2 className="font-display text-3xl font-extrabold">{c.office}</h2>{" "}
             <p className="text-lg">{site.address}</p>
             <a href={site.mapUrl} target="_blank" rel="noopener noreferrer" className="btn-primary w-fit max-w-full">{c.maps}</a>
           </Reveal>

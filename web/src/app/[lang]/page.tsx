@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Aurora from "@/components/Aurora";
 import Photo from "@/components/Photo";
@@ -35,6 +36,14 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <Aurora />
         <div className="wrap relative grid items-center gap-12 pb-20 pt-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16 lg:pb-28 lg:pt-16">
           <div className="grid min-w-0 gap-7">
+            {/* Phones: the logo and trust name come first, large, before anything else. */}
+            <div className="animate-rise flex flex-col items-center gap-4 text-center lg:hidden">
+              <Image src="/logo.jpg" alt="" width={160} height={160} priority className="h-36 w-36 rounded-full shadow-[0_18px_40px_-12px_rgb(var(--ink)/.55)] ring-4 ring-paper/70 sm:h-40 sm:w-40" />
+              <div className="grid gap-1">
+                <p className="font-display text-[1.7rem] font-extrabold leading-tight sm:text-4xl">{t.org.fullName}</p>
+                <p className="text-lg font-bold tracking-wide text-ink/75">{t.org.city}</p>
+              </div>
+            </div>
             <p className="glass animate-rise w-fit max-w-full rounded-3xl px-4 py-2 text-sm font-semibold">{fill(t.org.regTrust, { reg: site.regNo })}</p>
             <h1 className={`font-display font-extrabold leading-[.95] tracking-tight ${["ta", "kn", "te", "ml"].includes(lang) ? "text-[clamp(2.1rem,6vw,5rem)] leading-[1.1]" : "text-[clamp(2.8rem,7vw,6.25rem)]"}`}>
               {words.map((w, i) => (
